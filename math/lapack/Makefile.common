@@ -1,0 +1,20 @@
+# $NetBSD: Makefile.common,v 1.3 2016/10/18 14:08:14 wiz Exp $
+# used by math/blas/Makefile
+# used by math/lapack/Makefile
+
+DISTNAME=	lapack-3.6.1
+CATEGORIES=	math
+MASTER_SITES=	${MASTER_SITE_NETLIB:=lapack/}
+EXTRACT_SUFX=	.tgz
+
+MAINTAINER=	adam@NetBSD.org
+HOMEPAGE=	http://www.netlib.org/lapack/
+LICENSE=	modified-bsd
+
+USE_LANGUAGES=		c fortran
+USE_LIBTOOL=		yes
+
+DISTINFO_FILE=	${.CURDIR}/../../math/lapack/distinfo
+PATCHDIR=	${.CURDIR}/../../math/lapack/patches
+
+INSTALLATION_DIRS=	lib

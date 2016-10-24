@@ -1,0 +1,39 @@
+$NetBSD: patch-ae,v 1.15 2016/04/29 19:05:22 fhajny Exp $
+
+- Default locations.
+- Use 'su -' instead of just 'su'. Fixes priv delegation on SunOS
+  and AIX where Erlang relies on $HOME set correctly.
+
+--- ejabberdctl.template.orig	2016-04-28 13:57:55.000000000 +0000
++++ ejabberdctl.template
+@@ -27,7 +27,7 @@ if [ "$INSTALLUSER" != "" ] ; then
+                 mkdir -p "$INSTALLUSER_HOME"
+                 chown "$INSTALLUSER" "$INSTALLUSER_HOME"
+             fi
+-            EXEC_CMD="su $INSTALLUSER -c"
++            EXEC_CMD="su - $INSTALLUSER -c"
+         fi
+     done
+     if [ `id -g` -eq `id -g $INSTALLUSER` ] ; then
+@@ -73,10 +73,10 @@ if [ "$EJABBERD_CONFIG_PATH" = "" ] ; th
+     EJABBERD_CONFIG_PATH=$ETC_DIR/ejabberd.yml
+ fi
+ if [ "$LOGS_DIR" = "" ] ; then
+-    LOGS_DIR={{localstatedir}}/log/ejabberd
++    LOGS_DIR=@EJABBERD_LOGDIR@
+ fi
+ if [ "$SPOOL_DIR" = "" ] ; then
+-    SPOOL_DIR={{localstatedir}}/lib/ejabberd
++    SPOOL_DIR=@EJABBERD_DB@
+ fi
+ if [ "$EJABBERD_DOC_PATH" = "" ] ; then
+     EJABBERD_DOC_PATH={{docdir}}
+@@ -85,7 +85,7 @@ if [ "$ERLANG_NODE_ARG" != "" ] ; then
+     ERLANG_NODE=$ERLANG_NODE_ARG
+ fi
+ if [ "{{release}}" != "true" -a "$EJABBERD_BIN_PATH" = "" ] ; then
+-    EJABBERD_BIN_PATH={{libdir}}/ejabberd/priv/bin
++    EJABBERD_BIN_PATH={{libdir}}/erlang/lib/ejabberd/priv/bin
+ fi
+ EJABBERD_LOG_PATH=$LOGS_DIR/ejabberd.log
+ DATETIME=`date "+%Y%m%d-%H%M%S"`

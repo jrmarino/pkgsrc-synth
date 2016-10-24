@@ -1,0 +1,24 @@
+# $NetBSD: Makefile,v 1.16 2015/03/15 17:25:55 hiramatsu Exp $
+#
+
+DISTNAME=	ibus-hangul-1.5.0
+CATEGORIES=	inputmethod korean
+MASTER_SITES=	https://github.com/choehwanjin/ibus-hangul/releases/download/${PKGVERSION_NOREV}/
+
+MAINTAINER=	pkgsrc-users@NetBSD.org
+HOMEPAGE=	http://code.google.com/p/ibus/
+COMMENT=	Hangul engine for IBus input platform
+LICENSE=	gnu-gpl-v2
+
+GNU_CONFIGURE=		yes
+USE_LIBTOOL=		yes
+USE_PKGLOCALEDIR=	yes
+USE_TOOLS+=		pkg-config gmake msgfmt intltool
+
+.include "../../devel/gettext-lib/buildlink3.mk"
+.include "../../graphics/hicolor-icon-theme/buildlink3.mk"
+BUILDLINK_API_DEPENDS.libhangul+=	libhangul>=0.1.0
+.include "../../inputmethod/libhangul/buildlink3.mk"
+.include "../../inputmethod/ibus/buildlink3.mk"
+.include "../../lang/python/application.mk"
+.include "../../mk/bsd.pkg.mk"

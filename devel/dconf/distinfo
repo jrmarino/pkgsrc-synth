@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.11 2016/04/20 22:00:55 prlw1 Exp $
+
+SHA1 (dconf-0.26.0.tar.xz) = d4ab94969864c3e00515d0c0ee5b8090a7e0f896
+RMD160 (dconf-0.26.0.tar.xz) = 1421922be5703abb86fa59786a5d2e5c2d4cc646
+SHA512 (dconf-0.26.0.tar.xz) = ea225397a486815c90a113c064d943f113490dfc754e4acba049b033115aa3a6a3849a5cdc133663de09811cde41c963041bc244cfd9ed32d65399889e415d1e
+Size (dconf-0.26.0.tar.xz) = 219688 bytes

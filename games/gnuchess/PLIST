@@ -1,0 +1,11 @@
+@comment $NetBSD: PLIST,v 1.4 2016/05/03 01:46:15 mef Exp $
+bin/gnuchess
+bin/gnuchessu
+bin/gnuchessx
+info/gnuchess.info
+man/man1/gnuchess.1
+share/doc/gnuchess/README
+share/games/plugins/logos/gnuchess.png
+share/games/plugins/xboard/gnuchess.eng
+share/gnuchess/gnuchess.ini
+share/gnuchess/smallbook.bin

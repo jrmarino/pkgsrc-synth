@@ -1,0 +1,122 @@
+$NetBSD: patch-ac,v 1.5 2015/12/29 23:34:44 dholland Exp $
+
+Primitively roffify the doc so it can be installed as a man page.
+
+--- bwbasic.doc.orig	2015-05-20 14:17:40.000000000 +0000
++++ bwbasic.doc
+@@ -1,36 +1,10 @@
+-
+-
+-
+-
+-               Bywater BASIC Interpreter, version 3.00
+-               ---------------------------------------------
+-
+-                    Copyright (c) 1993, Ted A. Campbell
+-                  for bwBASIC version 2.10, 11 October 1993
+-
+-                  Copyright (c) 2014-2015, Howatd Wulf, AF5NE
+-                  for bwBASIC version 3.00, 2015-04-05
+-
+-
+-CONTENTS:
+-
+-   1. DESCRIPTION
+-   2. TERMS OF USE
+-   3. QUICK REFERENCE LIST OF COMMANDS AND FUNCTIONS
+-   4. GENERAL NOTES ON USAGE
+-   5. EXPANDED REFERENCE FOR COMMANDS AND FUNCTIONS
+-   6. PREDEFINED VARIABLES
+-   7. UNIMPLEMENTED COMMANDS AND FUNCTIONS
+-      and AGENDA FOR DEVELOPMENT
+-   8. THE STORY OF BYWATER BASIC
+-   9. COMMUNICATIONS
+-
+-   The author wishes to express his thanks to Mr. David MacKenzie, 
+-   who assisted in the development Unix installation and configuration
+-   for this version.
+-
+-
+-1. DESCRIPTION
++.Dd October 11, 1993
++.Dt bwBASIC 1
++.Os
++.Sh NAME
++.Nm bwBASIC
++.Nd BASIC Interpreter/Shell, version 2.10
++.Sh SYNOPSIS
+ 
+    The Bywater BASIC Interpreter (bwBASIC) implements a large
+    superset of the ANSI Standard for Minimal BASIC (X3.60-1978)
+@@ -53,7 +27,7 @@ CONTENTS:
+    into distinct lines as they are loaded.
+ 
+ 
+-2. TERMS OF USE:
++.Sh TERMS OF USE:
+ 
+    This version of Bywater BASIC is released under the terms of the 
+    GNU General Public License (GPL), which is distributed with this 
+@@ -64,7 +38,7 @@ CONTENTS:
+    for information on which you should contact the author.
+ 
+ 
+-3. QUICK REFERENCE LIST OF COMMANDS AND FUNCTIONS
++.Sh QUICK REFERENCE LIST OF COMMANDS AND FUNCTIONS
+ 
+    Be aware that many of these commands and functions will not be
+    available unless you have enabled a particular dialect using
+@@ -380,7 +354,7 @@ CONTENTS:
+      WRITE [# device-number,] element [, .... ]
+    
+ 
+-4. GENERAL NOTES ON USAGE:
++.Sh GENERAL NOTES ON USAGE:
+ 
+    4.a. Interactive Environment
+ 
+@@ -790,7 +764,7 @@ CONTENTS:
+    END FUNCTION
+    
+    
+-5. EXPANDED REFERENCE FOR COMMANDS AND FUNCTIONS
++.Sh EXPANDED REFERENCE FOR COMMANDS AND FUNCTIONS
+    
+    bwBASIC provides a simple "HELP" command to assist you in
+    finding the command or function you are looking for.
+@@ -6965,7 +6939,7 @@ DESCRIPTION: For file X, sets the line w
+ 
+ 
+ 
+-6. PREDEFINED VARIABLES
++.Sh PREDEFINED VARIABLES
+ 
+    BWB.EDITOR$
+    BWB.FILES$
+@@ -7003,7 +6977,7 @@ DESCRIPTION: For file X, sets the line w
+    return the current OPTION TERMINAL setting.
+    
+    
+-7. UNIMPLEMENTED COMMANDS AND FUNCTIONS, and AGENDA FOR DEVELOPMENT
++.Sh UNIMPLEMENTED COMMANDS AND FUNCTIONS, and AGENDA FOR DEVELOPMENT
+ 
+    There are some items not implemented that have been so long
+    a part of standard BASICs that their absence will seem surprising.
+@@ -7172,7 +7146,7 @@ DESCRIPTION: For file X, sets the line w
+    ZONEWIDTH
+ 
+ 
+-8. THE STORY OF BYWATER BASIC
++.Sh THE STORY OF BYWATER BASIC
+ 
+    This program was originally begun in 1982 by my grandmother, Mrs.
+    Verda Spell of Beaumont, TX.  She was writing the program using
+@@ -7194,7 +7168,7 @@ DESCRIPTION: For file X, sets the line w
+    should know, though, that I myself am an historian, not a programmer.
+ 
+ 
+-9. COMMUNICATIONS:
++.Sh COMMUNICATIONS:
+ 
+    email:  tcamp@delphi.com
+ 

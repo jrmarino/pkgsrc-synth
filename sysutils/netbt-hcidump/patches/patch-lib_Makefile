@@ -1,0 +1,17 @@
+$NetBSD: patch-lib_Makefile,v 1.6 2014/12/30 08:39:13 plunky Exp $
+
+Though we only require a minimal part of the library,
+build a libbt.a to avoid filename conflicts
+
+--- lib/Makefile.orig	2014-12-28 13:02:11.000000000 +0000
++++ lib/Makefile
+@@ -0,0 +1,9 @@
++#
++
++LIBISPRIVATE=	yes
++
++LIB=		bt
++
++SRCS=		bluetooth.c hci.c
++
++.include <bsd.lib.mk>

@@ -1,0 +1,7 @@
+$NetBSD: distinfo,v 1.4 2016/06/01 21:05:46 kleink Exp $
+
+SHA1 (Flask-0.11.tar.gz) = 9a080ae1544583193ddc8c98787107c55ab89b34
+RMD160 (Flask-0.11.tar.gz) = 3a5c9c8835d57da552b7f0b6cfee2f58b0f7590b
+SHA512 (Flask-0.11.tar.gz) = 77ee9998c96ba5e4eb007b81e04a051a6f8fc3ac837496a8c9e6637fdbff3e6fbba4912919b1cb2c5ed72951cc9fb8eb28d699e3f15de14ecbb51c362111eafc
+Size (Flask-0.11.tar.gz) = 563928 bytes
+SHA1 (patch-setup.py) = f8eb610f7e620355862d0d8edb818636f7e6d3c3

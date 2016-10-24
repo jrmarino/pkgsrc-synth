@@ -1,0 +1,21 @@
+$NetBSD: patch-Makefile,v 1.2 2014/05/30 21:35:04 schmonz Exp $
+
+DESTDIR support.
+
+--- Makefile.orig	1998-06-15 10:53:16.000000000 +0000
++++ Makefile
+@@ -4,6 +4,14 @@ SHELL=/bin/sh
+ 
+ default: it
+ 
++auto_destdir.c: \
++auto-str conf-destdir
++	./auto-str auto_qmail `head -1 conf-destdir` > auto_destdir.c
++
++auto_destdir.o: \
++compile auto_destdir.c
++	./compile auto_destdir.c
++
+ addresses.0: \
+ addresses.5
+ 	nroff -man addresses.5 > addresses.0

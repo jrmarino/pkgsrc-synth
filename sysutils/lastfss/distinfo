@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.4 2016/05/03 08:07:27 manu Exp $
+
+SHA1 (lastfss-0.2.tgz) = 26d4d326452ebd9347d772058a5e67c84a9a2c33
+RMD160 (lastfss-0.2.tgz) = 62cedd93d17b93bd7601df5592077f984c0fb0dd
+Size (lastfss-0.2.tgz) = 3057 bytes
+SHA1 (patch-lastfss.c) = f87f3e9e1d1478a387195a8d25eb5f5abb870421

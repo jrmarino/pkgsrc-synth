@@ -1,0 +1,11 @@
+$NetBSD: distinfo,v 1.18 2015/11/04 03:29:02 agc Exp $
+
+SHA1 (xf86-video-nv-2.1.20.tar.bz2) = 42b129be471d16444c5a7b443491e8d9e3e5df1a
+RMD160 (xf86-video-nv-2.1.20.tar.bz2) = 1245e6fb40728ec5b874d1a7cbc6836c39704837
+SHA512 (xf86-video-nv-2.1.20.tar.bz2) = f7c3f00aa949bdffdcb180fa727204b1cdbbad560919e111c589f8614fd897186cdefe014714505aa4646419b4d8bb879eaca96fea032b56cc8c71ba7faa6373
+Size (xf86-video-nv-2.1.20.tar.bz2) = 396982 bytes
+SHA1 (patch-src_g80__driver.c) = 7a009a40cb21973180befe403e2e14979030986a
+SHA1 (patch-src_nv__driver.c) = 3fef5f0ed734115e801c5cf14fdecb4cea17675b
+SHA1 (patch-src_nv__include.h) = 94e101db1ba731d9187753f3b1c8285f5fdd0c90
+SHA1 (patch-src_riva_driver.c) = 2820b601f3244cce48b6cd93c51e03bc0bff507f
+SHA1 (patch-src_riva_include.h) = 84859b666ad1e4a26e09876a63e5131adb35b513

@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.3 2016/02/06 11:23:41 jaapb Exp $
+
+SHA1 (reactiveData-0.2.tar.gz) = 2bf38de89be39110e8538203719067edda3ac27d
+RMD160 (reactiveData-0.2.tar.gz) = 1d1fd32c0f70cb2131132344b112c13e83e17ba7
+SHA512 (reactiveData-0.2.tar.gz) = ed6c82b499f7a740dcf3c39825dd9a98b73ab32d15159e372253a2ca9c8406301cd569654d02f5be2530b491b101587bb628984b0b6f1ce1cc21aab010e518cf
+Size (reactiveData-0.2.tar.gz) = 21063 bytes

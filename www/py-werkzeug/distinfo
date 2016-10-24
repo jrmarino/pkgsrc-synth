@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.14 2016/06/01 20:54:23 kleink Exp $
+
+SHA1 (Werkzeug-0.11.10.tar.gz) = 3b74c588f55c727a7bd91d805837dd3866c75339
+RMD160 (Werkzeug-0.11.10.tar.gz) = f7c8ee8273d7ae3bd3ddf81198d622fcd0b1d405
+SHA512 (Werkzeug-0.11.10.tar.gz) = e54a33418d742203894fb11ccdd03b5b495b3dd190c46dff34dc4c18b16749d891224b03b51e25ca7dafc554b81915224ed6b9cc724286900e91b4629abf2600
+Size (Werkzeug-0.11.10.tar.gz) = 1170919 bytes

@@ -1,0 +1,7 @@
+$NetBSD: distinfo,v 1.7 2014/02/17 08:18:07 pettai Exp $
+
+SHA1 (validns-0.8.tar.gz) = 1d9a233a1111a983d44ff6ccfb93d9308f12e90c
+RMD160 (validns-0.8.tar.gz) = 74204348e4478379f14eda129a8f045981e03829
+Size (validns-0.8.tar.gz) = 190325 bytes
+SHA1 (patch-Makefile) = 638dc179f7f272873fabc7d7b46e2beb140e43bc
+SHA1 (patch-carp.c) = bbb750d013b751ca7994e32244c8865f8687ff1b

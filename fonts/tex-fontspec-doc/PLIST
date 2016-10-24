@@ -1,0 +1,4 @@
+@comment $NetBSD: PLIST,v 1.4 2016/06/16 03:57:29 markd Exp $
+share/texmf-dist/doc/latex/fontspec/README.md
+share/texmf-dist/doc/latex/fontspec/fontspec-example.tex
+share/texmf-dist/doc/latex/fontspec/fontspec.pdf

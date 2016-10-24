@@ -1,0 +1,41 @@
+$NetBSD: patch-aa,v 1.6 2016/10/09 21:20:45 wiz Exp $
+
+Install completion files into example directory.
+Accept zlib 1.2.3.
+
+--- configure.orig	2016-10-04 01:47:21.000000000 +0000
++++ configure
+@@ -490,9 +490,9 @@ if ! pkg-config --exists zlib; then
+   rm -f compat/gen_zlib_pc
+ fi
+ 
+-printf "Checking for zlib (>= 1.2.5.2)... "
++printf "Checking for zlib (>= 1.2.3)... "
+ have_zlib=0
+-if pkg-config --atleast-version=1.2.5.2 zlib; then
++if pkg-config --atleast-version=1.2.3 zlib; then
+     printf "Yes.\n"
+     have_zlib=1
+     zlib_cflags=$(pkg-config --cflags zlib)
+@@ -688,7 +688,7 @@ EOF
+ 	echo "	https://xapian.org/"
+     fi
+     if [ $have_zlib -eq 0 ]; then
+-	echo "	zlib library (>= version 1.2.5.2, including development files such as headers)"
++	echo "	zlib library (>= version 1.2.3, including development files such as headers)"
+ 	echo "	http://zlib.net/"
+ 	echo
+     fi
+@@ -1026,10 +1026,10 @@ HAVE_DOXYGEN=${have_doxygen}
+ desktop_dir = \$(prefix)/share/applications
+ 
+ # The directory to which bash completions files should be installed
+-bash_completion_dir = ${BASHCOMPLETIONDIR:=\$(sysconfdir)/bash_completion.d}
++bash_completion_dir = ${BASHCOMPLETIONDIR:=\$(prefix)/share/examples/notmuch/bash_completion.d}
+ 
+ # The directory to which zsh completions files should be installed
+-zsh_completion_dir = ${ZSHCOMLETIONDIR:=\$(prefix)/share/zsh/functions/Completion/Unix}
++zsh_completion_dir = ${ZSHCOMLETIONDIR:=\$(prefix)/share/examples/notmuch/zsh/functions/Completion/Unix}
+ 
+ # Whether the canonicalize_file_name function is available (if not, then notmuch will
+ # build its own version)

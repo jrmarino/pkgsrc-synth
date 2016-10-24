@@ -1,0 +1,9 @@
+@comment $NetBSD: PLIST,v 1.2 2016/06/17 15:33:24 jaapb Exp $
+${OCAML_SITELIB}/cmdliner/META
+${PLIST.ocaml-opt}${OCAML_SITELIB}/cmdliner/cmdliner.a
+${OCAML_SITELIB}/cmdliner/cmdliner.cma
+${OCAML_SITELIB}/cmdliner/cmdliner.cmi
+${PLIST.ocaml-opt}${OCAML_SITELIB}/cmdliner/cmdliner.cmx
+${PLIST.ocaml-opt}${OCAML_SITELIB}/cmdliner/cmdliner.cmxa
+${PLIST.ocaml-opt}${OCAML_SITELIB}/cmdliner/cmdliner.cmxs
+${OCAML_SITELIB}/cmdliner/cmdliner.mli

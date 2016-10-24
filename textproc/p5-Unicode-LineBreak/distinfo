@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.6 2016/04/09 04:24:26 wen Exp $
+
+SHA1 (Unicode-LineBreak-2016.003.tar.gz) = db8df18773d8746d7c30b4d4f5d185ff8bbcb465
+RMD160 (Unicode-LineBreak-2016.003.tar.gz) = 49994074d270d323c40e1e1e3f13742355664c5d
+SHA512 (Unicode-LineBreak-2016.003.tar.gz) = c2296ebd87a06c55d95f198ef355566c05257a75a38876c726cebe309f5e6082a7bfd7d86f28505e183e3150313e781a6f1999e8de8b35ee772d94845cd08e2f
+Size (Unicode-LineBreak-2016.003.tar.gz) = 304042 bytes

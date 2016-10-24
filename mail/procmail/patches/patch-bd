@@ -1,0 +1,34 @@
+$NetBSD: patch-bd,v 1.3 2014/09/04 07:37:44 wiz Exp $
+
+First chunk:
+https://bugzilla.redhat.com/show_bug.cgi?id=1121299
+CVE-2014-3618
+
+Second chunk:
+Avoid conflict with existing getline() functions.
+
+--- src/formisc.c.orig	2001-06-29 02:20:45.000000000 +0000
++++ src/formisc.c
+@@ -84,12 +84,11 @@ normal:	   *target++= *start++;
+ 	case '"':*target++=delim='"';start++;
+       }
+      ;{ int i;
+-	do
++	while(*start)
+ 	   if((i= *target++= *start++)==delim)	 /* corresponding delimiter? */
+ 	      break;
+ 	   else if(i=='\\'&&*start)		    /* skip quoted character */
+ 	      *target++= *start++;
+-	while(*start);						/* anything? */
+       }
+      hitspc=2;
+    }
+@@ -115,7 +114,7 @@ void loadchar(c)const int c;		      /* a
+   buf[buffilled++]=c;
+ }
+ 
+-int getline P((void))			   /* read a newline-terminated line */
++int get_line P((void))			   /* read a newline-terminated line */
+ { if(buflast==EOF)			 /* at the end of our Latin already? */
+    { loadchar('\n');					  /* fake empty line */
+      return EOF;					  /* spread the word */

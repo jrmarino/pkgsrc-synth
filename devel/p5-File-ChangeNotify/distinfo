@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.11 2016/06/05 12:21:14 mef Exp $
+
+SHA1 (File-ChangeNotify-0.26.tar.gz) = 686b9dbadb809052203f95122ef511e658851392
+RMD160 (File-ChangeNotify-0.26.tar.gz) = 7100a0d87966f99a4dd62cbf3093b7f57463e3c3
+SHA512 (File-ChangeNotify-0.26.tar.gz) = 33f3f925b526f9d1ad8946f02f8aeb6f1f7edbb999a71318ffb339a2e3415daac93eda72e3747ceca252e44adc5414ed9a6f3948b42c6513a0e80336a6fce035
+Size (File-ChangeNotify-0.26.tar.gz) = 34396 bytes

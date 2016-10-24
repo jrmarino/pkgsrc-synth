@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.17 2016/10/12 14:48:47 mef Exp $
+
+SHA1 (Dist-Zilla-6.008.tar.gz) = 65b289ca52df71abea96fd9c23a8f9ff267508fc
+RMD160 (Dist-Zilla-6.008.tar.gz) = 28ae16cbf7accf2fe4e59d5f8ed3a0f0f5377b61
+SHA512 (Dist-Zilla-6.008.tar.gz) = ca0e71971defe212417413c14fb3f7fb4715d8485ee6e9b64018bc96320c09e0830f58382d74c1001f88618f19abdee1fb3ce6fa253d80bcc0e84ac503b8befa
+Size (Dist-Zilla-6.008.tar.gz) = 194894 bytes

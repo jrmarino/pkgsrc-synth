@@ -1,0 +1,34 @@
+# $NetBSD: Makefile,v 1.40 2016/08/03 10:23:23 adam Exp $
+#
+
+DISTNAME=		gnome-mount-0.8
+PKGREVISION=		35
+CATEGORIES=		sysutils gnome
+MASTER_SITES=		http://hal.freedesktop.org/releases/
+
+MAINTAINER=	pkgsrc-users@NetBSD.org
+HOMEPAGE=	http://hal.freedesktop.org/
+COMMENT=	Programs for mounting, unmounting and ejecting storage devices
+
+GNU_CONFIGURE=		YES
+USE_PKGLOCALEDIR=	YES
+USE_TOOLS+=		gmake intltool msgfmt perl pkg-config
+USE_LIBTOOL=		YES
+
+GCONF_SCHEMAS+=	gnome-mount.schemas
+
+.include "../../mk/bsd.prefs.mk"
+.if ${OPSYS} == "NetBSD"
+post-extract:
+	${CP} ${FILESDIR}/gnome-mount.schemas.in.NetBSD ${WRKSRC}/gnome-mount.schemas.in
+.endif
+
+.include "../../devel/GConf/schemas.mk"
+.include "../../devel/libglade/buildlink3.mk"
+.include "../../security/libgnome-keyring/buildlink3.mk"
+.include "../../sysutils/dbus-glib/buildlink3.mk"
+.include "../../sysutils/hal/buildlink3.mk"
+.include "../../sysutils/libnotify/buildlink3.mk"
+.include "../../sysutils/nautilus/buildlink3.mk"
+.include "../../x11/gtk2/buildlink3.mk"
+.include "../../mk/bsd.pkg.mk"

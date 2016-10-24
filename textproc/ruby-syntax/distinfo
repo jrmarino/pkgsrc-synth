@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.5 2016/10/18 14:49:25 taca Exp $
+
+SHA1 (syntax-1.2.1.gem) = 7c33a432d67358b52bd9e77034e2550c2ad8229d
+RMD160 (syntax-1.2.1.gem) = 8f3da42881772d54f46d5e126d3abd1ba0c5e80e
+SHA512 (syntax-1.2.1.gem) = 0ef97acc6425d775ce555e9c64b58cf788d8e0021f94acecec9120ec718964d9ef10c94bad7117bf35dc0ea38076a58f5ab3b027c2d01cdfc2e719888ea23b05
+Size (syntax-1.2.1.gem) = 19968 bytes

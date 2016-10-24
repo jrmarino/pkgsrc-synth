@@ -1,0 +1,14 @@
+$NetBSD: distinfo,v 1.21 2016/10/21 14:16:34 fhajny Exp $
+
+SHA1 (sqlrelay-0.66.0.tar.gz) = 08bb3cd32ce0d7d36783f3e43fa4f0035b6dd6d1
+RMD160 (sqlrelay-0.66.0.tar.gz) = 21971765d9a9d6e71c0bcb8c85f2af0e746ebc7c
+SHA512 (sqlrelay-0.66.0.tar.gz) = df56609816c88b5a041752e6460ecd35dba4a27823c2740693c45d2727a89dbce6b0f88af746cb4b74c7d36ef619bc4fd2c9991507d18b6bf6d351f36b294293
+Size (sqlrelay-0.66.0.tar.gz) = 4249607 bytes
+SHA1 (patch-ad) = cc4a94941ec737abede98bdd7b19bc902f755609
+SHA1 (patch-config.mk.in) = 22e8459f49e20529289e1a99b10cebaa449af0c0
+SHA1 (patch-configure) = 04affebca0556849cfbc3eb17f5b9481eb00631b
+SHA1 (patch-etc_Makefile) = 28e9cac18314f1fc725603d47cb92ec6e54d7c63
+SHA1 (patch-src_api_php_sql__relay.cpp) = 9e33260f4e4331874187e5b30db17d4478710385
+SHA1 (patch-src_api_ruby_getcflags.rb) = 033e26ef03db4851f493d831c37ec947662d47ee
+SHA1 (patch-src_api_ruby_getsitearchdir.rb) = 603c66ed45f854b833eefbcdbd58e41465fb8120
+SHA1 (patch-src_loggers_custom__sc.cpp) = 79e2b0a54b151e76175f549747e3392accd0b4d9

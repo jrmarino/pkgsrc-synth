@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.3 2016/10/04 14:37:03 wiz Exp $
+
+SHA1 (zstd-1.1.0.tar.gz) = 6c24a604cf71a961d4172cbced6b10470d1b416e
+RMD160 (zstd-1.1.0.tar.gz) = 05787448173f6fe61e5b5a3e957e05fd1bd7f912
+SHA512 (zstd-1.1.0.tar.gz) = 9fe72081d333b58d5c8f27f13bd01ab0d729984215b75690282770aa769aab6879b88177aa2b45d8ce2869bf1b360f3a828ca00aa3646a7cc57285a4e167d71f
+Size (zstd-1.1.0.tar.gz) = 716327 bytes

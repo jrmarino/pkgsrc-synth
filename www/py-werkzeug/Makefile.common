@@ -1,0 +1,25 @@
+# $NetBSD: Makefile.common,v 1.15 2016/06/01 20:54:22 kleink Exp $
+
+# used by www/py-werkzeug/Makefile
+# used by www/py-werkzeug-docs/Makefile
+
+DISTNAME=	Werkzeug-0.11.10
+CATEGORIES=	www python
+MASTER_SITES=  ${MASTER_SITE_GITHUB:=pallets/}
+GITHUB_PROJECT=${DISTNAME:tl:C/-[^-]*$//}
+WRKSRC=		${WRKDIR}/${DISTNAME:tl}
+
+DISTINFO_FILE=	${.CURDIR}/../../www/py-werkzeug/distinfo
+PATCHDIR=	${.CURDIR}/../../www/py-werkzeug/patches
+
+MAINTAINER=	kleink@NetBSD.org
+HOMEPAGE=	http://werkzeug.pocoo.org/
+LICENSE=	modified-bsd
+
+# for test
+BUILD_DEPENDS+=	${PYPKGPREFIX}-test-[0-9]*:../../devel/py-test
+BUILD_DEPENDS+=	${PYPKGPREFIX}-requests-[0-9]*:../../devel/py-requests
+
+DOCDIR=		share/doc/${PYPKGPREFIX}-${DISTNAME:tl:C/-[^-]*$//}
+
+PLIST_SUBST+=	DOCDIR=${DOCDIR}

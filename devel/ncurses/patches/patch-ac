@@ -1,0 +1,23 @@
+$NetBSD: patch-ac,v 1.23 2015/08/17 17:10:32 wiz Exp $
+
+Allow ncurses to build with compiler from pkgsrc by dropping the use of
+-no-cpp-precomp which is specific to Apple's supplied toolchain.
+Don't rename man pages on Debian.
+Include local paths before utilising flags from build env
+
+--- configure.orig	2015-08-05 09:20:32.000000000 +0000
++++ configure
+@@ -11090,12 +11090,7 @@ case ".$MANPAGE_RENAMES" in
+ (.no)
+ 	;;
+ (.|.yes)
+-	# Debian 'man' program?
+-	if test -f /etc/debian_version ; then
+-		MANPAGE_RENAMES=`cd $srcdir && pwd`/man/man_db.renames
+-	else
+-		MANPAGE_RENAMES=no
+-	fi
++	MANPAGE_RENAMES=no
+ 	;;
+ esac
+ 

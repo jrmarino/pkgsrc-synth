@@ -1,0 +1,14 @@
+$NetBSD: distinfo,v 1.44 2016/09/19 09:06:03 wiz Exp $
+
+SHA1 (bash-4.4.tar.gz) = 8de012df1e4f3e91f571c3eb8ec45b43d7c747eb
+RMD160 (bash-4.4.tar.gz) = 48869b3a460007d05c02ef99745477b2e526fdec
+SHA512 (bash-4.4.tar.gz) = 73de3b425faaac55e45456b0f6f6d8077b5dfa7bb76e0d1894a19361b4a2b6bd4fbbe182117ddbfe9b07b4d898fba03537c261badc9533dd3c0da891764c7f29
+Size (bash-4.4.tar.gz) = 9377313 bytes
+SHA1 (patch-af) = e26e3209902247263884cfebc11a2f7e43245062
+SHA1 (patch-ag) = cd3b151e3bb045d2bb609c0a03d7d3df2c871f47
+SHA1 (patch-aj) = 2e4c15afd9b50d44967ee8e1f85bdc908c0eeeb0
+SHA1 (patch-builtins_ulimit.def) = 1390069344607204eb3abbd6ddeb148ff590c55e
+SHA1 (patch-configure) = c4e1ab53a1ee85f3e6121047f0aca8ceb85e6e5d
+SHA1 (patch-lib_readline_colors.c) = 4ebf871b883fc8ab6756758c423f777d9eb21da1
+SHA1 (patch-shell.c) = daa07914d4c318cd72463f80344f4f7c364809cd
+SHA1 (patch-variables.c) = 0bb513cb863f82eb378b8c720bdfb1c31d21d36c

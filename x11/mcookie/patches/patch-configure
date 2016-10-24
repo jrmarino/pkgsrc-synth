@@ -1,0 +1,33 @@
+$NetBSD: patch-configure,v 1.2 2016/10/19 19:28:36 wiz Exp $
+
+Fix unportable test(1) operator.
+
+--- configure.orig	2016-09-07 11:36:20.036305071 +0000
++++ configure
+@@ -21297,7 +21297,7 @@ else
+ fi
+ 
+ 
+-if test "x$enable_libmount_force_mountinfo" == xyes; then :
++if test "x$enable_libmount_force_mountinfo" = xyes; then :
+ 
+ 
+ $as_echo "#define USE_LIBMOUNT_FORCE_MOUNTINFO 1" >>confdefs.h
+@@ -22193,7 +22193,7 @@ $as_echo "$as_me: WARNING: sys/signalfd.
+     esac
+   fi
+ 
+-if test "x$build_uuidd" = xyes || test "x$enable_libuuid_force_uuidd" == xyes ; then :
++if test "x$build_uuidd" = xyes || test "x$enable_libuuid_force_uuidd" = xyes ; then :
+ 
+ 
+ $as_echo "#define HAVE_UUIDD 1" >>confdefs.h
+@@ -29181,7 +29181,7 @@ else
+ fi
+ 
+ 
+-if test "x$enable_usrdir_path" == xyes; then :
++if test "x$enable_usrdir_path" = xyes; then :
+ 
+ 
+ $as_echo "#define USE_USRDIR_PATHS_ONLY 1" >>confdefs.h

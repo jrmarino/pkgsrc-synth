@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.18 2016/04/16 13:41:00 wen Exp $
+
+SHA1 (perl-ldap-0.65.tar.gz) = b7e270a63639eeb2a92da1f430f7ed6e165ddd5a
+RMD160 (perl-ldap-0.65.tar.gz) = d64f937a294c640adde6bfb8fa3176c964105a52
+SHA512 (perl-ldap-0.65.tar.gz) = 567de41fc1e659de23b4ae7b6cec5a60df0ad8bc90062158cf83f90d3729ac27a8bacb276b732931fefbf33847fe1baec7a62393aae5978f3c55c6c602f93747
+Size (perl-ldap-0.65.tar.gz) = 311145 bytes

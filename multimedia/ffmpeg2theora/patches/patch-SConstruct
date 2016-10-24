@@ -1,0 +1,15 @@
+$NetBSD: patch-SConstruct,v 1.2 2016/01/31 02:44:23 mef Exp $
+
+Preserve environment.
+
+--- SConstruct.orig	2014-12-11 21:32:11.000000000 +0000
++++ SConstruct
+@@ -37,7 +37,7 @@ opts.AddVariables(
+   BoolVariable('libkate', 'enable libkate support', 1),
+   BoolVariable('crossmingw', 'Set to 1 for crosscompile with mingw', 0)
+ )
+-env = Environment(options = opts)
++env = Environment(options = opts, ENV=os.environ)
+ Help(opts.GenerateHelpText(env))
+ 
+ pkg_flags="--cflags --libs"

@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.7 2016/04/29 13:23:06 mef Exp $
+
+SHA1 (Lexical-SealRequireHints-0.010.tar.gz) = afb6a3df0149dbf434426c261fcc5a415c7a3d7d
+RMD160 (Lexical-SealRequireHints-0.010.tar.gz) = 107ee569b01f57b06d97962a531b48db074effdb
+SHA512 (Lexical-SealRequireHints-0.010.tar.gz) = 4c71a22397ae689349bf45c1b2177108008158052b341f9d9b09e5d97c55cd538bb427c041389c4edf8584be292bf4b1f42abdff573510a0a64fb69e5166aecd
+Size (Lexical-SealRequireHints-0.010.tar.gz) = 20903 bytes

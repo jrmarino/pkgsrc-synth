@@ -1,0 +1,28 @@
+$NetBSD: patch-ag,v 1.5 2015/12/27 11:31:54 wiz Exp $
+
+Add __ppc64__ and __arm__
+Recognize __sun as well as sun
+
+--- Imake.cf.orig	2015-12-22 01:28:02.000000000 +0000
++++ Imake.cf
+@@ -25,9 +25,10 @@ XCOMM $XFree86: xc/config/cf/Imake.cf,v 
+ # define MacroIncludeFile <darwin.cf>
+ # define MacroFile darwin.cf
+ # define DarwinArchitecture
+-# ifdef __ppc__
++# if defined __ppc__ || defined __ppc64__
+ #  define PpcDarwinArchitecture
+ #  undef __ppc__
++#  undef __ppc64__
+ # endif
+ # ifdef __i386__
+ #  define i386DarwinArchitecture
+@@ -352,7 +357,7 @@ XCOMM $XFree86: xc/config/cf/Imake.cf,v 
+ # endif
+ #endif /* AMOEBA */
+ 
+-#ifdef sun
++#if defined(sun) || defined(__sun)
+ # define MacroIncludeFile <sun.cf>
+ # define MacroFile sun.cf
+ # ifdef SVR4

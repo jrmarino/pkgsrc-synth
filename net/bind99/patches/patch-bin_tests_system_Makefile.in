@@ -1,0 +1,15 @@
+$NetBSD: patch-bin_tests_system_Makefile.in,v 1.6 2015/12/13 17:37:00 taca Exp $
+
+Build fix for DragonFly while linking of driver.so.
+
+--- bin/tests/system/Makefile.in.orig	2015-09-09 02:23:50.000000000 +0000
++++ bin/tests/system/Makefile.in
+@@ -19,7 +19,7 @@ top_srcdir =	@top_srcdir@
+ 
+ @BIND9_MAKE_INCLUDES@
+ 
+-SUBDIRS =	builtin dlzexternal fetchlimit filter-aaaa lwresd \
++SUBDIRS =	builtin fetchlimit filter-aaaa lwresd \
+ 		statistics rpz rrl rsabigexponent tkey tsiggss
+ TARGETS =
+ 

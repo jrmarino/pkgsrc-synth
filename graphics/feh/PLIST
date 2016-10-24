@@ -1,0 +1,23 @@
+@comment $NetBSD: PLIST,v 1.11 2014/09/27 10:52:38 szptvlfn Exp $
+bin/feh
+man/man1/feh.1
+share/applications/feh.desktop
+share/doc/feh/AUTHORS
+share/doc/feh/ChangeLog
+share/doc/feh/README
+share/doc/feh/TODO
+share/doc/feh/examples/buttons
+share/doc/feh/examples/find-lowres
+share/doc/feh/examples/keys
+share/doc/feh/examples/themes
+share/feh/fonts/black.style
+share/feh/fonts/menu.style
+share/feh/fonts/yudit.ttf
+share/feh/images/feh.png
+share/feh/images/feh.svg
+share/feh/images/menubg_aluminium.png
+share/feh/images/menubg_aqua.png
+share/feh/images/menubg_black.png
+share/feh/images/menubg_brushed.png
+share/feh/images/menubg_default.png
+share/feh/images/menubg_sky.png

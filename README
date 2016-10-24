@@ -1,0 +1,17 @@
+PKGSRC-SYNTH
+============
+
+This is a systematically modified version of pkgsrc (https://www.pkgsrc.org).
+It is constructed by applying an overlay to stock version and generated every
+six hours.  The modification allows pkgsrc to create binary packages suitable
+for use by FreeBSD's pkg(8) binary package management tool
+(https://github.com/freebsd/pkg) rather than the older pkg_* tools.  This in
+turn allows John Marino's local repository builder known as Synth
+(https://github.com/jrmarino/synth) to be adapted to pkgsrc.
+
+Differences between PkgSrc-Synth and vanilla PkgSrc:
+  1. Adds pkgng format (Initial work by Pierre Pronchery)
+  2. Replaces pkg_install everywhere
+  3. Stores overlay patches at bootstrap/overlay
+  4. Omits the unreliable (and thus extra useless) docs/CHANGES-* files
+  5. Contains synth source

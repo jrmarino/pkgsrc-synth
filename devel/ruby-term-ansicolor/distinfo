@@ -1,0 +1,6 @@
+$NetBSD: distinfo,v 1.5 2016/10/09 15:24:17 taca Exp $
+
+SHA1 (term-ansicolor-1.4.0.gem) = 2645d93f3f6240e96572bcc54c292fad7634ce9a
+RMD160 (term-ansicolor-1.4.0.gem) = a9c3a19f69cf7c699b3f1322b685af14877d1a09
+SHA512 (term-ansicolor-1.4.0.gem) = 7f2c18d5879a35cc69e5f0064e98d6783e50d08bc51c3b5c97242a886847cd09c37acaca77428a1930673bdd448f26aefa5e0152afbc6b2dbb6e0a67e29a2de5
+Size (term-ansicolor-1.4.0.gem) = 890880 bytes

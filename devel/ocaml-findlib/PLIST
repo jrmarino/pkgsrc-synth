@@ -1,0 +1,45 @@
+@comment $NetBSD: PLIST,v 1.11 2016/06/25 13:55:15 jaapb Exp $
+bin/ocamlfind
+${OCAML_SITELIB}/bigarray/META
+${OCAML_SITELIB}/bytes/META
+${OCAML_SITELIB}/compiler-libs/META
+${OCAML_SITELIB}/dynlink/META
+${OCAML_SITELIB}/findlib/META
+${OCAML_SITELIB}/findlib/Makefile.config
+${PLIST.ocaml-opt}${OCAML_SITELIB}/findlib/findlib.a
+${OCAML_SITELIB}/findlib/findlib.cma
+${PLIST.ocaml-opt}${OCAML_SITELIB}/findlib/findlib.cmxa
+${PLIST.ocaml-opt}${OCAML_SITELIB}/findlib/findlib.cmxs
+${OCAML_SITELIB}/findlib/findlib.cmi
+${OCAML_SITELIB}/findlib/findlib.mli
+${PLIST.ocaml-opt}${OCAML_SITELIB}/findlib/findlib_dynload.a
+${OCAML_SITELIB}/findlib/findlib_dynload.cma
+${PLIST.ocaml-opt}${OCAML_SITELIB}/findlib/findlib_dynload.cmxa
+${PLIST.ocaml-opt}${OCAML_SITELIB}/findlib/findlib_dynload.cmxs
+${OCAML_SITELIB}/findlib/findlib_top.cma
+${OCAML_SITELIB}/findlib/fl_dynload.cmi
+${OCAML_SITELIB}/findlib/fl_dynload.mli
+${OCAML_SITELIB}/findlib/fl_metascanner.cmi
+${OCAML_SITELIB}/findlib/fl_metascanner.mli
+${OCAML_SITELIB}/findlib/fl_metatoken.cmi
+${OCAML_SITELIB}/findlib/fl_package_base.cmi
+${OCAML_SITELIB}/findlib/fl_package_base.mli
+${OCAML_SITELIB}/findlib/topfind.cmi
+${OCAML_SITELIB}/findlib/topfind.mli
+${OCAML_SITELIB}/graphics/META
+${OCAML_SITELIB}/ocamldoc/META
+${OCAML_SITELIB}/num-top/META
+${OCAML_SITELIB}/num-top/num_top.cma
+${OCAML_SITELIB}/num-top/num_top.cmi
+${OCAML_SITELIB}/num-top/num_top_printers.cmi
+${OCAML_SITELIB}/num/META
+${OCAML_SITELIB}/stdlib/META
+${OCAML_SITELIB}/str/META
+${OCAML_SITELIB}/threads/META
+${OCAML_SITELIB}/unix/META
+lib/ocaml/topfind
+@comment man/man1/ocamlfind.1
+@comment man/man5/META.5
+@comment man/man5/findlib.conf.5
+@comment man/man5/site-lib.5
+share/examples/ocaml-findlib/ocamlfind.conf

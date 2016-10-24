@@ -1,0 +1,13 @@
+@comment $NetBSD: PLIST,v 1.2 2016/07/02 10:11:09 jaapb Exp $
+bin/csvtool
+${OCAML_SITELIB}/csv/META
+${PLIST.ocaml-opt}${OCAML_SITELIB}/csv/csv.a
+${OCAML_SITELIB}/csv/csv.annot
+${OCAML_SITELIB}/csv/csv.cma
+${OCAML_SITELIB}/csv/csv.cmi
+${OCAML_SITELIB}/csv/csv.cmt
+${OCAML_SITELIB}/csv/csv.cmti
+${PLIST.ocaml-opt}${OCAML_SITELIB}/csv/csv.cmx
+${PLIST.ocaml-opt}${OCAML_SITELIB}/csv/csv.cmxa
+${PLIST.ocaml-opt}${OCAML_SITELIB}/csv/csv.cmxs
+${OCAML_SITELIB}/csv/csv.mli

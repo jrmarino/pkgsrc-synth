@@ -1,0 +1,22 @@
+# $NetBSD: Makefile.common,v 1.12 2016/02/25 16:20:51 jperkin Exp $
+#
+# used by net/nagios-plugin-mysql/Makefile
+# used by net/nagios-plugin-pgsql/Makefile
+# used by net/nagios-plugin-radius/Makefile
+# used by net/nagios-plugin-snmp/Makefile
+# used by net/nagios-plugins/Makefile
+
+PLUGINSVERSION=	2.0.3
+DISTNAME=	nagios-plugins-${PLUGINSVERSION}
+MASTER_SITES?=	http://nagios-plugins.org/download/
+
+.include "../../net/nagios-base/Makefile.common"
+.include "../../mk/bsd.prefs.mk"
+
+CONFIGURE_ARGS.DragonFly+=	fu_cv_sys_stat_statvfs=no
+
+CONFIGURE_ARGS+=	--with-nagios-user=${NAGIOS_USER:Q}
+CONFIGURE_ARGS+=	--with-nagios-group=${NAGIOS_GROUP:Q}
+CONFIGURE_ARGS+=	--datarootdir=${PREFIX}/share/nagios
+
+CONFIGURE_ENV+=		MACHINE_ARCH=${MACHINE_ARCH}
