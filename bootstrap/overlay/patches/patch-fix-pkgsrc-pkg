@@ -1,0 +1,297 @@
+diff --git pkgtools/pkg/Makefile pkgtools/pkg/Makefile
+index c586d5d..140c09d 100644
+--- pkgtools/pkg/Makefile
++++ pkgtools/pkg/Makefile
+@@ -1,23 +1,16 @@
+ # $NetBSD: Makefile,v 1.4 2016/08/27 21:57:05 khorben Exp $
+ 
+-VERSION=	1.8.7
+-DISTNAME=	${VERSION}
+-PKGNAME=	pkg-${VERSION}
++DISTNAME=	pkg-1.8.7
+ CATEGORIES=	pkgtools
+-MASTER_SITES=	${MASTER_SITE_GITHUB:=freebsd/pkg/archive/}
++MASTER_SITES=	http://files.etoilebsd.net/pkg/
++EXTRACT_SUFX=	.tar.xz
+ 
+ MAINTAINER=	khorben@defora.org
+ HOMEPAGE=	https://wiki.freebsd.org/pkgng
+ COMMENT=	Package management tool for FreeBSD
+ LICENSE=	2-clause-bsd
+ 
+-WRKSRC=		${WRKDIR}/pkg-${VERSION}
+-
+ GNU_CONFIGURE=	yes
+-USE_LIBTOOL=	yes
+-USE_TOOLS+=	autoconf
+-USE_TOOLS+=	automake
+-USE_TOOLS+=	pkg-config
+ USE_LANGUAGES=	c c++
+ 
+ CPPFLAGS+=	-D_LOCALBASE="\"${PREFIX}\""
+@@ -57,8 +50,9 @@ SUBST_FILES.pkgconf-prefix=	src/pkg.conf.sample
+ SUBST_SED.pkgconf-prefix+=	-e "s|/usr/local|${PREFIX}|g"
+ SUBST_MESSAGE.pkgconf-prefix=	Correct the installation prefix in pkg.conf(5).
+ 
+-pre-configure:
+-	cd ${WRKSRC} && ./autogen.sh
++post-patch:
++	${CP} ${FILESDIR}/readpassphrase_compat.h \
++		${WRKSRC}/src/
+ 
+ post-install:
+ 	${MV} ${DESTDIR}${PREFIX}/etc/bash_completion.d/_pkg.bash \
+diff --git pkgtools/pkg/distinfo pkgtools/pkg/distinfo
+index e88e735..421e032 100644
+--- pkgtools/pkg/distinfo
++++ pkgtools/pkg/distinfo
+@@ -1,7 +1,9 @@
+ $NetBSD: distinfo,v 1.5 2016/08/27 21:57:05 khorben Exp $
+ 
+-SHA1 (1.8.7.tar.gz) = 93ce7126a7e036bb21153bfabc923cd74b701a6b
+-RMD160 (1.8.7.tar.gz) = 80d421c73a1406ac64c62a0b460928ec9ad75ce5
+-SHA512 (1.8.7.tar.gz) = 462775ea9cef6f5741c895d2d4b872abbe269bbaab78d4d601a1b77655d267bb339f1ef69595a9f9342cedf773462177755550b024df4e0ef57c427e229487b1
+-Size (1.8.7.tar.gz) = 2972264 bytes
++SHA1 (pkg-1.8.7.tar.xz) = 4727c25b0e4c34df1bf7a00df0e9c6370e855416
++RMD160 (pkg-1.8.7.tar.xz) = f0087c0e88ef890300a46a28d0644926fa7a7acb
++SHA512 (pkg-1.8.7.tar.xz) = 61b1553cb444ba30bcf1c9a5da204ff29b08ad87641c3f49fb7e7efd9f5396742e6812bf96a0228d3e76916648511faa086d197cc41c2ced9979615e23a3bc43
++Size (pkg-1.8.7.tar.xz) = 1950148 bytes
+ SHA1 (patch-docs_Makefile.am) = aa6d5c9310c644d13d55c3176cd186c37cccc7c2
++SHA1 (patch-libpkg_pkg.h.in) = e74a96513c1e74ddea8a5b05b080cef57976d68b
++SHA1 (patch-libpkg_pkg__elf.c) = 07174f421e162fc74f1c2b306f60da1273b8b6ec
+diff --git pkgtools/pkg/files/readpassphrase_compat.h pkgtools/pkg/files/readpassphrase_compat.h
+new file mode 100644
+index 0000000..20ba78a
+--- /dev/null
++++ pkgtools/pkg/files/readpassphrase_compat.h
+@@ -0,0 +1,192 @@
++/*	$OpenBSD: readpassphrase.c,v 1.24 2013/11/24 23:51:29 deraadt Exp $	*/
++
++/*
++ * Copyright (c) 2000-2002, 2007, 2010
++ *	Todd C. Miller <Todd.Miller@courtesan.com>
++ *
++ * Permission to use, copy, modify, and distribute this software for any
++ * purpose with or without fee is hereby granted, provided that the above
++ * copyright notice and this permission notice appear in all copies.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
++ *
++ * Sponsored in part by the Defense Advanced Research Projects
++ * Agency (DARPA) and Air Force Research Laboratory, Air Force
++ * Materiel Command, USAF, under agreement number F39502-99-1-0512.
++ */
++
++#ifndef READPASSPHRASE_COMPAT_H
++#define READPASSPHRASE_COMPAT_H
++
++#include <ctype.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <paths.h>
++#include <pwd.h>
++#include <signal.h>
++#include <string.h>
++#include <termios.h>
++#include <unistd.h>
++
++#define RPP_ECHO_OFF 0x00 /* Turn off echo (default). */
++#define RPP_ECHO_ON 0x01 /* Leave echo on. */
++#define RPP_REQUIRE_TTY 0x02 /* Fail if there is no tty. */
++#define RPP_FORCELOWER 0x04 /* Force input to lower case. */
++#define RPP_FORCEUPPER 0x08 /* Force input to upper case. */
++#define RPP_SEVENBIT 0x10 /* Strip the high bit from input. */
++#define RPP_STDIN 0x20 /* Read from stdin, not /dev/tty */
++
++#ifndef _NSIG
++#define _NSIG 32
++#endif
++
++static volatile sig_atomic_t signo[_NSIG];
++static void handler(int);
++
++static char *
++readpassphrase(const char *prompt, char *buf, size_t bufsiz, int flags)
++{
++	ssize_t nr;
++	int input, output, save_errno, i, need_restart;
++	char ch, *p, *end;
++	struct termios term, oterm;
++	struct sigaction sa, savealrm, saveint, savehup, savequit, saveterm;
++	struct sigaction savetstp, savettin, savettou, savepipe;
++
++	/* I suppose we could alloc on demand in this case (XXX). */
++	if (bufsiz == 0) {
++		errno = EINVAL;
++		return(NULL);
++	}
++
++restart:
++	for (i = 0; i < _NSIG; i++)
++		signo[i] = 0;
++	nr = -1;
++	save_errno = 0;
++	need_restart = 0;
++	/*
++	 * Read and write to /dev/tty if available.  If not, read from
++	 * stdin and write to stderr unless a tty is required.
++	 */
++	if ((flags & RPP_STDIN) ||
++	    (input = output = open("/dev/tty", O_RDWR)) == -1) {
++		if (flags & RPP_REQUIRE_TTY) {
++			errno = ENOTTY;
++			return(NULL);
++		}
++		input = STDIN_FILENO;
++		output = STDERR_FILENO;
++	}
++
++	/*
++	 * Turn off echo if possible.
++	 * If we are using a tty but are not the foreground pgrp this will
++	 * generate SIGTTOU, so do it *before* installing the signal handlers.
++	 */
++	if (input != STDIN_FILENO && tcgetattr(input, &oterm) == 0) {
++		memcpy(&term, &oterm, sizeof(term));
++		if (!(flags & RPP_ECHO_ON))
++			term.c_lflag &= ~(ECHO | ECHONL);
++		(void)tcsetattr(input, TCSAFLUSH, &term);
++	} else {
++		memset(&term, 0, sizeof(term));
++		term.c_lflag |= ECHO;
++		memset(&oterm, 0, sizeof(oterm));
++		oterm.c_lflag |= ECHO;
++	}
++
++	/*
++	 * Catch signals that would otherwise cause the user to end
++	 * up with echo turned off in the shell.  Don't worry about
++	 * things like SIGXCPU and SIGVTALRM for now.
++	 */
++	sigemptyset(&sa.sa_mask);
++	sa.sa_flags = 0;		/* don't restart system calls */
++	sa.sa_handler = handler;
++	(void)sigaction(SIGALRM, &sa, &savealrm);
++	(void)sigaction(SIGHUP, &sa, &savehup);
++	(void)sigaction(SIGINT, &sa, &saveint);
++	(void)sigaction(SIGPIPE, &sa, &savepipe);
++	(void)sigaction(SIGQUIT, &sa, &savequit);
++	(void)sigaction(SIGTERM, &sa, &saveterm);
++	(void)sigaction(SIGTSTP, &sa, &savetstp);
++	(void)sigaction(SIGTTIN, &sa, &savettin);
++	(void)sigaction(SIGTTOU, &sa, &savettou);
++
++	if (!(flags & RPP_STDIN))
++		(void)write(output, prompt, strlen(prompt));
++	end = buf + bufsiz - 1;
++	p = buf;
++	while ((nr = read(input, &ch, 1)) == 1 && ch != '\n' && ch != '\r') {
++		if (p < end) {
++			if ((flags & RPP_SEVENBIT))
++				ch &= 0x7f;
++			if (isalpha((unsigned char)ch)) {
++				if ((flags & RPP_FORCELOWER))
++					ch = (char)tolower((unsigned char)ch);
++				if ((flags & RPP_FORCEUPPER))
++					ch = (char)toupper((unsigned char)ch);
++			}
++			*p++ = ch;
++		}
++	}
++	*p = '\0';
++	save_errno = errno;
++	if (!(term.c_lflag & ECHO))
++		(void)write(output, "\n", 1);
++
++	/* Restore old terminal settings and signals. */
++	if (memcmp(&term, &oterm, sizeof(term)) != 0) {
++		while (tcsetattr(input, TCSAFLUSH, &oterm) == -1 &&
++		    errno == EINTR && !signo[SIGTTOU])
++			continue;
++	}
++	(void)sigaction(SIGALRM, &savealrm, NULL);
++	(void)sigaction(SIGHUP, &savehup, NULL);
++	(void)sigaction(SIGINT, &saveint, NULL);
++	(void)sigaction(SIGQUIT, &savequit, NULL);
++	(void)sigaction(SIGPIPE, &savepipe, NULL);
++	(void)sigaction(SIGTERM, &saveterm, NULL);
++	(void)sigaction(SIGTSTP, &savetstp, NULL);
++	(void)sigaction(SIGTTIN, &savettin, NULL);
++	(void)sigaction(SIGTTOU, &savettou, NULL);
++	if (input != STDIN_FILENO)
++		(void)close(input);
++
++	/*
++	 * If we were interrupted by a signal, resend it to ourselves
++	 * now that we have restored the signal handlers.
++	 */
++	for (i = 0; i < _NSIG; i++) {
++		if (signo[i]) {
++			kill(getpid(), i);
++			switch (i) {
++			case SIGTSTP:
++			case SIGTTIN:
++			case SIGTTOU:
++				need_restart = 1;
++			}
++		}
++	}
++	if (need_restart)
++		goto restart;
++
++	if (save_errno)
++		errno = save_errno;
++	return(nr == -1 ? NULL : buf);
++}
++
++static void handler(int s)
++{
++
++	signo[s] = 1;
++}
++
++#endif
+diff --git pkgtools/pkg/patches/patch-libpkg_pkg.h.in pkgtools/pkg/patches/patch-libpkg_pkg.h.in
+new file mode 100644
+index 0000000..8077fb5
+--- /dev/null
++++ pkgtools/pkg/patches/patch-libpkg_pkg.h.in
+@@ -0,0 +1,13 @@
++$NetBSD$
++
++--- libpkg/pkg.h.in.orig	2016-07-05 15:06:13.000000000 +0000
+++++ libpkg/pkg.h.in
++@@ -74,7 +74,7 @@ extern "C" {
++ #endif
++ 
++ #ifdef __NetBSD_Version__
++-#define OSMAJOR __NetBSD_Version__
+++#define OSMAJOR ((__NetBSD_Version__ + 1000000) / 100000000)
++ #endif
++ 
++ #ifndef __DECONST
+diff --git pkgtools/pkg/patches/patch-libpkg_pkg__elf.c pkgtools/pkg/patches/patch-libpkg_pkg__elf.c
+new file mode 100644
+index 0000000..bb24af8
+--- /dev/null
++++ pkgtools/pkg/patches/patch-libpkg_pkg__elf.c
+@@ -0,0 +1,13 @@
++$NetBSD$
++
++--- libpkg/pkg_elf.c.orig	2016-07-05 15:06:13.000000000 +0000
+++++ libpkg/pkg_elf.c
++@@ -787,6 +787,8 @@ pkg_get_myarch_elfparse(char *dest, size
++ #if defined(__DragonFly__)
++ 	snprintf(dest, sz, "%s:%d.%d",
++ 	    osname, version / 100000, (((version / 100 % 1000)+1)/2)*2);
+++#elif defined(__NetBSD__)
+++	snprintf(dest, sz, "%s:%d", osname, (version + 1000000) / 100000000);
++ #else
++ 	snprintf(dest, sz, "%s:%d", osname, version / 100000);
++ #endif
