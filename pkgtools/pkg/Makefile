@@ -1,6 +1,7 @@
-# $NetBSD: Makefile,v 1.4 2016/08/27 21:57:05 khorben Exp $
+# $NetBSD: Makefile,v 1.6 2016/10/25 12:54:37 khorben Exp $
 
 DISTNAME=	pkg-1.8.7
+PKGREVISION=	1
 CATEGORIES=	pkgtools
 MASTER_SITES=	http://files.etoilebsd.net/pkg/
 EXTRACT_SUFX=	.tar.xz
