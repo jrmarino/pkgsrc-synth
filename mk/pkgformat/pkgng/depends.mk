@@ -195,15 +195,15 @@ _pkgformat-post-install-dependencies: .PHONY ${_RDEPENDS_FILE} ${_RRDEPENDS_FILE
 ###
 .PHONY: pkg_install-depends
 pkg_install-depends:
-	${RUN}if [ `${PKG_INFO_CMD} -V 2>/dev/null || echo 20010302` -lt ${PKGTOOLS_REQD} ]; then \
-	${PHASE_MSG} "Trying to handle out-dated pkg_install..."; \
-	cd ../../pkgtools/pkg_install && ${PKGSRC_SETENV} ${PKGSRC_MAKE_ENV} \
-	    _PKGSRC_DEPS=" ${PKGNAME}${_PKGSRC_DEPS}" \
-	    ${MAKE} ${MAKEFLAGS} _AUTOMATIC=yes clean && \
-	cd ../../pkgtools/pkg_install && ${PKGSRC_SETENV} ${PKGSRC_MAKE_ENV} \
-	    _PKGSRC_DEPS=" ${PKGNAME}${_PKGSRC_DEPS}" \
-	    ${MAKE} ${MAKEFLAGS} _AUTOMATIC=yes ${DEPENDS_TARGET:Q}; \
-	fi
+#	${RUN}if [ `${PKG_INFO_CMD} -V 2>/dev/null || echo 20010302` -lt ${PKGTOOLS_REQD} ]; then \
+#	${PHASE_MSG} "Trying to handle out-dated pkg_install..."; \
+#	cd ../../pkgtools/pkg_install && ${PKGSRC_SETENV} ${PKGSRC_MAKE_ENV} \
+#	    _PKGSRC_DEPS=" ${PKGNAME}${_PKGSRC_DEPS}" \
+#	    ${MAKE} ${MAKEFLAGS} _AUTOMATIC=yes clean && \
+#	cd ../../pkgtools/pkg_install && ${PKGSRC_SETENV} ${PKGSRC_MAKE_ENV} \
+#	    _PKGSRC_DEPS=" ${PKGNAME}${_PKGSRC_DEPS}" \
+#	    ${MAKE} ${MAKEFLAGS} _AUTOMATIC=yes ${DEPENDS_TARGET:Q}; \
+#	fi
 
 ######################################################################
 ### bootstrap-depends (PUBLIC, pkgsrc/mk/depends/depends.mk)

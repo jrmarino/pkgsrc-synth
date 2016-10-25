@@ -16,7 +16,7 @@ USE_TOOLS+=	date
 .endif
 
 # This is the package database directory for the default view.
-PKG_DBDIR?=		/var/db/pkg
+PKG_DBDIR?=		/var/db/pkgng
 
 # _PKG_DBDIR is the actual packages database directory where we register
 # packages.
@@ -63,21 +63,24 @@ _AUDIT_CONFIG_OPTION=	IGNORE_URL
 # The binary pkg_install tools all need to consistently refer to the
 # correct package database directory.
 #
-PKGTOOLS_ARGS?=		-K ${_PKG_DBDIR}
-HOST_PKGTOOLS_ARGS?=	-K ${_HOST_PKG_DBDIR}
+PKGTOOLS_ARGS?=		#-K ${_PKG_DBDIR}
+SET_DBDIR?=		${PKGSRC_SETENV} PKG_DBDIR="${_PKG_DBDIR}" \
+			INSTALL_AS_USER=yes
+HOST_SET_DBDIR?=	${PKGSRC_SETENV} PKG_DBDIR="${_HOST_PKG_DBDIR}" \
+			INSTALL_AS_USER=yes
 
-PKG_ADD?=	${PKG_ADD_CMD} ${PKGTOOLS_ARGS}
-PKG_ADMIN?=	${PKG_ADMIN_CMD} ${PKGTOOLS_ARGS}
-PKG_CREATE?=	${PKG_CREATE_CMD}
-PKG_DELETE?=	${PKG_DELETE_CMD} ${PKGTOOLS_ARGS}
-PKG_INFO?=	${PKG_INFO_CMD} ${PKGTOOLS_ARGS}
+PKG_ADD?=	${SET_DBDIR} ${PKG_ADD_CMD}
+PKG_ADMIN?=	${PKG_ADMIN_CMD} # unsupported
+PKG_CREATE?=	${SET_DBDIR} ${PKG_CREATE_CMD}
+PKG_DELETE?=	${SET_DBDIR} ${PKG_DELETE_CMD}
+PKG_INFO?=	${SET_DBDIR} ${PKG_INFO_CMD}
 LINKFARM?=	${LINKFARM_CMD}
 
-HOST_PKG_ADD?=		${PKG_ADD_CMD} ${HOST_PKGTOOLS_ARGS}
-HOST_PKG_ADMIN?=	${PKG_ADMIN_CMD} ${HOST_PKGTOOLS_ARGS}
-HOST_PKG_CREATE?=	${PKG_CREATE_CMD}
-HOST_PKG_DELETE?=	${PKG_DELETE_CMD} ${HOST_PKGTOOLS_ARGS}
-HOST_PKG_INFO?=		${PKG_INFO_CMD} ${HOST_PKGTOOLS_ARGS}
+HOST_PKG_ADD?=		${HOST_SET_DBDIR} ${PKG_ADD_CMD}
+HOST_PKG_ADMIN?=	${PKG_ADMIN_CMD} # unsupported
+HOST_PKG_CREATE?=	${HOST_SET_DBDIR} ${PKG_CREATE_CMD}
+HOST_PKG_DELETE?=	${HOST_SET_DBDIR} ${PKG_DELETE_CMD}
+HOST_PKG_INFO?=		${HOST_SET_DBDIR} ${PKG_INFO_CMD}
 HOST_LINKFARM?=		${LINKFARM_CMD}
 
 # "${_PKG_BEST_EXISTS} pkgpattern" prints out the name of the installed
@@ -85,8 +88,8 @@ HOST_LINKFARM?=		${LINKFARM_CMD}
 # "${PKG_INFO} -e pkgpattern" if the latter would return more than one
 # package name.
 #
-_PKG_BEST_EXISTS?=	${PKG_INFO} -E
-_HOST_PKG_BEST_EXISTS?=	${HOST_PKG_INFO} -E
+_PKG_BEST_EXISTS?=	${PKG_INFO} -Eg
+_HOST_PKG_BEST_EXISTS?=	${HOST_PKG_INFO} -Eg
 
 # XXX Leave this here until all uses of this have been purged from the
 # XXX public parts of pkgsrc.

@@ -18,14 +18,14 @@
 # ENVIRONMENT
 #	PKG_DBDIR
 #		This is the package meta-data directory in which the
-#		packages are registered.  By default, this is /var/db/pkg.
+#		packages are registered.  By default, this is /var/db/pkgng.
 #
 ######################################################################
 
 : ${AWK:=awk}
 : ${CP:=cp}
 : ${ECHO:=echo}
-: ${PKG_DBDIR:=/var/db/pkg}
+: ${PKG_DBDIR:=/var/db/pkgng}
 : ${RM:=rm}
 : ${TEST:=test}
 : ${TOUCH:=touch}
