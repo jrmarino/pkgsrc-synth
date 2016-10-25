@@ -1,0 +1,40 @@
+--- bootstrap/bootstrap.orig	2016-06-22 11:40:16 UTC
++++ bootstrap/bootstrap
+@@ -509,6 +509,7 @@ root_user=root
+ bmakexargs=
+ need_extras=no
+ use_bsdinstall=
++want_pkgng=yes
+ case "$opsys" in
+ AIX)
+ 	root_group=system
+@@ -1090,6 +1091,15 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$boots
+ 	echo $opsys
+ fi
+ 
++case "$want_pkgng" in
++yes)
++	echo "PKG_FORMAT=               pkg"   >> ${BOOTSTRAP_MKCONF}
++	echo "PKG_FORMAT=               pkgng" >> ${TARGET_MKCONF};;
++*)
++	echo "PKG_FORMAT=               pkg" >> ${BOOTSTRAP_MKCONF}
++	echo "PKG_FORMAT=               pkg" >> ${TARGET_MKCONF};;
++esac
++
+ # sbin is used by pkg_install, share/mk by bootstrap-mk-files
+ mkdir_p $wrkdir/sbin $wrkdir/share/mk
+ mkdir_p_early ${wrkdir}
+@@ -1320,7 +1330,12 @@ esac
+ case "$need_extras" in
+ yes)	build_package "pkgtools/bootstrap-extras";;
+ esac
+-build_package "pkgtools/pkg_install"
++case "$want_pkgng" in
++yes)
++	build_package "pkgtools/pkg";;
++*)
++	build_package "pkgtools/pkg_install";;
++esac
+ 
+ etc_mk_conf="$sysconfdir/mk.conf"
+ 

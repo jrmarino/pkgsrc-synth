@@ -25,11 +25,11 @@ _PKG_DBDIR=		${_CROSS_DESTDIR}${PKG_DBDIR}
 _HOST_PKG_DBDIR=	${HOST_PKG_DBDIR:U${PKG_DBDIR}}
 
 PKG_CMD?=		${PKG_TOOLS_BIN}/pkg
-PKG_ADD_CMD?=		${PKG_TOOLS_BIN}/pkg_add
-PKG_ADMIN_CMD?=		${PKG_TOOLS_BIN}/pkg_admin
+PKG_ADD_CMD?=		${PKG_CMD}/pkg add
+PKG_ADMIN_CMD?=		unsupported
 PKG_CREATE_CMD?=	${PKG_CMD} create
-PKG_DELETE_CMD?=	${PKG_TOOLS_BIN}/pkg_delete
-PKG_INFO_CMD?=		${PKG_TOOLS_BIN}/pkg_info
+PKG_DELETE_CMD?=	${PKG_CMD}/pkg delete
+PKG_INFO_CMD?=		${PKG_CMD}/pkg info
 LINKFARM_CMD?=		${PKG_TOOLS_BIN}/linkfarm
 
 # Latest versions of tools required for correct pkgsrc operation.
