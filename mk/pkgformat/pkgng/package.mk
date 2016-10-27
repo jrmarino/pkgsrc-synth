@@ -54,7 +54,6 @@ ${STAGE_PKGFILE}: ${_MANIFEST_TARGETS}
 	@${STEP_MSG} "Creating binary package ${.TARGET}"
 	${RUN} ${MKDIR} ${.TARGET:H}
 	if ! ${PKG_CREATE} ${_PKG_ARGS_PACKAGE}; then		\
-echo "wtf?"; \
 		exitcode=$$?; ${RM} -f "${.TARGET}"; exit $$exitcode;	\
 	fi
 
