@@ -119,6 +119,18 @@ _PKG_CREATE_ARGS+=	--verbose
 PKGNG_ARCH!=	${PKG_CMD} config abi
 .endif
 
+LICLOGIC=	single
+.if defined(LICENSE) && !empty(LICENSE)
+.  if ${LICENSE:MAND}
+LICLOGIC=	multi
+.  elif ${LICENSE:NOR}
+LICLOGIC=	dual
+.  endif
+.endif
+
+ACTUAL-PACKAGE-DEPENDS?= ${SETENV} PKG_BIN="${PKG_CMD}" ${SH} \
+	${PKGDIR:H:H}/mk/scripts/actual-package-depends ${DEPENDS:C/(.*)\:.*/"\1"/}
+
 ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 	${RUN}${MKDIR} ${.TARGET:H}
 	${RUN} { \
@@ -131,13 +143,13 @@ ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 	${ECHO} "maintainer: ${MAINTAINER}"; \
 	${ECHO} "prefix: ${PREFIX}"; \
 	${ECHO} "categories: [ ${CATEGORIES} ]"; \
-	${ECHO} "licenselogic: single"; \
+	${ECHO} "licenselogic: ${LICLOGIC}"; \
 		} > ${.TARGET}
 .if defined(HOMEPAGE)
 	${RUN}${ECHO} "www: ${HOMEPAGE}" >> ${.TARGET}
 .endif
 .if defined(LICENSE) && !empty(LICENSE)
-	${RUN}${ECHO} "licenses: [ ${LICENSE:u:S/$/,/} ]" >> ${.TARGET}
+	${RUN}${ECHO} "licenses: [ ${LICENSE:NAND:NOR:u:S/$/,/} ]" >> ${.TARGET}
 .endif
 .if defined(PKG_USERS) && !empty(PKG_USERS)
 	${RUN}${ECHO} "users: [ ${PKG_USERS:C/:.*//:S/$/,/} ]" >> ${.TARGET}
@@ -149,6 +161,22 @@ ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 	${RUN}${ECHO} "arch: ${PKGNG_ARCH:S/:/ /g:[1]:tl}:${PKGNG_ARCH:S/:/ /g:[2]}:*" >> ${.TARGET}
 	${RUN}${ECHO} "abi: ${PKGNG_ARCH:S/:/ /g:[1]}:${PKGNG_ARCH:S/:/ /g:[2]}:*" >> ${.TARGET}
 .endif
+
+	${RUN}${ECHO} "deps: {" >> ${.TARGET}
+	${RUN}${ACTUAL-PACKAGE-DEPENDS} | ${SORT} -u >> ${.TARGET}
+	${RUN}${ECHO} "}" >> ${.TARGET}
+
+	${RUN}${ECHO} "options: {" >> ${.TARGET}
+.if defined(PKG_SUPPORTED_OPTIONS) && !empty(PKG_SUPPORTED_OPTIONS)
+.  for opt in ${PKG_SUPPORTED_OPTIONS:u:O}
+.    if ${PKG_OPTIONS:M${opt}}
+	${RUN}${ECHO} " ${opt}: on," >> ${.TARGET}
+.    else
+	${RUN}${ECHO} " ${opt}: off," >> ${.TARGET}
+.    endif
+.  endfor
+.endif
+	${RUN}${ECHO} "}" >> ${.TARGET}
 
 
 ######################################################################
