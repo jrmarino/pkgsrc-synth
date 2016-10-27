@@ -14,20 +14,10 @@ PKG_COMPRESSION=	none
 WARNINGS+=		"Unsupported value for PKG_SUFX"
 .  endif
 .endif
-PKG_SUFX?=		.tgz
+PKG_SUFX?=		.txz
 FILEBASE?=		${PKGBASE}
 PKGFILE?=		${PKGREPOSITORY}/${FILEBASE}-${PKGVERSION}${PKG_SUFX}
-.if ${_USE_DESTDIR} == "no"
-. if !empty(SIGN_PACKAGES:Mgpg)
 STAGE_PKGFILE?=		${WRKDIR}/.packages/${FILEBASE}-${PKGVERSION}${PKG_SUFX}
-. elif !empty(SIGN_PACKAGES:Mx509)
-STAGE_PKGFILE?=		${WRKDIR}/.packages/${FILEBASE}-${PKGVERSION}${PKG_SUFX}
-. else
-STAGE_PKGFILE?=		${PKGFILE}
-. endif
-.else
-STAGE_PKGFILE?=		${WRKDIR}/.packages/${FILEBASE}-${PKGVERSION}${PKG_SUFX}
-.endif
 PKGREPOSITORY?=		${PACKAGES}/${PKGREPOSITORYSUBDIR}
 PKGREPOSITORYSUBDIR?=	All
 
@@ -84,10 +74,7 @@ _PKG_ARGS_PACKAGE+=	-f tar
 ${STAGE_PKGFILE}: ${_MANIFEST_TARGETS}
 	${RUN} ${MKDIR} ${.TARGET:H}
 	@${STEP_MSG} "Creating binary package ${.TARGET}"
-	${RUN} tmpname=${.TARGET:S,${PKG_SUFX}$,.tmp${PKG_SUFX},};	\
-	if ${PKG_CREATE} ${_PKG_ARGS_PACKAGE} "$$tmpname"; then		\
-		${MV} -f "$$tmpname" ${.TARGET};			\
-	else								\
+	if ! ${PKG_CREATE} ${_PKG_ARGS_PACKAGE}; then		\
 		exitcode=$$?; ${RM} -f "$$tmpname"; exit $$exitcode;	\
 	fi
 
