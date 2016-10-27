@@ -3,22 +3,17 @@
 # This Makefile fragment provides variable and target overrides that are
 # specific to the pkgsrc native package format.
 #
+_DEPENDS_PLIST:=	# non-existant, referenced by plist.mk and install.mk
+PKG_FILELIST_CMD=	${PKG_CMD} query '%Fp' ${PKGNAME:Q}
 
-# PKG_FILELIST_CMD outputs the list of files owned by ${PKGNAME} as
-# registered on the system.
-#
-# For DESTDIR support, just use _DEPENDS_PLIST instead.
-#
-.if ${_USE_DESTDIR} == "no"
-PKG_FILELIST_CMD=	${PKG_INFO} -qL ${PKGNAME:Q}
-.else
-PKG_FILELIST_CMD=	${SED} -e "/^@/d" -e "s|^|${PREFIX}/|" ${_DEPENDS_PLIST}
-.endif
-
-.include "depends.mk"
 .include "check.mk"
 .include "metadata.mk"
 .include "deinstall.mk"
 .include "package.mk"
 
 .include "utility.mk"
+
+# dependency installation is handled by pkg(8), provide empty targets
+
+_pkgformat-install-dependencies:
+_pkgformat-post-install-dependencies:
