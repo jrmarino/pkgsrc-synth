@@ -19,7 +19,6 @@ PKG_FILELIST_CMD=	${SED} -e "/^@/d" -e "s|^|${PREFIX}/|" ${_DEPENDS_PLIST}
 .include "check.mk"
 .include "metadata.mk"
 .include "deinstall.mk"
-.include "replace.mk"
 .include "package.mk"
 
 .include "utility.mk"
