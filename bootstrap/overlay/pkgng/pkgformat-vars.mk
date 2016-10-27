@@ -88,7 +88,7 @@ HOST_LINKFARM?=		${LINKFARM_CMD}
 # "${PKG_INFO} -e pkgpattern" if the latter would return more than one
 # package name.
 #
-_PKG_BEST_EXISTS?=	${PKG_INFO} -Eg
+_PKG_BEST_EXISTS?=	${PKG_INFO_CMD} --show-name-only --glob
 _HOST_PKG_BEST_EXISTS?=	${HOST_PKG_INFO} -Eg
 
 # XXX Leave this here until all uses of this have been purged from the
