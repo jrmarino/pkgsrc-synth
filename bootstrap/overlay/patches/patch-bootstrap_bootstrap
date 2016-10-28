@@ -1,37 +1,74 @@
---- bootstrap/bootstrap.orig	2016-06-22 11:40:16 UTC
+--- bootstrap/bootstrap.orig	2016-10-28 15:42:03 UTC
 +++ bootstrap/bootstrap
-@@ -509,6 +509,7 @@ root_user=root
- bmakexargs=
- need_extras=no
- use_bsdinstall=
+@@ -47,6 +47,9 @@ unprivileged=no
+ 
+ preserve_path=no
+ 
++# This should be turned to a configuration option
 +want_pkgng=yes
- case "$opsys" in
- AIX)
- 	root_group=system
-@@ -1090,6 +1091,15 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$boots
++
+ # where the building takes place
+ bootstrapdir=`dirname "$0"`
+ bootstrapdir=`cd "${bootstrapdir}" && pwd`
+@@ -487,7 +490,13 @@ elif [ -z "$prefix" -o "$prefix" = "/usr
+ fi
+ 
+ [ -z "$varbase" ] && varbase=${prefix}/var
+-[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg
++
++case "$want_pkgng" in
++yes)
++	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg;;
++*)
++	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkgng;;
++esac
+ 
+ if [ "$prefix" = "/usr" ]; then
+ 	[ -z "$pkginfodir" ] && pkginfodir=share/info
+@@ -1090,6 +1099,15 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$boots
  	echo $opsys
  fi
  
 +case "$want_pkgng" in
 +yes)
-+	echo "PKG_FORMAT=               pkg"   >> ${BOOTSTRAP_MKCONF}
-+	echo "PKG_FORMAT=               pkgng" >> ${TARGET_MKCONF};;
++	echo "PKG_FORMAT=             pkg"   >> ${BOOTSTRAP_MKCONF}
++	echo "PKG_FORMAT=             pkgng" >> ${TARGET_MKCONF};;
 +*)
-+	echo "PKG_FORMAT=               pkg" >> ${BOOTSTRAP_MKCONF}
-+	echo "PKG_FORMAT=               pkg" >> ${TARGET_MKCONF};;
++	echo "PKG_FORMAT=             pkg" >> ${BOOTSTRAP_MKCONF}
++	echo "PKG_FORMAT=             pkg" >> ${TARGET_MKCONF};;
 +esac
 +
  # sbin is used by pkg_install, share/mk by bootstrap-mk-files
  mkdir_p $wrkdir/sbin $wrkdir/share/mk
  mkdir_p_early ${wrkdir}
-@@ -1320,7 +1330,12 @@ esac
+@@ -1144,6 +1162,7 @@ bootstrap_bmake() {
+ bootstrap_bmake
+ 
+ bmake="$wrkdir/bin/bmake"
++shiny_bmake="$prefix/bin/bmake"
+ 
+ # build libnbcompat
+ echo_msg "Building libnbcompat"
+@@ -1292,6 +1311,10 @@ build_package() {
+ 	run_cmd "(cd $pkgsrcdir/$1 && $bmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none -DPKG_PRESERVE MAKECONF=${BOOTSTRAP_MKCONF} install)"
+ }
+ 
++build_shiny_package() {
++	run_cmd "(cd $pkgsrcdir/$1 && $shiny_bmake MAKE_JOBS=${make_jobs} MAKECONF=${TARGET_MKCONF} install)"
++}
++
+ #
+ # Please make sure that the following packages and
+ # only the following packages set BOOTSTRAP_PKG=yes.
+@@ -1320,7 +1343,13 @@ esac
  case "$need_extras" in
  yes)	build_package "pkgtools/bootstrap-extras";;
  esac
 -build_package "pkgtools/pkg_install"
 +case "$want_pkgng" in
 +yes)
-+	build_package "pkgtools/pkg";;
++	build_package       "pkgtools/pkg"
++	build_shiny_package "pkgtools/pkgng_admin";;
 +*)
 +	build_package "pkgtools/pkg_install";;
 +esac
