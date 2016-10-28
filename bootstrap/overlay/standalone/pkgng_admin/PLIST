@@ -1,0 +1,4 @@
+@comment $NetBSD$
+sbin/pkgng_admin
+man/man1/pkgng_admin.1
+man/man5/pkgng_admin.conf.5

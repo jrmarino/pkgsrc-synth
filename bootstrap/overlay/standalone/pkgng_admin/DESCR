@@ -1,0 +1,10 @@
+This installs pkgng_admin which provides a very limited subset of
+functions that pkg_admin does.  The latter is an administration tool
+required for the original package format.
+
+Remaining functionality:
+ - check-license <condition>         check if condition is acceptable
+ - check-single-license <license>    check if license is acceptable
+ - pmatch pattern pkg                returns true if pkg matches pattern
+
+These are used throughout the tree, especially pmatch.

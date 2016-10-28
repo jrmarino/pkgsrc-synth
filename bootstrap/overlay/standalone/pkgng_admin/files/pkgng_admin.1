@@ -1,0 +1,83 @@
+.\"	$NetBSD: pkg_admin.1,v 1.34 2014/12/30 15:13:20 wiz Exp $
+.\"
+.\" Copyright (c) 1999-2010 The NetBSD Foundation, Inc.
+.\" All rights reserved.
+.\"
+.\" This code is derived from software contributed to The NetBSD Foundation
+.\" by Hubert Feyrer <hubert@feyrer.de>.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\" 3. All advertising materials mentioning features or use of this software
+.\"    must display the following acknowledgement:
+.\"        This product includes software developed by the NetBSD
+.\"        Foundation, Inc. and its contributors.
+.\" 4. Neither the name of The NetBSD Foundation nor the names of its
+.\"    contributors may be used to endorse or promote products derived
+.\"    from this software without specific prior written permission.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE NETBSD FOUNDATION, INC. AND CONTRIBUTORS
+.\" ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+.\" TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+.\" PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR CONTRIBUTORS
+.\" BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+.\" CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+.\" SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+.\" INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+.\" CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+.\" ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+.\" POSSIBILITY OF SUCH DAMAGE.
+.\"
+.Dd October 28, 2016
+.Dt PKGNG_ADMIN 1
+.Os
+.Sh NAME
+.Nm pkgng_admin
+.Nd perform license checks and pattern matching for packages
+.Sh SYNOPSIS
+.Nm
+.Op Fl V
+.Op Fl C Ar config
+.Ar command Op args ...
+.Sh DESCRIPTION
+This command handles the license checks (whether to do them,
+which licenses are acceptable, etc) prior to installing packages.
+It is also heavily used as a pattern matcher.
+.Sh OPTIONS
+The following command-line options are supported:
+.Bl -tag -width indent
+.It Fl C Ar config
+Read the configuration file from
+.Ar config
+instead of the system default.
+.It Fl V
+Print version number and exit.
+.El
+.Pp
+The following commands are supported:
+.Bl -tag -width indent
+.It Cm check-license Ar condition
+Check if
+.Ar condition
+can be fulfilled with the currently set of accepted licenses.
+Prints either yes or no to stdout if the condition can be parsed,
+otherwise it exits with error.
+.It Cm check-single-license Ar license
+Check if
+.Ar license
+is a valid license name and if it is in the set of acceptable licenses.
+Prints either yes or no to stdout if the condition can be parsed,
+otherwise it exits with error.
+.It Cm config-var Ar variable
+Print the current value of
+.Ar variable
+as used after parsing the configuration file.
+.El
+.Sh SEE ALSO
+.Xr pkgng_admin.conf 5
