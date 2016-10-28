@@ -423,6 +423,7 @@ while [ $# -gt 0 ]; do
 	--workdir)	wrkdir="$2"; shift ;;
 	--prefix=*)	prefix=`get_optarg "$1"` ;;
 	--prefix)	prefix="$2"; shift ;;
+	--format=*)	format=`get_optarg "$1"` ;;
 	--format)       format="$2"; shift ;;
 	--pkgdbdir=*)	pkgdbdir=`get_optarg "$1"` ;;
 	--pkgdbdir)	pkgdbdir="$2"; shift ;;
