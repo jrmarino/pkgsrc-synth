@@ -18,9 +18,9 @@
 +
 +case "$want_pkgng" in
 +yes)
-+	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg;;
-+*)
 +	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkgng;;
++*)
++	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg;;
 +esac
  
  if [ "$prefix" = "/usr" ]; then
