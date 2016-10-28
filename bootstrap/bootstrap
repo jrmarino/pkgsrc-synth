@@ -47,9 +47,6 @@ unprivileged=no
 
 preserve_path=no
 
-# This should be turned to a configuration option
-want_pkgng=yes
-
 # where the building takes place
 bootstrapdir=`dirname "$0"`
 bootstrapdir=`cd "${bootstrapdir}" && pwd`
@@ -62,6 +59,7 @@ usage="Usage: $0 "'
     [ --binary-macpkg <pkg> ]
     [ --compiler <compiler> ]
     [ --cwrappers ]
+    [ --format <pkg|pkgng> ]
     [ --full ]
     [ --gzip-binary-kit <tarball> ]
     [ --help ]
@@ -417,6 +415,7 @@ full=no
 make_jobs=1
 mk_fragment=
 quiet=no
+format=
 
 while [ $# -gt 0 ]; do
 	case $1 in
@@ -424,6 +423,7 @@ while [ $# -gt 0 ]; do
 	--workdir)	wrkdir="$2"; shift ;;
 	--prefix=*)	prefix=`get_optarg "$1"` ;;
 	--prefix)	prefix="$2"; shift ;;
+	--format)       format="$2"; shift ;;
 	--pkgdbdir=*)	pkgdbdir=`get_optarg "$1"` ;;
 	--pkgdbdir)	pkgdbdir="$2"; shift ;;
 	--pkginfodir=*)	pkginfodir=`get_optarg "$1"` ;;
@@ -491,11 +491,11 @@ fi
 
 [ -z "$varbase" ] && varbase=${prefix}/var
 
-case "$want_pkgng" in
-yes)
-	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkgng;;
-*)
+case "$format" in
+pkg)
 	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg;;
+*)
+	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkgng;;
 esac
 
 if [ "$prefix" = "/usr" ]; then
@@ -1099,13 +1099,13 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$bootstrap_sh_set" != "set" ]; then
 	echo $opsys
 fi
 
-case "$want_pkgng" in
-yes)
-	echo "PKG_FORMAT=             pkg"   >> ${BOOTSTRAP_MKCONF}
-	echo "PKG_FORMAT=             pkgng" >> ${TARGET_MKCONF};;
-*)
+case "$format" in
+pkg)
 	echo "PKG_FORMAT=             pkg" >> ${BOOTSTRAP_MKCONF}
 	echo "PKG_FORMAT=             pkg" >> ${TARGET_MKCONF};;
+*)
+	echo "PKG_FORMAT=             pkg"   >> ${BOOTSTRAP_MKCONF}
+	echo "PKG_FORMAT=             pkgng" >> ${TARGET_MKCONF};;
 esac
 
 # sbin is used by pkg_install, share/mk by bootstrap-mk-files
@@ -1343,12 +1343,12 @@ esac
 case "$need_extras" in
 yes)	build_package "pkgtools/bootstrap-extras";;
 esac
-case "$want_pkgng" in
-yes)
+case "$format" in
+pkg)
+	build_package "pkgtools/pkg_install";;
+*)
 	build_package       "pkgtools/pkg"
 	build_shiny_package "pkgtools/pkgng_admin";;
-*)
-	build_package "pkgtools/pkg_install";;
 esac
 
 etc_mk_conf="$sysconfdir/mk.conf"
