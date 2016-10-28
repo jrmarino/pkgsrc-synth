@@ -11,7 +11,9 @@ turn allows John Marino's local repository builder known as Synth
 
 Differences between PkgSrc-Synth and vanilla PkgSrc:
   1. Adds pkgng format (Initial work by Pierre Pronchery)
-  2. Replaces pkg_install everywhere
-  3. Stores overlay patches at bootstrap/overlay
-  4. Omits the unreliable (and thus extra useless) docs/CHANGES-* files
-  5. Contains synth source
+  2. Removes pkg_install dependency
+  3  Adds very small pkgng_admin dependency for licenses and matching
+  4. Stores overlay sources at bootstrap/overlay
+  5. Omits the unreliable (and thus extra useless) docs/CHANGES-* and
+     docs/TODO* files
+  6. Contains synth source
