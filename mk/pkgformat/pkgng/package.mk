@@ -50,7 +50,13 @@ stage-package-create:	stage-install ${STAGE_PKGFILE}
 
 _PKG_ARGS_PACKAGE+=	${_PKG_CREATE_ARGS} ${_PKG_FORMAT}
 
-${STAGE_PKGFILE}: ${_MANIFEST_TARGETS}
+${PLIST_PKGNG}:	${PLIST}
+	${RUN}${FGREP} '@pkgdir' ${PLIST} | \
+		${SED} 's|@pkgdir |${DESTDIR}${PREFIX}/|' | \
+		${XARGS} ${MKDIR}
+	${RUN}${SED} -e 's|@pkgdir |@dir |' ${PLIST} > ${.TARGET}
+
+${STAGE_PKGFILE}: ${_MANIFEST_TARGETS} ${PLIST_PKGNG}
 	@${STEP_MSG} "Creating binary package ${.TARGET}"
 	${RUN} ${MKDIR} ${.TARGET:H}
 	if ! ${PKG_CREATE} ${_PKG_ARGS_PACKAGE}; then		\

@@ -105,9 +105,10 @@ install-display-message: ${_MESSAGE_FILE}
 ### any special "@" commands, e.g. @dirrm.
 ###
 _MANIFEST_FILE=		${PKG_DB_TMPDIR}/+MANIFEST
+PLIST_PKGNG:=		${WRKDIR}/.PLIST.pkgng
 
 _PKG_CREATE_ARGS+=	--metadata ${PKG_DB_TMPDIR} \
-			--plist    ${PLIST} \
+			--plist    ${PLIST_PKGNG} \
 			--out-dir  ${WRKDIR}/.packages \
 			--root-dir ${DESTDIR}
 
@@ -134,17 +135,18 @@ ACTUAL-PACKAGE-DEPENDS?= ${SETENV} PKG_BIN="${PKG_CMD}" ${SH} \
 ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 	${RUN}${MKDIR} ${.TARGET:H}
 	${RUN} { \
-	${ECHO} "name: \"${PKGNAME:C/-.*//}\""; \
+	${ECHO} "name: \"${PKGNAME:C/(.*)-.*/\1/}\""; \
 	${ECHO} "version: \"${PKGVERSION}\""; \
-	${ECHO} "origin: ${CATEGORIES}/${PKGNAME:C/-.*//}"; \
+	${ECHO} "origin: ${CATEGORIES}/${PKGNAME:C/(.*)-.*/\1/}"; \
 	${ECHO} "comment: <<EOD"; \
-	${ECHO} ${COMMENT}; \
+	${ECHO} ${COMMENT:Q}; \
 	${ECHO} "EOD"; \
 	${ECHO} "maintainer: ${MAINTAINER}"; \
 	${ECHO} "prefix: ${PREFIX}"; \
 	${ECHO} "categories: [ ${CATEGORIES} ]"; \
 	${ECHO} "licenselogic: ${LICLOGIC}"; \
 		} > ${.TARGET}
+
 .if defined(HOMEPAGE)
 	${RUN}${ECHO} "www: ${HOMEPAGE}" >> ${.TARGET}
 .endif

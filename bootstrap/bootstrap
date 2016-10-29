@@ -1306,14 +1306,23 @@ fi
 echo ".endif			# end pkgsrc settings" >> ${TARGET_MKCONF}
 echo ".endif			# end pkgsrc settings" >> ${BOOTSTRAP_MKCONF}
 
+pkgng_installed="no"
+bmake_installed="no"
+
 # build and register packages
 # usage: build_package <packagedirectory> [additional arguments]
 build_package() {
-	run_cmd "(cd $pkgsrcdir/$1 && $bmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none -DPKG_PRESERVE MAKECONF=${BOOTSTRAP_MKCONF} install)"
-}
-
-build_shiny_package() {
-	run_cmd "(cd $pkgsrcdir/$1 && $shiny_bmake MAKE_JOBS=${make_jobs} MAKECONF=${TARGET_MKCONF} install)"
+	local bsdmake;
+	if [ "$bmake_installed" = "no" ]; then
+		bsdmake=$bmake
+	else
+		bsdmake=$shiny_bmake;
+	fi;
+	if [ "$pkgng_installed" = "no" ]; then
+		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none -DPKG_PRESERVE MAKECONF=${BOOTSTRAP_MKCONF} install)"
+	else
+		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake MAKE_JOBS=${make_jobs} MAKECONF=${TARGET_MKCONF} install)"
+	fi;
 }
 
 #
@@ -1321,6 +1330,13 @@ build_shiny_package() {
 # only the following packages set BOOTSTRAP_PKG=yes.
 #
 echo_msg "Installing packages"
+case "$format" in
+pkg)	;;
+*)	build_package  "pkgtools/pkg"
+	pkgng_installed="yes";
+	build_package "pkgtools/pkgng_admin"
+	;;
+esac;
 build_package "pkgtools/bootstrap-mk-files"
 case "$need_bsd_install" in
 yes)
@@ -1335,6 +1351,7 @@ case "$need_ksh" in
 yes)	build_package "shells/pdksh";;
 esac
 build_package "devel/bmake"
+bmake_installed="yes"
 case "$need_awk" in
 yes)	build_package "lang/nawk";;
 esac
@@ -1345,11 +1362,8 @@ case "$need_extras" in
 yes)	build_package "pkgtools/bootstrap-extras";;
 esac
 case "$format" in
-pkg)
-	build_package "pkgtools/pkg_install";;
-*)
-	build_package       "pkgtools/pkg"
-	build_shiny_package "pkgtools/pkgng_admin";;
+pkg)	build_package "pkgtools/pkg_install";;
+*)	;;
 esac
 
 etc_mk_conf="$sysconfdir/mk.conf"
