@@ -55,12 +55,20 @@ ${WRKDIR}/.created_fixed_dirs:
 	${RUN}${MKDIR} ${DESTDIR}${D}
 .endfor
 .for D in ${REQD_DIRS} ${REQD_DIRS_PERMS}
-	${RUN}${MKDIR} ${DESTDIR}${PREFIX}${D}
+	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${D}
 .endfor
+.if ${PKG_SYSCONFSUBDIR:M*}
+.  if ${PKG_SYSCONFSUBDIR:M/*}
+	${RUN}${MKDIR} ${DESTDIR}${PKG_SYSCONFSUBDIR}
+.  else
+	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${PKG_SYSCONFSUBDIR}
+.  endif
+.endif
 	${RUN}${TOUCH} ${.TARGET}
 
 ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
-	${AWK} -vPREFIX="${PREFIX}" -vCONF_FILES="${CONF_FILES}" \
+	${AWK} -vPREFIX="${PREFIX}" -vCONF_FILES="${CONF_FILES} ${REQD_FILES}" \
+		-vCONF_FILES_PERMS="${CONF_FILES_PERMS} ${REQD_FILES_PERMS}" \
 		-f  ${PKGSRCDIR}/mk/pkgformat/pkgng/transform_plist.awk \
 		${PLIST} > ${.TARGET}
 	# Treat REQD_DIRS, MAKE_DIRS and OWN_DIRS identically
@@ -70,6 +78,15 @@ ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
 .for D owner group mode in ${REQD_DIRS_PERMS} ${OWN_DIRS_PERMS} ${MAKE_DIRS_PERMS}
 	${RUN}${ECHO} "@dir(${owner},${group},${mode}) ${D}" >> ${.TARGET}
 .endfor
+.if ${PKG_SYSCONFSUBDIR:M*}
+.for D owner group mode in ${PKG_SYSCONFSUBDIR} ${PKG_SYSCONFDIR_PERMS}
+.  if ${D:M/*}
+	${RUN}${ECHO} "@dir(${owner},${group},${mode}) ${D}" >> ${.TARGET}
+.  else
+	${RUN}${ECHO} "@dir(${owner},${group},${mode}) ${PREFIX}/${D}" >> ${.TARGET}
+.  endif
+.endfor
+.endif
 .for i in ${INFO}
 	@${LS} ${STAGEDIR}${PREFIX}/${INFO_PATH}/$i.info* | ${SED} -e s:${STAGEDIR}:@info\ :g >> ${TMPPLIST}
 .endfor
