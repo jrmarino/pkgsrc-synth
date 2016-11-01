@@ -77,6 +77,7 @@ ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
 		-vRCD_SCRIPTS_DIR="${RCD_SCRIPTS_DIR}" \
 		-vRCD_SCRIPTS_MODE="${RCD_SCRIPTS_MODE}" \
 		-vRCD_SCRIPTS_EXAMPLEDIR="${RCD_SCRIPTS_EXAMPLEDIR}" \
+		-vPKG_SHELL="${PKG_SHELL}" \
 		-f  ${PKGSRCDIR}/mk/pkgformat/pkgng/transform_plist.awk \
 		${PLIST} > ${.TARGET}
 	# Treat REQD_DIRS, MAKE_DIRS and OWN_DIRS identically

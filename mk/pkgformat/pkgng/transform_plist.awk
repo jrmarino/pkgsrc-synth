@@ -9,6 +9,8 @@
 #  RCD_SCRIPTS= special case of sample (1 per)
 #  RCD_SCRIPTS_MODE= set mode of all RCD_SCRIPTS
 #  RCD_SCRIPTS_DIR= directory to install RC scripts
+#  RCD_SCRIPTS_EXAMPLEDIR = default examples directory for rc scripts
+#  PKG_SHELL= single entry for @shell keyword
 #  PREFIX= installation prefix
 #  
 #
@@ -29,6 +31,10 @@ BEGIN {
     split (RCD_SCRIPTS, RCD);
     num_RCD = length(RCD);
     for (k = 0; k < num_RCD; k++) used_RCD[k] = 0;
+
+    split (PKG_SHELL, SHELL);
+    num_SHELL = length (SHELL);
+    for (k = 0; k < num_SHELL; k++) used_SHELL[k] = 0;
 }
 
 function dump_CF (k) {
@@ -57,6 +63,11 @@ function dump_RCD (k) {
    used_RCD[k] = 1;
 }
 
+function dump_SHELL (k) {
+   print "@shell " SHELL[k+1];
+   used_SHELL[k] = 1;
+}
+
 END {
    for (k = 0; k < num_CF; k++) {
       if (!used_CF[k]) { dump_CF(k) }
@@ -69,6 +80,9 @@ END {
    }
    for (k = 0; k < num_RCD; k++) {
       if (!used_RCD[k]) { dump_RCD(k) }
+   }
+   for (k = 0; k < num_SHELL; k++) {
+      if (!used_SHELL[k]) { dump_SHELL(k) }
    }
 }
 
@@ -111,12 +125,24 @@ function is_sample () {
     return 0;  
 }
 
-function is_info() {
+function is_info () {
    if ((length($1) > 9) && (substr ($1, 1, 5) == "info/")) {
        print "@info " PREFIX "/" $1;
        return 1;
    }
    return 0;  
+}
+
+function is_shell () {
+    for (k = 0; k < num_SHELL; k++) {
+       if (!used_SHELL[k]) {
+          if ($1 == SHELL[k+1]) {
+             dump_SHELL(k);
+             return 1;
+          }
+       }
+   }
+   return 0;
 }
 
 # MAIN
@@ -125,7 +151,9 @@ function is_info() {
        print "@dir " $2;
     } else if (is_sample()) {
        # handled in function
-    } else if (is_info()){
+    } else if (is_info()) {
+       # handled in function
+    } else if (is_shell()) {
        # handled in function
     } else {
         print $0

@@ -33,7 +33,6 @@ _PKG_VARS.pkginstall+=	PKG_GID.${g}
 .endfor
 _PKG_VARS.pkginstall+= \
 	SPECIAL_PERMS \
-	PKG_SHELL \
 	FONTS_DIRS.ttf FONTS_DIRS.type1 FONTS_DIRS.x11 \
 _SYS_VARS.pkginstall= \
 	SETUID_ROOT_PERMS \
@@ -511,33 +510,6 @@ install-script-data-ocaml-findlib-register:
 #	is relative, then it is taken to be relative to ${PREFIX}.
 #
 PKG_SHELL?=		# empty
-
-_INSTALL_SHELL_FILE=		${_PKGINSTALL_DIR}/shell
-_INSTALL_SHELL_DATAFILE=	${_PKGINSTALL_DIR}/shell-data
-_INSTALL_UNPACK_TMPL+=		${_INSTALL_SHELL_FILE}
-_INSTALL_DATA_TMPL+=		${_INSTALL_SHELL_DATAFILE}
-
-${_INSTALL_SHELL_DATAFILE}:
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${PKG_SHELL}; shift;				\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		shell="$$1"; shift;					\
-		shell=`strip_prefix "$$shell"`;				\
-		${ECHO} "# SHELL: $$shell";				\
-	done
-
-${_INSTALL_SHELL_FILE}: ${_INSTALL_SHELL_DATAFILE}
-${_INSTALL_SHELL_FILE}: ../../mk/pkginstall/shell
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	${SED} ${FILES_SUBST_SED} ../../mk/pkginstall/shell > ${.TARGET}
-	${RUN}								\
-	if ${_ZERO_FILESIZE_P} ${_INSTALL_SHELL_DATAFILE}; then		\
-		${RM} -f ${.TARGET};					\
-		${TOUCH} ${TOUCH_ARGS} ${.TARGET};			\
-	fi
 
 # SHLIB_TYPE
 #	The type of shared library supported by the platform.
