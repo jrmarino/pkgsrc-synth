@@ -33,10 +33,6 @@ _PKG_VARS.pkginstall+=	PKG_GID.${g}
 .endfor
 _PKG_VARS.pkginstall+= \
 	SPECIAL_PERMS \
-	CONF_FILES REQD_FILES \
-	CONF_FILES_MODE REQD_FILES_MODE \
-	CONF_FILES_PERMS REQD_FILES_PERMS \
-	RCD_SCRIPTS ${RCD_SCRIPTS:@s@RCD_SCRIPT_SRC.${s}@} \
 	PKG_SHELL \
 	FONTS_DIRS.ttf FONTS_DIRS.type1 FONTS_DIRS.x11 \
 _SYS_VARS.pkginstall= \
@@ -479,118 +475,12 @@ FILES_SUBST+=		RCD_SCRIPTS_SHELL=${RCD_SCRIPTS_SHELL:Q}
 MESSAGE_SUBST+=		RCD_SCRIPTS_DIR=${RCD_SCRIPTS_DIR}
 MESSAGE_SUBST+=		RCD_SCRIPTS_EXAMPLEDIR=${RCD_SCRIPTS_EXAMPLEDIR}
 
-_INSTALL_FILES_FILE=		${_PKGINSTALL_DIR}/files
-_INSTALL_FILES_DATAFILE=	${_PKGINSTALL_DIR}/files-data
-_INSTALL_UNPACK_TMPL+=		${_INSTALL_FILES_FILE}
-_INSTALL_DATA_TMPL+=		${_INSTALL_FILES_DATAFILE}
-
 # Only generate init scripts if we are using rc.d
 _INSTALL_RCD_SCRIPTS=	# empty
 
 .if ${INIT_SYSTEM} == "rc.d"
 _INSTALL_RCD_SCRIPTS=	${RCD_SCRIPTS}
 .endif
-
-privileged-install-hook: _pkginstall-postinstall-check
-_pkginstall-postinstall-check: .PHONY
-	${RUN} p="${DESTDIR}${PREFIX}";					\
-	${_FUNC_STRIP_PREFIX};						\
-	canon() { f=`strip_prefix "$$1"`; case $$f in [!/]*) f="$$p/$$f"; esac; echo "$$f"; }; \
-	needargs() { [ $$3 -ge $$2 ] || ${FAIL_MSG} "[bsd.pkginstall.mk] $$1 must have a multiple of $$2 words. Rest: $$4"; }; \
-	set args ${_INSTALL_RCD_SCRIPTS}; shift;				\
-	while [ $$# -gt 0 ]; do						\
-		egfile=`canon "${RCD_SCRIPTS_EXAMPLEDIR}/$$1"`; shift;	\
-		[ -f "$$egfile" ] || [ -c "$$egfile" ] || ${FAIL_MSG} "RCD_SCRIPT $$egfile does not exist."; \
-	done;								\
-	set args ${CONF_FILES}; shift;					\
-	while [ $$# -gt 0 ]; do						\
-		needargs CONF_FILES 2 $$# "$$*";			\
-		egfile=`canon "$$1"`; shift 2;				\
-		[ -f "$$egfile" ] || [ -c "$$egfile" ] || ${FAIL_MSG} "CONF_FILE $$egfile does not exist."; \
-	done;								\
-	set args ${REQD_FILES}; shift;					\
-	while [ $$# -gt 0 ]; do						\
-		needargs REDQ_FILES 2 $$# "$$*";			\
-		egfile=`canon "$$1"`; shift 2;				\
-		[ -f "$$egfile" ] || [ -c "$$egfile" ] || ${FAIL_MSG} "REQD_FILE $$egfile does not exist."; \
-	done;								\
-	set args ${CONF_FILES_PERMS}; shift;				\
-	while [ $$# -gt 0 ]; do						\
-		needargs CONF_FILES_PERMS 5 $$# "$$*";			\
-		egfile=`canon "$$1"`; shift 5;				\
-		[ -f "$$egfile" ] || [ -c "$$egfile" ] || ${FAIL_MSG} "CONF_FILES_PERMS $$egfile does not exist."; \
-	done;								\
-	set args ${REQD_FILES_PERMS}; shift;				\
-	while [ $$# -gt 0 ]; do						\
-		needargs REQD_FILES_PERMS 5 $$# "$$*";			\
-		egfile=`canon "$$1"`; shift 5;				\
-		[ -f "$$egfile" ] || [ -c "$$egfile" ] || ${FAIL_MSG} "REQD_FILES_PERMS $$egfile does not exist."; \
-	done
-
-${_INSTALL_FILES_DATAFILE}:
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${_INSTALL_RCD_SCRIPTS}; shift;			\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		script="$$1"; shift;					\
-		file="${RCD_SCRIPTS_DIR:S/^${PREFIX}\///}/$$script";	\
-		egfile="${RCD_SCRIPTS_EXAMPLEDIR}/$$script";		\
-		${ECHO} "# FILE: $$file cr $$egfile ${RCD_SCRIPTS_MODE}"; \
-	done
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${CONF_FILES}; shift;				\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		egfile="$$1"; file="$$2";				\
-		shift; shift;						\
-		egfile=`strip_prefix "$$egfile"`;			\
-		file=`strip_prefix "$$file"`;				\
-		${ECHO} "# FILE: $$file c $$egfile ${CONF_FILES_MODE}"; \
-	done
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${REQD_FILES}; shift;				\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		egfile="$$1"; file="$$2";				\
-		shift; shift;						\
-		egfile=`strip_prefix "$$egfile"`;			\
-		file=`strip_prefix "$$file"`;				\
-		${ECHO} "# FILE: $$file cf $$egfile ${REQD_FILES_MODE}"; \
-	done
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${CONF_FILES_PERMS}; shift;			\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		egfile="$$1"; file="$$2";				\
-		owner="$$3"; group="$$4"; mode="$$5";			\
-		shift; shift; shift; shift; shift;			\
-		egfile=`strip_prefix "$$egfile"`;			\
-		file=`strip_prefix "$$file"`;				\
-		${ECHO} "# FILE: $$file c $$egfile $$mode $$owner $$group"; \
-	done
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${REQD_FILES_PERMS}; shift;			\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		egfile="$$1"; file="$$2";				\
-		owner="$$3"; group="$$4"; mode="$$5";			\
-		shift; shift; shift; shift; shift;			\
-		egfile=`strip_prefix "$$egfile"`;			\
-		file=`strip_prefix "$$file"`;				\
-		${ECHO} "# FILE: $$file cf $$egfile $$mode $$owner $$group"; \
-	done
-
-${_INSTALL_FILES_FILE}: ${_INSTALL_FILES_DATAFILE}
-${_INSTALL_FILES_FILE}: ../../mk/pkginstall/files
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	${SED} ${FILES_SUBST_SED} ../../mk/pkginstall/files > ${.TARGET}
-	${RUN}								\
-	if ${_ZERO_FILESIZE_P} ${_INSTALL_FILES_DATAFILE}; then		\
-		${RM} -f ${.TARGET};					\
-		${TOUCH} ${TOUCH_ARGS} ${.TARGET};			\
-	fi
 
 # OCAML_FINDLIB_REGISTER
 _INSTALL_OFR_FILE=	${_PKGINSTALL_DIR}/ocaml-findlib-register

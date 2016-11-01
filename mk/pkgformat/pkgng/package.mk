@@ -67,8 +67,16 @@ ${WRKDIR}/.created_fixed_dirs:
 	${RUN}${TOUCH} ${.TARGET}
 
 ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
-	${AWK} -vPREFIX="${PREFIX}" -vCONF_FILES="${CONF_FILES} ${REQD_FILES}" \
+	${AWK} -vPREFIX="${PREFIX}" \
+		-vREQD_FILES="${REQD_FILES}" \
+		-vREQD_FILES_MODE="${REQD_FILES_MODE}" \
+		-vCONF_FILES="${CONF_FILES}" \
+		-vCONF_FILES_MODE="${CONF_FILES_MODE}" \
 		-vCONF_FILES_PERMS="${CONF_FILES_PERMS} ${REQD_FILES_PERMS}" \
+		-vRCD_SCRIPTS="${RCD_SCRIPTS}" \
+		-vRCD_SCRIPTS_DIR="${RCD_SCRIPTS_DIR}" \
+		-vRCD_SCRIPTS_MODE="${RCD_SCRIPTS_MODE}" \
+		-vRCD_SCRIPTS_EXAMPLEDIR="${RCD_SCRIPTS_EXAMPLEDIR}" \
 		-f  ${PKGSRCDIR}/mk/pkgformat/pkgng/transform_plist.awk \
 		${PLIST} > ${.TARGET}
 	# Treat REQD_DIRS, MAKE_DIRS and OWN_DIRS identically
