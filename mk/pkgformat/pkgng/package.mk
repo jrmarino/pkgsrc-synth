@@ -50,11 +50,29 @@ stage-package-create:	stage-install ${STAGE_PKGFILE}
 
 _PKG_ARGS_PACKAGE+=	${_PKG_CREATE_ARGS} ${_PKG_FORMAT}
 
-${PLIST_PKGNG}:	${PLIST}
-	${RUN}${FGREP} '@pkgdir' ${PLIST} | \
-		${SED} 's|@pkgdir |${DESTDIR}${PREFIX}/|' | \
-		${XARGS} ${MKDIR}
-	${RUN}${SED} -e 's|@pkgdir |@dir |' ${PLIST} > ${.TARGET}
+${WRKDIR}/.created_fixed_dirs:
+.for D in ${OWN_DIRS} ${OWN_DIRS_PERMS} ${MAKE_DIRS} ${MAKE_DIRS_PERMS}
+	${RUN}${MKDIR} ${DESTDIR}${D}
+.endfor
+.for D in ${REQD_DIRS} ${REQD_DIRS_PERMS}
+	${RUN}${MKDIR} ${DESTDIR}${PREFIX}${D}
+.endfor
+	${RUN}${TOUCH} ${.TARGET}
+
+${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
+	${AWK} -vPREFIX="${PREFIX}" -vCONF_FILES="${CONF_FILES}" \
+		-f  ${PKGSRCDIR}/mk/pkgformat/pkgng/transform_plist.awk \
+		${PLIST} > ${.TARGET}
+	# Treat REQD_DIRS, MAKE_DIRS and OWN_DIRS identically
+.for D in ${REQD_DIRS} ${OWN_DIRS} ${MAKE_DIRS}
+	${RUN}${ECHO} "@dir ${D}" >> ${.TARGET}
+.endfor
+.for D owner group mode in ${REQD_DIRS_PERMS} ${OWN_DIRS_PERMS} ${MAKE_DIRS_PERMS}
+	${RUN}${ECHO} "@dir(${owner},${group},${mode}) ${D}" >> ${.TARGET}
+.endfor
+.for i in ${INFO}
+	@${LS} ${STAGEDIR}${PREFIX}/${INFO_PATH}/$i.info* | ${SED} -e s:${STAGEDIR}:@info\ :g >> ${TMPPLIST}
+.endfor
 
 ${STAGE_PKGFILE}: ${_MANIFEST_TARGETS} ${PLIST_PKGNG}
 	@${STEP_MSG} "Creating binary package ${.TARGET}"
