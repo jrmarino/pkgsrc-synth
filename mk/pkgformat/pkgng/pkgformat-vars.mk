@@ -33,9 +33,9 @@ PKGTOOLS_VERSION=	20160410
 # The binary pkg_install tools all need to consistently refer to the
 # correct package database directory.
 #
-SET_DBDIR?=		${PKGSRC_SETENV} PKG_DBDIR="${_PKG_DBDIR}" \
+SET_DBDIR?=		${PKGSRC_SETENV} PKG_DBDIR=${_PKG_DBDIR} \
 			INSTALL_AS_USER=yes
-HOST_SET_DBDIR?=	${PKGSRC_SETENV} PKG_DBDIR="${_HOST_PKG_DBDIR}" \
+HOST_SET_DBDIR?=	${PKGSRC_SETENV} PKG_DBDIR=${_HOST_PKG_DBDIR} \
 			INSTALL_AS_USER=yes
 
 PKG_ADD?=		${SET_DBDIR} ${PKG_ADD_CMD}
@@ -52,6 +52,7 @@ HOST_PKG_INFO?=		${HOST_SET_DBDIR} ${PKG_INFO_CMD}
 # package name.
 #
 _PKG_BEST_EXISTS?=	${PKG_INFO_CMD} --show-name-only --glob
+_HOST_PKG_BEST_EXISTS?=	${HOST_PKG_INFO} --show-name-only --glob
 
 # XXX Leave this here until all uses of this have been purged from the
 # XXX public parts of pkgsrc.

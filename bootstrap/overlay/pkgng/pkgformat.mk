@@ -3,9 +3,13 @@
 # This Makefile fragment provides variable and target overrides that are
 # specific to the pkgsrc native package format.
 #
-_DEPENDS_PLIST:=	# non-existant, referenced by plist.mk and install.mk
 PKG_FILELIST_CMD=	${PKG_CMD} query '%Fp' ${PKGNAME:Q}
 
+.if "${OBJECT_FMT}" != "ELF"
+.error The pkgng format is only available on ELF systems
+.endif
+
+.include "depends.mk"
 .include "check.mk"
 .include "metadata.mk"
 .include "deinstall.mk"
@@ -17,3 +21,5 @@ PKG_FILELIST_CMD=	${PKG_CMD} query '%Fp' ${PKGNAME:Q}
 
 _pkgformat-install-dependencies:
 _pkgformat-post-install-dependencies:
+
+_pkgformat-install-clean: .PHONY _pkgformat-clean-metadata
