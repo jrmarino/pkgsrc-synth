@@ -11,8 +11,8 @@
 #  RCD_SCRIPTS_DIR= directory to install RC scripts
 #  RCD_SCRIPTS_EXAMPLEDIR = default examples directory for rc scripts
 #  PKG_SHELL= single entry for @shell keyword
+#  SPECIAL_PERMS= space delimited list of perms per file
 #  PREFIX= installation prefix
-#  
 #
 
 BEGIN {
@@ -35,6 +35,10 @@ BEGIN {
     split (PKG_SHELL, SHELL);
     num_SHELL = length (SHELL);
     for (k = 0; k < num_SHELL; k++) used_SHELL[k] = 0;
+
+    split (SPECIAL_PERMS, SP);
+    num_SP = length(SP) / 4;
+    for (k = 0; k < num_SP; k++) used_SP[k] = 0;
 }
 
 function dump_CF (k) {
@@ -68,7 +72,13 @@ function dump_SHELL (k) {
    used_SHELL[k] = 1;
 }
 
+function dump_SP (k) {
+   print "@(" SP[4*k+2] "," SP[4*k+3] "," SP[4*k+4] ") " SP[4*k+1];
+   used_SP[k] = 1;
+}
+
 END {
+   # Any output is produced in the END section is indicative of a bad plist
    for (k = 0; k < num_CF; k++) {
       if (!used_CF[k]) { dump_CF(k) }
    }
@@ -83,6 +93,9 @@ END {
    }
    for (k = 0; k < num_SHELL; k++) {
       if (!used_SHELL[k]) { dump_SHELL(k) }
+   }
+   for (k = 0; k < num_SP; k++) {
+      if (!used_SP[k]) { dump_SP(k) }
    }
 }
 
@@ -145,6 +158,18 @@ function is_shell () {
    return 0;
 }
 
+function is_special_perms () {
+    for (k = 0; k < num_SP; k++) {
+       if (!used_SP[k]) {
+          if ($1 == SP[k+1]) {
+             dump_SP(k);
+             return 1;
+          }
+       }
+   }
+   return 0;
+}
+
 # MAIN
 {
     if ($1 == "@pkgdir") {
@@ -154,6 +179,8 @@ function is_shell () {
     } else if (is_info()) {
        # handled in function
     } else if (is_shell()) {
+       # handled in function
+    } else if (is_special_perms()) {
        # handled in function
     } else {
         print $0

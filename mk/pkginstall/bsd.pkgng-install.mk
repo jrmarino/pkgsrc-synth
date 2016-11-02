@@ -32,7 +32,6 @@ _PKG_VARS.pkginstall+=	PKG_UID.${u} PKG_GECOS.${u} PKG_HOME.${u} PKG_SHELL.${u}
 _PKG_VARS.pkginstall+=	PKG_GID.${g}
 .endfor
 _PKG_VARS.pkginstall+= \
-	SPECIAL_PERMS \
 	FONTS_DIRS.ttf FONTS_DIRS.type1 FONTS_DIRS.x11 \
 _SYS_VARS.pkginstall= \
 	SETUID_ROOT_PERMS \
@@ -394,34 +393,6 @@ SETUID_ROOT_PERMS?=	${REAL_ROOT_USER} ${REAL_ROOT_GROUP} 4511
 SETGID_GAMES_PERMS?=	${GAMES_USER} ${GAMES_GROUP} ${GAMEMODE}
 GAMEDATA_PERMS?=	${GAMES_USER} ${GAMES_GROUP} ${GAMEDATAMODE}
 GAMEDIR_PERMS?=		${GAMES_USER} ${GAMES_GROUP} ${GAMEDIRMODE}
-
-_INSTALL_PERMS_FILE=		${_PKGINSTALL_DIR}/perms
-_INSTALL_PERMS_DATAFILE=	${_PKGINSTALL_DIR}/perms-data
-_INSTALL_UNPACK_TMPL+=		${_INSTALL_PERMS_FILE}
-_INSTALL_DATA_TMPL+=		${_INSTALL_PERMS_DATAFILE}
-
-${_INSTALL_PERMS_DATAFILE}:
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${SPECIAL_PERMS}; shift;				\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		file="$$1"; owner="$$2"; group="$$3"; mode="$$4";	\
-		shift; shift; shift; shift;				\
-		file=`strip_prefix "$$file"`;				\
-		${ECHO} "# PERMS: $$file $$mode $$owner $$group";	\
-	done
-
-${_INSTALL_PERMS_FILE}: ${_INSTALL_PERMS_DATAFILE}
-${_INSTALL_PERMS_FILE}: ../../mk/pkginstall/perms
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	${SED} ${FILES_SUBST_SED} ../../mk/pkginstall/perms > ${.TARGET}
-	${RUN}								\
-	if ${_ZERO_FILESIZE_P} ${_INSTALL_PERMS_DATAFILE}; then		\
-		${RM} -f ${.TARGET};					\
-		${TOUCH} ${TOUCH_ARGS} ${.TARGET};			\
-	fi
 
 # CONF_FILES
 # REQD_FILES
