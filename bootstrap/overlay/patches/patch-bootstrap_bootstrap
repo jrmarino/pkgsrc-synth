@@ -1,4 +1,4 @@
---- bootstrap/bootstrap.orig	2016-10-29 07:19:02 UTC
+--- bootstrap/bootstrap.orig	2016-11-02 14:18:52 UTC
 +++ bootstrap/bootstrap
 @@ -59,6 +59,7 @@ usage="Usage: $0 "'
      [ --binary-macpkg <pkg> ]
@@ -72,7 +72,7 @@
 +bmake_installed="no"
 +
  # build and register packages
- # usage: build_package <packagedirectory> [additional arguments]
+ # usage: build_package <packagedirectory>
  build_package() {
 -	run_cmd "(cd $pkgsrcdir/$1 && $bmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none -DPKG_PRESERVE MAKECONF=${BOOTSTRAP_MKCONF} install)"
 +	local bsdmake;
@@ -87,9 +87,9 @@
 +		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake MAKE_JOBS=${make_jobs} MAKECONF=${TARGET_MKCONF} install)"
 +	fi;
  }
- 
- #
-@@ -1297,6 +1330,13 @@ build_package() {
+ build_package_nopreserve() {
+ 	run_cmd "(cd $pkgsrcdir/$1 && $bmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none MAKECONF=${BOOTSTRAP_MKCONF} install)"
+@@ -1311,6 +1344,13 @@ esac
  # only the following packages set BOOTSTRAP_PKG=yes.
  #
  echo_msg "Installing packages"
@@ -103,7 +103,7 @@
  build_package "pkgtools/bootstrap-mk-files"
  case "$need_bsd_install" in
  yes)
-@@ -1311,6 +1351,7 @@ case "$need_ksh" in
+@@ -1325,6 +1365,7 @@ case "$need_ksh" in
  yes)	build_package "shells/pdksh";;
  esac
  build_package "devel/bmake"
@@ -111,7 +111,7 @@
  case "$need_awk" in
  yes)	build_package "lang/nawk";;
  esac
-@@ -1320,7 +1361,10 @@ esac
+@@ -1334,7 +1375,10 @@ esac
  case "$need_extras" in
  yes)	build_package "pkgtools/bootstrap-extras";;
  esac
