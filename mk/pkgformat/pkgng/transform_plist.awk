@@ -39,6 +39,8 @@ BEGIN {
     split (SPECIAL_PERMS, SP);
     num_SP = length(SP) / 4;
     for (k = 0; k < num_SP; k++) used_SP[k] = 0;
+
+    set_ldconfig = (LDCONFIG == "yes") ? 1 : 0;
 }
 
 function dump_CF (k) {
@@ -78,7 +80,7 @@ function dump_SP (k) {
 }
 
 END {
-   # Any output is produced in the END section is indicative of a bad plist
+   # Any output is produced in this section is indicative of a bad plist
    for (k = 0; k < num_CF; k++) {
       if (!used_CF[k]) { dump_CF(k) }
    }
@@ -97,6 +99,9 @@ END {
    for (k = 0; k < num_SP; k++) {
       if (!used_SP[k]) { dump_SP(k) }
    }
+
+   # Output from here forward doesn't mean a bad plist
+   if (set_ldconfig) { print "@ldconfig" }
 }
 
 function is_sample () {

@@ -1,0 +1,13 @@
+# $NetBSD$
+# 
+# Note that pkg(8) only works for ELF systems which doesn't run ldconfig
+# by default.  Currently overrides are not supported (ldconfig is assumed)
+#
+
+actions: []
+post-install: <<EOD
+  ldconfig > /dev/null || true
+EOD
+post-deinstall: <<EOD
+  ldconfig > /dev/null || true
+EOD

@@ -35,10 +35,7 @@ _PKG_VARS.pkginstall+= \
 	FONTS_DIRS.ttf FONTS_DIRS.type1 FONTS_DIRS.x11 \
 _SYS_VARS.pkginstall= \
 	SETUID_ROOT_PERMS \
-	SETGID_GAMES_PERMS \
-	SHLIB_TYPE \
-	LDCONFIG_ADD_CMD \
-	LDCONFIG_REMOVE_CMD
+	SETGID_GAMES_PERMS
 
 # The Solaris /bin/sh does not know the ${foo#bar} shell substitution.
 # This shell function serves a similar purpose, but is specialized on
@@ -482,45 +479,15 @@ install-script-data-ocaml-findlib-register:
 #
 PKG_SHELL?=		# empty
 
-# SHLIB_TYPE
-#	The type of shared library supported by the platform.
-#
-#	Default value: ${_OPSYS_SHLIB_TYPE}
-#
-# LDCONFIG_ADD_CMD
-# LDCONFIG_REMOVE_CMD
-#	Command-line to be invoked to update the system run-time library
-#	search paths database when adding and removing a package.
-#
-#	Default value: ${LDCONFIG}
-#
-SHLIB_TYPE=		${_SHLIB_TYPE_cmd:sh}
-_SHLIB_TYPE_cmd=							\
-	sh ${.CURDIR}/../../mk/scripts/shlib-type			\
-		${_OPSYS_SHLIB_TYPE:Q} ${PKG_INFO_CMD:Q}
+# PKGNG only supports ELF format, so there's no need to test library type
+# Set the @ldconfig configure if port provided RUN_LDCONFIG setting
 
-LDCONFIG_ADD_CMD?=		${_LDCONFIG_ADD_CMD.${OPSYS}}
-LDCONFIG_REMOVE_CMD?=		${_LDCONFIG_REMOVE_CMD.${OPSYS}}
-_LDCONFIG_ADD_CMD.${OPSYS}?=	${LDCONFIG}
-_LDCONFIG_REMOVE_CMD.${OPSYS}?=	${LDCONFIG}
-FILES_SUBST+=			LDCONFIG_ADD_CMD=${LDCONFIG_ADD_CMD:Q}
-FILES_SUBST+=			LDCONFIG_REMOVE_CMD=${LDCONFIG_REMOVE_CMD:Q}
-
-.if ${SHLIB_TYPE} == "a.out"
-RUN_LDCONFIG?=	yes
-.else
+SHLIB_TYPE=	ELF
 RUN_LDCONFIG?=	no
-.endif
 
-_INSTALL_SHLIBS_FILE=		${_PKGINSTALL_DIR}/shlibs
-.if !empty(RUN_LDCONFIG:M[Yy][Ee][Ss])
-_INSTALL_UNPACK_TMPL+=		${_INSTALL_SHLIBS_FILE}
+.if !empty(RUN_LDCONFIG:tl:Myes)
+SET_LDCONFIG_KEYWORD=	yes
 .endif
-
-${_INSTALL_SHLIBS_FILE}: ../../mk/pkginstall/shlibs
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	${SED} ${FILES_SUBST_SED} ../../mk/pkginstall/shlibs > ${.TARGET}
 
 # FONTS_DIRS.<type> are lists of directories in which the font databases
 #	are updated.  If this is non-empty, then the appropriate tools are
