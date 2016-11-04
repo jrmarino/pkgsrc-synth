@@ -14,7 +14,6 @@
 _VARGROUPS+=		pkginstall
 _USER_VARS.pkginstall= \
 	FONTS_VERBOSE \
-	OCAML_FINDLIB_REGISTER_VERBOSE \
 	PKG_CREATE_USERGROUP \
 	PKG_CONFIG PKG_CONFIG_PERMS \
 	PKG_RCD_SCRIPTS \
@@ -449,30 +448,6 @@ _INSTALL_RCD_SCRIPTS=	# empty
 _INSTALL_RCD_SCRIPTS=	${RCD_SCRIPTS}
 .endif
 
-# OCAML_FINDLIB_REGISTER
-_INSTALL_OFR_FILE=	${_PKGINSTALL_DIR}/ocaml-findlib-register
-_INSTALL_UNPACK_TMPL+=		${_INSTALL_OFR_FILE}
-
-${_INSTALL_OFR_FILE}: ../../mk/pkginstall/ocaml-findlib-register
-	${RUN}${MKDIR} ${.TARGET:H}
-.if !empty(OCAML_FINDLIB_REGISTER:M[Yy][Ee][Ss])
-	${RUN}${SED} ${FILES_SUBST_SED} \
-		../../mk/pkginstall/ocaml-findlib-register > ${.TARGET}
-.else
-	${RUN}${RM} -f ${.TARGET}; \
-	${TOUCH} ${TOUCH_ARGS} ${.TARGET}
-.endif
-
-.PHONY: install-script-data-ocaml-findlib-register
-install-script-data: install-script-data-ocaml-findlib-register
-install-script-data-ocaml-findlib-register:
-.if !empty(OCAML_FINDLIB_REGISTER:M[Yy][Ee][Ss])
-	${RUN} \
-	cd ${PKG_DB_TMPDIR} && ${PKGSRC_SETENV} ${INSTALL_SCRIPTS_ENV} \
-	${_PKG_DEBUG_SCRIPT} ${INSTALL_FILE} ${PKGNAME} \
-		UNPACK +OCAML_FINDLIB_REGISTER
-.endif
-
 # PKG_SHELL contains the pathname of the shell that should be added or
 #	removed from the shell database, /etc/shells.  If a pathname
 #	is relative, then it is taken to be relative to ${PREFIX}.
@@ -804,6 +779,8 @@ _PKGINSTALL_TARGETS+=	release-pkginstall-lock
 
 .PHONY: pkginstall install-script-data
 pkginstall: ${_PKGINSTALL_TARGETS}
+
+install-script-data:	# do nothing
 
 .PHONY: acquire-pkginstall-lock release-pkginstall-lock
 acquire-pkginstall-lock: acquire-lock
