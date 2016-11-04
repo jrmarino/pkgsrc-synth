@@ -109,6 +109,9 @@ END {
    for (k = 0; k < num_SP; k++) {
       if (!used_SP[k]) { dump_SP(k) }
    }
+   for (k = 0; k < num_OFL; k++) {
+      if (!used_OFL[k]) { dump_OFL(k) }
+   }
 
    # Output from here forward doesn't mean a bad plist
    if (set_ldconfig) { print "@ldconfig" }

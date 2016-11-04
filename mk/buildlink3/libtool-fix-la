@@ -261,6 +261,10 @@ if $test -f $lafile; then
 						;;
 					-L${WRKSRC}|-L${WRKSRC}/*)
 						;;
+					-L*/.destdir/*/.buildlink/lib)
+						# skip private ncurses,
+						# readline, etc
+						;;
 					*)
 						case $L in
 						*"$i "*) ;;

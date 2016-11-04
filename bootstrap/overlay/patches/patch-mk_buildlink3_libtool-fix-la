@@ -1,0 +1,13 @@
+--- mk/buildlink3/libtool-fix-la.orig	2014-12-30 15:13:19 UTC
++++ mk/buildlink3/libtool-fix-la
+@@ -261,6 +261,10 @@ if $test -f $lafile; then
+ 						;;
+ 					-L${WRKSRC}|-L${WRKSRC}/*)
+ 						;;
++					-L*/.destdir/*/.buildlink/lib)
++						# skip private ncurses,
++						# readline, etc
++						;;
+ 					*)
+ 						case $L in
+ 						*"$i "*) ;;
