@@ -55,7 +55,11 @@ ${WRKDIR}/.created_fixed_dirs:
 	${RUN}${MKDIR} ${DESTDIR}${D}
 .endfor
 .for D in ${REQD_DIRS} ${REQD_DIRS_PERMS}
+.  if ${D:M/*}
+	${RUN}${MKDIR} ${DESTDIR}${D}
+.  else
 	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${D}
+.  endif
 .endfor
 .if ${PKG_SYSCONFSUBDIR:M*}
 .  if ${PKG_SYSCONFSUBDIR:M/*}
@@ -79,6 +83,7 @@ ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
 		-vRCD_SCRIPTS_EXAMPLEDIR="${RCD_SCRIPTS_EXAMPLEDIR}" \
 		-vPKG_SHELL="${PKG_SHELL}" \
 		-vSPECIAL_PERMS="${SPECIAL_PERMS}" \
+		-vOCAML_FINDLIB_DIRS="${OCAML_FINDLIB_DIRS}" \
 		-vLDCONFIG="${SET_LDCONFIG_KEYWORD}" \
 		-f  ${PKGSRCDIR}/mk/pkgformat/pkgng/transform_plist.awk \
 		${PLIST} > ${.TARGET}

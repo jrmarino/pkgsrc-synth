@@ -1,0 +1,24 @@
+# $NetBSD$
+#
+# OCAML_SITELIBDIR = lib/ocaml/site-lib
+# %1 OCAML_FINDLIB_DIR
+
+actions: []
+post-install: <<EOD
+  ldconf="%D/lib/ocaml/ld.conf"
+  sitedir="%D/lib/ocaml/site-lib/%1"
+  if [ ! -f "${ldconf}" ]; then
+    echo ${sitedir} > ${ldconf}
+  else
+    echo ${sitedir} | cat ${ldconf} - | sort -u > ${ldconf}.tmp
+    mv ${ldconf}.tmp ${ldconf}
+  if
+EOD
+post-deinstall: <<EOD
+  ldconf="%D/lib/ocaml/ld.conf"
+  sitedir="%D/lib/ocaml/site-lib/%1"
+  if [ -f "${ldconf}" ]; then
+    fgrep -v "${sitedir}" ${ldconf} > ${ldconf}.tmp
+    mv ${ldconf}.tmp ${ldconf}
+  fi
+EOD

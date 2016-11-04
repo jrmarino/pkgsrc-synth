@@ -12,6 +12,7 @@
 #  RCD_SCRIPTS_EXAMPLEDIR = default examples directory for rc scripts
 #  PKG_SHELL= single entry for @shell keyword
 #  SPECIAL_PERMS= space delimited list of perms per file
+#  OCAML_FINDLIB_DIRS= space delimited list of ocaml directories to register
 #  PREFIX= installation prefix
 #
 
@@ -39,6 +40,10 @@ BEGIN {
     split (SPECIAL_PERMS, SP);
     num_SP = length(SP) / 4;
     for (k = 0; k < num_SP; k++) used_SP[k] = 0;
+
+    split (OCAML_FINDLIB_DIRS, OFL);
+    num_OFL = length(OFL) / 4;
+    for (k = 0; k < num_OFL; k++) used_OFL[k] = 0;
 
     set_ldconfig = (LDCONFIG == "yes") ? 1 : 0;
 }
@@ -77,6 +82,11 @@ function dump_SHELL (k) {
 function dump_SP (k) {
    print "@(" SP[4*k+2] "," SP[4*k+3] "," SP[4*k+4] ") " SP[4*k+1];
    used_SP[k] = 1;
+}
+
+function dump_OFL (k) {
+   print "@ocaml-register " OFL[k+1];
+   used_OFL[k] = 1;
 }
 
 END {
@@ -119,7 +129,7 @@ function is_sample () {
     for (k = 0; k < num_RF; k++) {
        if (!used_RF[k]) {
           if (candidate == RF[2*k+1]) {
-             dump_RF;
+             dump_RF(k);
              return 1;
           }
        }
