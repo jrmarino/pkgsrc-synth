@@ -491,7 +491,7 @@ USE_TOOLS+=		type1inst:run
 .endif
 .endif
 
-.if !empty(FONTS_DIRS.x11:M*)
+.if !empty(FONTS_DIRS.x11:M*) || !empty(FONTS_DIRS.ttf:M*) || !empty(FONTS_DIRS.type1:M*)
 USE_TOOLS+=		mkfontdir:run
 .if ${X11_TYPE} == "modular"
 DEPENDS+=		encodings-[0-9]*:../../fonts/encodings
