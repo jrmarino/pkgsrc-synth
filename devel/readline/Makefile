@@ -24,5 +24,10 @@ CONFIGURE_ENV.NetBSD+=	bash_cv_wcwidth_broken=no
 BUILD_TARGET=		all-libtool examples
 INSTALL_TARGET=		install-libtool
 
+.if ${OPSYS} == "DragonFly"
+CONFIGURE_ARGS+=	--with-curses=yes
+.include "../../mk/curses.buildlink3.mk"
+.else
 .include "../../mk/termcap.buildlink3.mk"
+.endif
 .include "../../mk/bsd.pkg.mk"
