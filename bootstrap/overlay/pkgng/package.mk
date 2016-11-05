@@ -68,6 +68,13 @@ ${WRKDIR}/.created_fixed_dirs:
 	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${PKG_SYSCONFSUBDIR}
 .  endif
 .endif
+.for D in ${FONTS_DIRS.x11} ${FONTS_DIRS.ttf} ${FONTS_DIRS.type1}
+.  if ${D:M/*}
+	${RUN}${MKDIR} ${DESTDIR}${D}
+.  else
+	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${D}
+.  endif
+.endfor
 	${RUN}${TOUCH} ${.TARGET}
 
 ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
@@ -85,6 +92,10 @@ ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
 		-vSPECIAL_PERMS="${SPECIAL_PERMS}" \
 		-vOCAML_FINDLIB_DIRS="${OCAML_FINDLIB_DIRS}" \
 		-vLDCONFIG="${SET_LDCONFIG_KEYWORD}" \
+		-vX11_TYPE="${X11_TYPE}" \
+		-vFONTSDIR_X11="${FONTS_DIRS.x11}" \
+		-vFONTSDIR_TTF="${FONTS_DIRS.ttf}" \
+		-vFONTSDIR_TYPE1="${FONTS_DIRS.type1}" \
 		-f  ${PKGSRCDIR}/mk/pkgformat/pkgng/transform_plist.awk \
 		${PLIST} > ${.TARGET}
 	# Treat REQD_DIRS, MAKE_DIRS and OWN_DIRS identically

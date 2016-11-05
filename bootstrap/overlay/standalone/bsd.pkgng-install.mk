@@ -30,8 +30,6 @@ _PKG_VARS.pkginstall+=	PKG_UID.${u} PKG_GECOS.${u} PKG_HOME.${u} PKG_SHELL.${u}
 .for g in ${PKG_GROUPS}
 _PKG_VARS.pkginstall+=	PKG_GID.${g}
 .endfor
-_PKG_VARS.pkginstall+= \
-	FONTS_DIRS.ttf FONTS_DIRS.type1 FONTS_DIRS.x11 \
 _SYS_VARS.pkginstall= \
 	SETUID_ROOT_PERMS \
 	SETGID_GAMES_PERMS
@@ -477,84 +475,28 @@ FONTS_DIRS.ttf?=	# empty
 FONTS_DIRS.type1?=	# empty
 FONTS_DIRS.x11?=	# empty
 
-_INSTALL_FONTS_FILE=		${_PKGINSTALL_DIR}/fonts
-_INSTALL_FONTS_DATAFILE=	${_PKGINSTALL_DIR}/fonts-data
-_INSTALL_UNPACK_TMPL+=		${_INSTALL_FONTS_FILE}
-_INSTALL_DATA_TMPL+=		${_INSTALL_FONTS_DATAFILE}
-
-# Directories with TTF and Type1 fonts also need to run mkfontdir, so
-# list them as "x11" font directories as well.
-#
 .if !empty(FONTS_DIRS.ttf:M*)
 .if ${X11_TYPE} == "modular"
 USE_TOOLS+=		mkfontscale:run
-FILES_SUBST+=		TTF_INDEX_CMD=${TOOLS_PATH.mkfontscale:Q}
 .else
 USE_TOOLS+=		ttmkfdir:run
-FILES_SUBST+=		TTF_INDEX_CMD=${TOOLS_PATH.ttmkfdir:Q}
 .endif
-FONTS_DIRS.x11+=	${FONTS_DIRS.ttf}
 .endif
+
 .if !empty(FONTS_DIRS.type1:M*)
 .if ${X11_TYPE} == "modular"
 USE_TOOLS+=		mkfontscale:run
-FILES_SUBST+=		TYPE1_INDEX_CMD=${TOOLS_PATH.type1inst:Q}
-FILES_SUBST+=		TYPE1_POSTINDEX_CMD=
 .else
 USE_TOOLS+=		type1inst:run
-FILES_SUBST+=		TYPE1_INDEX_CMD=${TOOLS_PATH.type1inst:Q}
-FILES_SUBST+=		TYPE1_POSTINDEX_CMD="\$${RM} type1inst.log"
 .endif
-FONTS_DIRS.x11+=	${FONTS_DIRS.type1}
 .endif
+
 .if !empty(FONTS_DIRS.x11:M*)
 USE_TOOLS+=		mkfontdir:run
-FILES_SUBST+=		MKFONTDIR=${TOOLS_PATH.mkfontdir:Q}
-
 .if ${X11_TYPE} == "modular"
 DEPENDS+=		encodings-[0-9]*:../../fonts/encodings
 .endif
 .endif
-
-FILES_SUBST+=		X11_ENCODINGSDIR=${X11_ENCODINGSDIR:Q}
-
-${_INSTALL_FONTS_DATAFILE}:
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${FONTS_DIRS.ttf}; shift;				\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		dir="$$1"; shift;					\
-		dir=`strip_prefix "$$dir"`;				\
-		${ECHO} "# FONTS: $$dir ttf";				\
-	done
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${FONTS_DIRS.type1}; shift;			\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		dir="$$1"; shift;					\
-		dir=`strip_prefix "$$dir"`;				\
-		${ECHO} "# FONTS: $$dir type1";				\
-	done
-	${RUN}${_FUNC_STRIP_PREFIX};					\
-	set -- dummy ${FONTS_DIRS.x11}; shift;				\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		dir="$$1"; shift;					\
-		dir=`strip_prefix "$$dir"`;				\
-		${ECHO} "# FONTS: $$dir x11";				\
-	done
-
-${_INSTALL_FONTS_FILE}: ${_INSTALL_FONTS_DATAFILE}
-${_INSTALL_FONTS_FILE}: ../../mk/pkginstall/fonts
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	${SED} ${FILES_SUBST_SED} ../../mk/pkginstall/fonts > ${.TARGET}
-	${RUN}								\
-	if ${_ZERO_FILESIZE_P} ${_INSTALL_FONTS_DATAFILE}; then		\
-		${RM} -f ${.TARGET};					\
-		${TOUCH} ${TOUCH_ARGS} ${.TARGET};			\
-	fi
 
 # PKG_CREATE_USERGROUP indicates whether the INSTALL script should
 #	automatically add any needed users/groups to the system using

@@ -1,0 +1,86 @@
+# $NetBSD$
+#
+# Register fonts directory
+# Technique varies with type of X11 server
+#
+# %1 must be "modular_x11" or "native_x11"
+# %2 must be "ttf" or "type1" or "x11"
+# %3 is the fonts directory
+#
+
+actions: [dir (3)]
+arguments: true
+post-install: <<EOD
+  case "%3" in
+  /*) fontsdir="%3" ;;
+  *) fontsdir="%D/%3" ;;
+  esac
+  case "%1" in
+  modular_x11)
+    case "%2" in
+      ttf|type1)
+           mkfontscale ${fontsdir} 2>/dev/null || true
+	   ;;
+      x11) ;;
+    esac
+    mkfontdir -e "%D/share/fonts/X11/encodings" ${fontsdir} 2>/dev/null || true
+    ;;
+  native_x11)
+    case "%2" in
+      ttf)   ttmkfdir --font-dir ${fontsdir} 2>/dev/null || true
+	     ;;
+      type1) cd ${fontsdir} && type1inst 2>/dev/null || true
+             rm -f ${fontsdir}/type1inst.log 2>/dev/null || true
+             ;;
+      x11)   ;;
+    esac
+    mkfontdir ${fontsdir} 2>/dev/null || true
+    ;;
+  esac
+EOD
+post-deinstall: <<EOD
+  case "%3" in
+  /*) fontsdir="%3" ;;
+  *) fontsdir="%D/%3" ;;
+  esac
+  case "%1" in
+  modular_x11)
+    case "%2" in
+      ttf|type1)
+           mkfontscale ${fontsdir} 2>/dev/null || true
+	   ;;
+      x11) ;;
+    esac
+    mkfontdir -e "%D/share/fonts/X11/encodings" ${fontsdir} 2>/dev/null || true
+    ;;
+  native_x11)
+    case "%2" in
+      ttf)   ttmkfdir --font-dir ${fontsdir} 2>/dev/null || true
+	     ;;
+      type1) cd ${fontsdir} && type1inst -nolog --quiet 2>/dev/null
+	     if [ $? -ne 0 ]; then
+               rm -f ${fontsdir}/Fontmap*
+             fi
+             ;;
+      x11)   ;;
+    esac
+    mkfontdir ${fontsdir} 2>/dev/null || true
+    ;;
+  esac
+  # Remove fonts databases if there are no fonts in the directory.
+  # We filter out the encodings.dir, fonts.{dirs,scale}, and
+  # Fontmap database files from the directory listing.  Also remove
+  # the directory if it turns out to be empty.
+
+  if [ -e ${fontsdir}/fonts.dir -a "`stat -f '%%z' ${fontsdir}/fonts.dir 2>/dev/null`" = '2' ]; then
+    rm ${fontsdir}/fonts.dir
+  fi
+  if [ -e ${fontsdir}/fonts.scale -a "`stat -f '%%z' ${fontsdir}/fonts.scale 2>/dev/null`" = '2' ]; then
+    rm ${fontsdir}/fonts.scale
+  fi
+  if [ ! -e ${fontsdir}/fonts.dir -a ! -e ${fontsdir}/fonts.scale ]; then
+     if [ -e ${fontsdir}/encodings.dir ]; then
+        rm ${fontsdir}/encodings.dir
+     fi
+  fi
+EOD

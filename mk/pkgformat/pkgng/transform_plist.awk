@@ -13,6 +13,10 @@
 #  PKG_SHELL= single entry for @shell keyword
 #  SPECIAL_PERMS= space delimited list of perms per file
 #  OCAML_FINDLIB_DIRS= space delimited list of ocaml directories to register
+#  X11_TYPE= either "native" or "modular"
+#  FONTSDIR_X11= list of x11 font directories
+#  FONTSDIR_TTF= list of ttf font directories
+#  FONTSDIR_TYPE1= list of type1 font directories
 #  PREFIX= installation prefix
 #
 
@@ -45,7 +49,36 @@ BEGIN {
     num_OFL = length(OFL) / 4;
     for (k = 0; k < num_OFL; k++) used_OFL[k] = 0;
 
+    split (FONTSDIR_X11, FX11);
+    num_FX11 = length (FX11);
+    for (k = 0; k < num_FX11; k++) used_FX11[k] = 0;
+
+    split (FONTSDIR_TTF, FTTF);
+    num_FTTF = length (FTTF);
+    for (k = 0; k < num_FTTF; k++) {
+       used_FTTF[k] = 0;
+       # Eliminate duplicates in X11 type
+       for (j = 0; j < num_FX11; j++) {
+          if (FTTF[k+1] == FX11[j+1]) {
+             used_FX11[j] = 1;
+          }
+       }
+    }
+
+    split (FONTSDIR_TYPE1, FTY1);
+    num_FTY1 = length (FTY1);
+    for (k = 0; k < num_FTY1; k++) {
+       used_FTY1[k] = 0;
+       # Eliminate duplicates in X11 type
+       for (j = 0; j < num_FX11; j++) {
+          if (FTY1[k+1] == FX11[j+1]) {
+             used_FX11[j] = 1;
+          }
+       }
+    }
+
     set_ldconfig = (LDCONFIG == "yes") ? 1 : 0;
+    fontdir_type = (X11_TYPE == "modular") ? "modular_x11" : "native_x11";
 }
 
 function dump_CF (k) {
@@ -89,6 +122,22 @@ function dump_OFL (k) {
    used_OFL[k] = 1;
 }
 
+function dump_FX11 (k) {
+   print "@fontsdir " fontdir_type " x11   " FX11[k+1];
+   used_FX11[k] = 1;
+}
+
+function dump_FTTF (k) {
+   print "@fontsdir " fontdir_type " ttf   " FTTF[k+1];
+   used_FTTF[k] = 1;
+}
+
+
+function dump_FTY1 (k) {
+   print "@fontsdir " fontdir_type " type1 " FTY1[k+1];
+   used_FY1[k] = 1;
+}
+
 END {
    # Any output is produced in this section is indicative of a bad plist
    for (k = 0; k < num_CF; k++) {
@@ -111,6 +160,15 @@ END {
    }
    for (k = 0; k < num_OFL; k++) {
       if (!used_OFL[k]) { dump_OFL(k) }
+   }
+   for (k = 0; k < num_FTTF; k++) {
+      if (!used_FTTF[k]) { dump_FTTF(k) }
+   }
+   for (k = 0; k < num_FTY1; k++) {
+      if (!used_FTY1[k]) { dump_FTY1(k) }
+   }
+   for (k = 0; k < num_FX11; k++) {
+      if (!used_FX11[k]) { dump_FX11(k) }
    }
 
    # Output from here forward doesn't mean a bad plist
