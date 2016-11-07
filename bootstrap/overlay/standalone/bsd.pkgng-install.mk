@@ -5,15 +5,8 @@
 # framework, simply set the relevant variables to customize the install
 # scripts to the package.
 #
-# User-settable variables:
-#
-# FONTS_VERBOSE indicates whether the +FONTS scriptlet will output a message
-#	noting the actions taken if PKG_UPDATE_FONTS_DB is YES.  It is either
-#	YES or NO and defaults to YES for PKG_DEVELOPERs, otherwise NO.
-#
 _VARGROUPS+=		pkginstall
 _USER_VARS.pkginstall= \
-	FONTS_VERBOSE \
 	PKG_CREATE_USERGROUP \
 	PKG_CONFIG PKG_CONFIG_PERMS \
 	PKG_RCD_SCRIPTS \
@@ -34,20 +27,6 @@ _SYS_VARS.pkginstall= \
 	SETUID_ROOT_PERMS \
 	SETGID_GAMES_PERMS
 
-# The Solaris /bin/sh does not know the ${foo#bar} shell substitution.
-# This shell function serves a similar purpose, but is specialized on
-# stripping ${PREFIX}/ from a pathname.
-_FUNC_STRIP_PREFIX= \
-	strip_prefix() {						\
-	  ${AWK} 'END {							\
-	    plen = length(prefix);					\
-	      if (substr(s, 1, plen) == prefix) {			\
-	        s = substr(s, 1 + plen, length(s) - plen);		\
-	      }								\
-	      print s;							\
-	    }' s="$$1" prefix=${PREFIX:Q}/ /dev/null;			\
-	}
-
 _PKGINSTALL_DIR=	${WRKDIR}/.pkginstall
 
 # XXX This should not be duplicated from the install module, but we
@@ -61,7 +40,7 @@ PKG_DB_TMPDIR?=		${WRKDIR}/.pkgdb
 # point to additional script fragments.  These bits are included after
 # the main install/deinstall script fragments.
 #
-_HEADER_TMPL?=		${.CURDIR}/../../mk/pkginstall/header
+_HEADER_TMPL?=		${.CURDIR}/../../mk/pkginstall/header-pkgng
 HEADER_TEMPLATES?=	# empty
 .if exists(${PKGDIR}/HEADER) && \
     empty(HEADER_TEMPLATES:M${PKGDIR}/HEADER)
@@ -72,9 +51,6 @@ DEINSTALL_TEMPLATES?=	# empty
     empty(DEINSTALL_TEMPLATES:M${PKGDIR}/DEINSTALL)
 DEINSTALL_TEMPLATES+=	${PKGDIR}/DEINSTALL
 .endif
-_DEINSTALL_TMPL?=	${.CURDIR}/../../mk/pkginstall/deinstall
-_INSTALL_UNPACK_TMPL?=	# empty
-_INSTALL_TMPL?=		${.CURDIR}/../../mk/pkginstall/install
 INSTALL_TEMPLATES?=	# empty
 .if exists(${PKGDIR}/INSTALL) && \
     empty(INSTALL_TEMPLATES:M${PKGDIR}/INSTALL)
@@ -92,14 +68,10 @@ _FOOTER_TMPL?=		${.CURDIR}/../../mk/pkginstall/footer
 #
 _DEINSTALL_TEMPLATES=	${_HEADER_TMPL} ${HEADER_TEMPLATES}		\
 			${DEINSTALL_TEMPLATES}				\
-			${_DEINSTALL_TMPL}				\
 			${_FOOTER_TMPL}
 _INSTALL_TEMPLATES=	${_HEADER_TMPL} ${HEADER_TEMPLATES}		\
-			${_INSTALL_UNPACK_TMPL}				\
-			${_INSTALL_TMPL}				\
 			${INSTALL_TEMPLATES}				\
-			${_FOOTER_TMPL}					\
-			${_INSTALL_DATA_TMPL}				\
+			${_FOOTER_TMPL}
 
 _DEINSTALL_TEMPLATES_DFLT=	${_HEADER_TMPL}				\
 				${_DEINSTALL_TMPL}			\
@@ -124,7 +96,6 @@ FILES_SUBST+=		VARBASE=${VARBASE:Q}
 FILES_SUBST+=		PKG_SYSCONFBASE=${PKG_SYSCONFBASE:Q}
 FILES_SUBST+=		PKG_SYSCONFBASEDIR=${PKG_SYSCONFBASEDIR:Q}
 FILES_SUBST+=		PKG_SYSCONFDIR=${PKG_SYSCONFDIR:Q}
-FILES_SUBST+=		CONF_DEPENDS=${CONF_DEPENDS:C/:.*//:Q}
 FILES_SUBST+=		PKGBASE=${PKGBASE:Q}
 
 # PKG_USERS represents the users to create for the package.  It is a
@@ -221,8 +192,6 @@ _INSTALL_USERGROUPFUNCS_FILE?=	../../mk/pkginstall/usergroupfuncs.${OPSYS}
 _INSTALL_USERGROUPFUNCS_FILE?=	../../mk/pkginstall/usergroupfuncs
 .endif
 _INSTALL_USERGROUP_DATAFILE=	${_PKGINSTALL_DIR}/usergroup-data
-_INSTALL_UNPACK_TMPL+=		${_INSTALL_USERGROUP_FILE}
-_INSTALL_DATA_TMPL+=		${_INSTALL_USERGROUP_DATAFILE}
 
 .for _group_ in ${PKG_GROUPS}
 .  if defined(USERGROUP_PHASE)
@@ -435,9 +404,6 @@ RCD_SCRIPTS?=		# empty
 RCD_SCRIPTS_MODE?=	0755
 RCD_SCRIPTS_EXAMPLEDIR=	share/examples/rc.d
 RCD_SCRIPTS_SHELL?=	${SH}
-FILES_SUBST+=		RCD_SCRIPTS_SHELL=${RCD_SCRIPTS_SHELL:Q}
-MESSAGE_SUBST+=		RCD_SCRIPTS_DIR=${RCD_SCRIPTS_DIR}
-MESSAGE_SUBST+=		RCD_SCRIPTS_EXAMPLEDIR=${RCD_SCRIPTS_EXAMPLEDIR}
 
 # Only generate init scripts if we are using rc.d
 _INSTALL_RCD_SCRIPTS=	# empty
@@ -547,8 +513,6 @@ FILES_SUBST+=		PKG_CONFIG_PERMS=${PKG_CONFIG_PERMS:Q}
 FILES_SUBST+=		PKG_RCD_SCRIPTS=${PKG_RCD_SCRIPTS:Q}
 FILES_SUBST+=		PKG_REGISTER_SHELLS=${PKG_REGISTER_SHELLS:Q}
 FILES_SUBST+=		PKG_UPDATE_FONTS_DB=${PKG_UPDATE_FONTS_DB:Q}
-FILES_SUBST+=		FONTS_VERBOSE=${FONTS_VERBOSE:Q}
-FILES_SUBST+=		OCAML_FINDLIB_REGISTER_VERBOSE=${OCAML_FINDLIB_REGISTER_VERBOSE:Q}
 
 # Substitute for various programs used in the DEINSTALL/INSTALL scripts and
 # in the rc.d scripts.
@@ -570,7 +534,6 @@ FILES_SUBST+=		FALSE=${FALSE:Q}
 FILES_SUBST+=		FIND=${FIND:Q}
 FILES_SUBST+=		GREP=${GREP:Q}
 FILES_SUBST+=		GROUPADD=${GROUPADD:Q}
-FILES_SUBST+=		GTAR=${GTAR:Q}
 FILES_SUBST+=		HEAD=${HEAD:Q}
 FILES_SUBST+=		ID=${ID:Q}
 FILES_SUBST+=		INSTALL_INFO=${INSTALL_INFO:Q}
@@ -579,8 +542,6 @@ FILES_SUBST+=		LN=${LN:Q}
 FILES_SUBST+=		LS=${LS:Q}
 FILES_SUBST+=		MKDIR=${MKDIR:Q}
 FILES_SUBST+=		MV=${MV:Q}
-FILES_SUBST+=		OCAML_FINDLIB_DIRS=${OCAML_FINDLIB_DIRS:Q}
-FILES_SUBST+=		OCAML_SITELIBDIR=${OCAML_SITELIBDIR:Q}
 FILES_SUBST+=		PERL5=${PERL5:Q}
 FILES_SUBST+=		PKG_ADMIN=${PKG_ADMIN_CMD:Q}
 FILES_SUBST+=		PKG_INFO=${PKG_INFO_CMD:Q}
@@ -601,12 +562,6 @@ FILES_SUBST+=		USERADD=${USERADD:Q}
 FILES_SUBST+=		XARGS=${XARGS:Q}
 
 FILES_SUBST_SED=	${FILES_SUBST:S/=/@!/:S/$/!g/:S/^/ -e s!@/}
-
-PKG_REFCOUNT_DBDIR?=	${PKG_DBDIR}.refcount
-
-INSTALL_SCRIPTS_ENV=	PKG_PREFIX=${PREFIX}
-INSTALL_SCRIPTS_ENV+=	PKG_METADATA_DIR=${_PKG_DBDIR}/${PKGNAME}
-INSTALL_SCRIPTS_ENV+=	PKG_REFCOUNT_DBDIR=${PKG_REFCOUNT_DBDIR}
 
 DEINSTALL_FILE=		${PKG_DB_TMPDIR}/+DEINSTALL
 INSTALL_FILE=		${PKG_DB_TMPDIR}/+INSTALL
