@@ -1,0 +1,221 @@
+#!/bin/sh
+# $NetBSD$
+#
+
+set -e
+
+validate_env() {
+	local envfault
+	for i ; do
+		if ! (eval ": \${${i}?}" ) >/dev/null; then
+			envfault="${envfault}${envfault:+" "}${i}"
+		fi
+	done
+	if [ -n "${envfault}" ]; then
+		echo "Environment variable ${envfault} undefined. Aborting." \
+		| fmt >&2
+		exit 1
+	fi
+}
+
+validate_env dp_ECHO_MSG dp_GROUPS_BLACKLIST dp_USERS_BLACKLIST \
+	dp_OPSYS dp_UG_DEINSTALL dp_UG_INSTALL dp_DFLT_SHELL dp_DFLT_HOME
+
+[ -n "${DEBUG_MK_SCRIPTS_DO_USERS_GROUPS}" ] && set -x
+
+set -u
+
+# Argument 1 is list in format <user name>:<user id>:<user desc>:<home dir>:<shell>
+#                              (everything other than user name by be blank)
+# Argument 2 is list in format <group name>:<group id> (latter may be blank)
+
+USERS=$1
+GROUPS=$2
+
+rm -f "${dp_UG_INSTALL}" "${dp_UG_DEINSTALL}" || :
+
+if [ -n "${GROUPS}" ]; then
+    ${dp_ECHO_MSG} "===> Creating groups."
+    echo "echo \"===> Creating groups.\"" >> "${dp_UG_INSTALL}"
+    for group_desc in ${GROUPS}; do
+	o_IFS=${IFS}
+	IFS=":"
+	# _bgpd:130
+	set -- ${group_desc}
+	group=${1}
+	gid=${2}
+
+	case ${gid} in
+		"") extra= ;;
+		*)  extra=" with gid '${gid}'" ;;
+	esac
+	case ${dp_OPSYS} in
+	    FreeBSD|DragonFly)
+		chk_cmd="/usr/sbin/pw groupshow ${group}"
+		case ${gid} in
+		"") add_cmd="/usr/sbin/pw groupadd ${group}" ;;
+		*)  add_cmd="/usr/sbin/pw groupadd ${group} -g ${gid}" ;;
+		esac
+		;;
+	    NetBSD|OpenBSD|MirBSD|Bitrig)
+		chk_cmd="/usr/sbin/groupinfo -e ${group}"
+		case ${gid}
+		"") add_cmd="/usr/sbin/groupadd groupadd ${group}" ;;
+		*)  add_cmd="/usr/sbin/groupadd -g ${gid} ${group}" ;;
+		esac
+		;;
+	    Linux|SunOS)
+		chk_cmd="/usr/bin/getent group ${group}"
+		case ${gid}
+		"") add_cmd="/usr/sbin/groupadd groupadd ${group}" ;;
+		*)  add_cmd="/usr/sbin/groupadd -g ${gid} ${group}" ;;
+		esac
+		;;
+	    *) # pkg(8) not confirmed to build on any other systems
+	       # requires complex generic check, leave for now
+		;;
+	esac
+	cat >> "${dp_UG_INSTALL}" <<-eot
+	if ! ${chk_cmd} >/dev/null 2>&1; then
+	  echo "Creating group '$group'${extra}"
+	  ${add_cmd}
+	else
+	  echo "Using existing group '$group'."
+	fi
+	eot
+	IFS=${o_IFS}
+    done
+fi
+
+if [ -n "${USERS}" ]; then
+    ${dp_ECHO_MSG} "===> Creating users"
+    echo "echo \"===> Creating users\"" >> "${dp_UG_INSTALL}"
+
+    for user_desc in ${USERS}; do
+	o_IFS=${IFS}
+	IFS=":"
+	# _bgpd:130:130:BGP Daemon:/var/empty:/sbin/nologin
+	set -- ${user_desc}
+	user=${1}	# required
+	group=${2}	# required
+	uid=${3}
+	gecos=${4}
+	homedir=${5}
+	shell=${6}
+
+	[ -z "${homedir}" ] && homedir="${dp_DFLT_HOME}"
+	[ -z "${shell}" ]   && shell="${dp_DFLT_SHELL}"
+	[ -z "${gecos}" ]   && gecos="${user} user"
+
+	case ${dp_OPSYS} in
+	    FreeBSD|DragonFly)
+		chk_cmd="/usr/sbin/pw usershow ${user}"
+		add_cmd="/usr/sbin/pw useradd ${user} -g ${group} \
+			-c \"${gecos}\" \
+			-d \"${homedir}\" \
+			-s \"${shell}\""
+		[ -n "${uid}" ] && add_cmd="${add_cmd} -u ${uid}"
+		;;
+	    NetBSD|OpenBSD|MirBSD|Bitrig)
+		chk_cmd="/usr/sbin/userinfo -e ${user}"
+		add_cmd="/usr/sbin/useradd ${user} -g ${group} \
+			-c \"${gecos}\" \
+			-d \"${homedir}\" \
+			-s \"${shell}\""
+		[ -n "${uid}" ] && add_cmd="${add_cmd} -u ${uid}"
+		;;
+	    Linux|SunOS)
+		chk_cmd="/usr/bin/getent passwd ${user}"
+		add_cmd="/usr/sbin/useradd ${user} -g ${group} \
+			-c \"${gecos}\" \
+			-d \"${homedir}\" \
+			-s \"${shell}\""
+		[ -n "${uid}" ] && add_cmd="${add_cmd} -u ${uid}"
+		;;
+	    *) # pkg(8) not confirmed to build on any other systems
+	       # requires complex generic check, leave for now
+		;;
+	esac
+	cat >> "${dp_UG_INSTALL}" <<-eot
+	if ! ${chk_cmd} >/dev/null 2>&1; then
+	  echo "Creating user '$user'"
+	  ${add_cmd}
+	else
+	  echo "Using existing user '$user'."
+	fi
+	eot
+	IFS=${o_IFS}
+    done
+fi
+
+if [ -n "${USERS}" ]; then
+	for user in ${USERS}; do
+	    if ! echo "${dp_USERS_BLACKLIST}" | grep -qw "${user}"; then
+		case ${dp_OPSYS} in
+		    FreeBSD|DragonFly)
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			if /usr/sbin/pw usershow ${user} >/dev/null 2>&1; then
+			  echo "==> You should manually remove the \"${user}\" user."
+			fi
+			eot
+			;;
+		    NetBSD|OpenBSD|MirBSD|Bitrig)
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			if /usr/sbin/userinfo -e ${user} >/dev/null 2>&1; then
+			  echo "==> You should manually remove the \"${user}\" user."
+			fi
+			eot
+			;;
+		    Linux|SunOS)
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			if /usr/bin/getent passwd ${user} >/dev/null 2>&1; then
+			  echo "==> You should manually remove the \"${user}\" user."
+			fi
+			eot
+			;;
+		    *) # pkg(8) not confirmed to build on any other systems
+		       # so skip user checks for now
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			echo "==> \"${user}\" user existence check unsupported on ${dp_OPSYS}."
+			eot
+			;;
+		esac
+	    fi
+	done
+fi
+
+if [ -n "${GROUPS}" ]; then
+	for group in ${GROUPS}; do
+	    if ! echo "${dp_GROUPS_BLACKLIST}" | grep -qw "${group}"; then
+		case ${dp_OPSYS} in
+		    FreeBSD|DragonFly)
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			if /usr/sbin/pw groupshow ${group} >/dev/null 2>&1; then
+			  echo "==> You should manually remove the \"${group}\" group "
+			fi
+			eot
+			;;
+		    NetBSD|OpenBSD|MirBSD|Bitrig)
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			if /usr/sbin/groupinfo -e ${group} >/dev/null 2>&1; then
+			  echo "==> You should manually remove the \"${group}\" group "
+			fi
+			eot
+			;;
+		    Linux|SunOS)
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			if /usr/bin/getent group ${group} >/dev/null 2>&1; then
+			  echo "==> You should manually remove the \"${group}\" group "
+			fi
+			eot
+			;;
+		    *) # pkg(8) not confirmed to build on any other systems
+		       # so skip group checks for now
+			cat >> "${dp_UG_DEINSTALL}" <<-eot
+			echo "==> \"${group}\" group existence check unsupported on ${dp_OPSYS}."
+			eot
+			;;
+		esac
+	    fi
+	done
+fi
