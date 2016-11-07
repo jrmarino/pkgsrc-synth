@@ -34,57 +34,35 @@ _PKGINSTALL_DIR=	${WRKDIR}/.pkginstall
 # XXX
 PKG_DB_TMPDIR?=		${WRKDIR}/.pkgdb
 
-# These are the template scripts for the INSTALL/DEINSTALL scripts.
-# Packages may do additional work in the INSTALL/DEINSTALL scripts by
-# overriding the variables DEINSTALL_TEMPLATES and INSTALL_TEMPLATES to
-# point to additional script fragments.  These bits are included after
-# the main install/deinstall script fragments.
+# If INSTALL template file exists in the PKGDIR directory, the +INSTALL
+# script will be created.  Likewise, the presence of a DEINSTALL template
+# file in the PKGDIR directory leads to the creation of the +DEINSTALL
+# script for pkg(8).
 #
-_HEADER_TMPL?=		${.CURDIR}/../../mk/pkginstall/header-pkgng
-HEADER_TEMPLATES?=	# empty
-.if exists(${PKGDIR}/HEADER) && \
-    empty(HEADER_TEMPLATES:M${PKGDIR}/HEADER)
-HEADER_TEMPLATES+=	${PKGDIR}/HEADER
-.endif
-DEINSTALL_TEMPLATES?=	# empty
-.if exists(${PKGDIR}/DEINSTALL) && \
-    empty(DEINSTALL_TEMPLATES:M${PKGDIR}/DEINSTALL)
-DEINSTALL_TEMPLATES+=	${PKGDIR}/DEINSTALL
-.endif
-INSTALL_TEMPLATES?=	# empty
-.if exists(${PKGDIR}/INSTALL) && \
-    empty(INSTALL_TEMPLATES:M${PKGDIR}/INSTALL)
-INSTALL_TEMPLATES+=	${PKGDIR}/INSTALL
-.endif
-_INSTALL_DATA_TMPL?=	# empty
-_FOOTER_TMPL?=		${.CURDIR}/../../mk/pkginstall/footer
+_HEADER_TMPL=		${.CURDIR}/../../mk/pkginstall/header-pkgng
+_FOOTER_TMPL=		${.CURDIR}/../../mk/pkginstall/footer
+DEINSTALL_FILE=		# none
+INSTALL_FILE=		# none
 
-# _DEINSTALL_TEMPLATES and _INSTALL_TEMPLATES are the list of source
-#	files that are concatenated to form the DEINSTALL/INSTALL
-#	scripts.
-#
-# _DEINSTALL_TEMPLATES_DFLT and _INSTALL_TEMPLATES_DFLT are the list of
-#	template files minus any user-supplied templates.
-#
-_DEINSTALL_TEMPLATES=	${_HEADER_TMPL} ${HEADER_TEMPLATES}		\
-			${DEINSTALL_TEMPLATES}				\
-			${_FOOTER_TMPL}
-_INSTALL_TEMPLATES=	${_HEADER_TMPL} ${HEADER_TEMPLATES}		\
-			${INSTALL_TEMPLATES}				\
-			${_FOOTER_TMPL}
+.if exists(${PKGDIR}/DEINSTALL)
+DEINSTALL_FILE=		${PKG_DB_TMPDIR}/+DEINSTALL
+DEINSTALL_TEMPLATES=	${PKGDIR}/DEINSTALL
+.endif
 
-_DEINSTALL_TEMPLATES_DFLT=	${_HEADER_TMPL}				\
-				${_DEINSTALL_TMPL}			\
-				${_FOOTER_TMPL}
-_INSTALL_TEMPLATES_DFLT=	${_HEADER_TMPL}				\
-				${_INSTALL_TMPL}			\
-				${_FOOTER_TMPL}
+.if exists(${PKGDIR}/INSTALL)
+INSTALL_FILE=		${PKG_DB_TMPDIR}/+INSTALL
+INSTALL_TEMPLATES=	${PKGDIR}/INSTALL
+.endif
 
 # These are the list of source files that are concatenated to form the
 # INSTALL/DEINSTALL scripts.
 #
-DEINSTALL_SRC?=		${_DEINSTALL_TEMPLATES}
-INSTALL_SRC?=		${_INSTALL_TEMPLATES}
+DEINSTALL_SRC=		${_HEADER_TMPL}		\
+			${DEINSTALL_TEMPLATES}	\
+			${_FOOTER_TMPL}
+INSTALL_SRC=		${_HEADER_TMPL}		\
+			${INSTALL_TEMPLATES}	\
+			${_FOOTER_TMPL}
 
 # FILES_SUBST lists what to substitute in DEINSTALL/INSTALL scripts and in
 # rc.d scripts.
@@ -563,46 +541,10 @@ FILES_SUBST+=		XARGS=${XARGS:Q}
 
 FILES_SUBST_SED=	${FILES_SUBST:S/=/@!/:S/$/!g/:S/^/ -e s!@/}
 
-DEINSTALL_FILE=		${PKG_DB_TMPDIR}/+DEINSTALL
-INSTALL_FILE=		${PKG_DB_TMPDIR}/+INSTALL
-_DEINSTALL_FILE=	${_PKGINSTALL_DIR}/DEINSTALL
-_INSTALL_FILE=		${_PKGINSTALL_DIR}/INSTALL
-_DEINSTALL_FILE_DFLT=	${_PKGINSTALL_DIR}/DEINSTALL.default
-_INSTALL_FILE_DFLT=	${_PKGINSTALL_DIR}/INSTALL.default
-
 .PHONY: generate-install-scripts
-generate-install-scripts:						\
-		${_DEINSTALL_FILE} ${_INSTALL_FILE}			\
-		${_DEINSTALL_FILE_DFLT} ${_INSTALL_FILE_DFLT}
-.if !exists(${DEINSTALL_FILE}) || !exists(${INSTALL_FILE})
-	${RUN}${MKDIR} ${INSTALL_FILE:H}
-	${RUN}${MKDIR} ${DEINSTALL_FILE:H}
-	${RUN}								\
-	if ${CMP} -s ${_INSTALL_FILE_DFLT:Q} ${_INSTALL_FILE:Q}; then	\
-		${TRUE};						\
-	else								\
-		${CP} -f ${_INSTALL_FILE} ${INSTALL_FILE};		\
-		${CP} -f ${_DEINSTALL_FILE} ${DEINSTALL_FILE};		\
-	fi
-	${RUN}								\
-	if ${CMP} -s ${_DEINSTALL_FILE_DFLT:Q} ${_DEINSTALL_FILE:Q}; then \
-		${TRUE};						\
-	else								\
-		${CP} -f ${_DEINSTALL_FILE} ${DEINSTALL_FILE};		\
-	fi
-.endif
+generate-install-scripts: ${DEINSTALL_FILE} ${INSTALL_FILE}
 
-${_DEINSTALL_FILE_DFLT}: ${_DEINSTALL_TEMPLATES_DFLT}
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}${CAT} ${.ALLSRC} | ${SED} ${FILES_SUBST_SED} > ${.TARGET}
-	${RUN}${CHMOD} +x ${.TARGET}
-
-${_INSTALL_FILE_DFLT}: ${_INSTALL_TEMPLATES_DFLT}
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}${CAT} ${.ALLSRC} | ${SED} ${FILES_SUBST_SED} > ${.TARGET}
-	${RUN}${CHMOD} +x ${.TARGET}
-
-${_DEINSTALL_FILE}: ${DEINSTALL_SRC}
+${DEINSTALL_FILE}: ${DEINSTALL_SRC}
 	${RUN}${MKDIR} ${.TARGET:H}
 	${RUN}								\
 	exec 1>>${.TARGET};						\
@@ -613,7 +555,7 @@ ${_DEINSTALL_FILE}: ${DEINSTALL_SRC}
 	esac
 	${RUN}${CHMOD} +x ${.TARGET}
 
-${_INSTALL_FILE}: ${INSTALL_SRC}
+${INSTALL_FILE}: ${INSTALL_SRC}
 	${RUN}${MKDIR} ${.TARGET:H}
 	${RUN}								\
 	exec 1>>${.TARGET};						\
