@@ -7,7 +7,6 @@
 #
 _VARGROUPS+=		pkginstall
 _PKG_VARS.pkginstall= \
-	FILES_SUBST \
 	PKG_USERS PKG_GROUPS USERGROUP_PHASE
 .for u in ${PKG_USERS}
 _PKG_VARS.pkginstall+=	PKG_UID.${u} PKG_GECOS.${u} PKG_HOME.${u} PKG_SHELL.${u}
@@ -54,17 +53,6 @@ INSTALL_SRC=		${_HEADER_TMPL}		\
 			${INSTALL_TEMPLATES}	\
 			${_FOOTER_TMPL}
 
-# FILES_SUBST lists what to substitute in DEINSTALL/INSTALL scripts and in
-# rc.d scripts.
-#
-FILES_SUBST+=		PREFIX=${PREFIX:Q}
-FILES_SUBST+=		LOCALBASE=${LOCALBASE:Q}
-FILES_SUBST+=		X11BASE=${X11BASE:Q}
-FILES_SUBST+=		VARBASE=${VARBASE:Q}
-FILES_SUBST+=		PKG_SYSCONFBASE=${PKG_SYSCONFBASE:Q}
-FILES_SUBST+=		PKG_SYSCONFBASEDIR=${PKG_SYSCONFBASEDIR:Q}
-FILES_SUBST+=		PKG_SYSCONFDIR=${PKG_SYSCONFDIR:Q}
-FILES_SUBST+=		PKGBASE=${PKGBASE:Q}
 
 # PKG_USERS represents the users to create for the package.  It is a
 #	space-separated list of elements of the form
@@ -343,78 +331,79 @@ DEPENDS+=		encodings-[0-9]*:../../fonts/encodings
 .endif
 .endif
 
-# Substitute for various programs used in the DEINSTALL/INSTALL scripts and
-# in the rc.d scripts.
-#
-FILES_SUBST+=		AWK=${AWK:Q}
-FILES_SUBST+=		BASENAME=${BASENAME:Q}
-FILES_SUBST+=		CAT=${CAT:Q}
-FILES_SUBST+=		CHGRP=${CHGRP:Q}
-FILES_SUBST+=		CHMOD=${CHMOD:Q}
-FILES_SUBST+=		CHOWN=${CHOWN:Q}
-FILES_SUBST+=		CMP=${CMP:Q}
-FILES_SUBST+=		CP=${CP:Q}
-FILES_SUBST+=		DIRNAME=${DIRNAME:Q}
-FILES_SUBST+=		ECHO=${ECHO:Q}
-FILES_SUBST+=		ECHO_N=${ECHO_N:Q}
-FILES_SUBST+=		EGREP=${EGREP:Q}
-FILES_SUBST+=		EXPR=${EXPR:Q}
-FILES_SUBST+=		FALSE=${FALSE:Q}
-FILES_SUBST+=		FIND=${FIND:Q}
-FILES_SUBST+=		GREP=${GREP:Q}
-FILES_SUBST+=		GROUPADD=${GROUPADD:Q}
-FILES_SUBST+=		HEAD=${HEAD:Q}
-FILES_SUBST+=		ID=${ID:Q}
-FILES_SUBST+=		INSTALL_INFO=${INSTALL_INFO:Q}
-FILES_SUBST+=		LINKFARM=${LINKFARM:Q}
-FILES_SUBST+=		LN=${LN:Q}
-FILES_SUBST+=		LS=${LS:Q}
-FILES_SUBST+=		MKDIR=${MKDIR:Q}
-FILES_SUBST+=		MV=${MV:Q}
-FILES_SUBST+=		PERL5=${PERL5:Q}
-FILES_SUBST+=		PKG_ADMIN=${PKG_ADMIN_CMD:Q}
-FILES_SUBST+=		PKG_INFO=${PKG_INFO_CMD:Q}
-FILES_SUBST+=		PW=${PW:Q}
-FILES_SUBST+=		PWD_CMD=${PWD_CMD:Q}
-FILES_SUBST+=		RM=${RM:Q}
-FILES_SUBST+=		RMDIR=${RMDIR:Q}
-FILES_SUBST+=		SED=${SED:Q}
-FILES_SUBST+=		SETENV=${SETENV:Q}
-FILES_SUBST+=		SH=${SH:Q}
-FILES_SUBST+=		SORT=${SORT:Q}
-FILES_SUBST+=		SU=${SU:Q}
-FILES_SUBST+=		TEST=${TEST:Q}
-FILES_SUBST+=		TOUCH=${TOUCH:Q}
-FILES_SUBST+=		TR=${TR:Q}
-FILES_SUBST+=		TRUE=${TRUE:Q}
-FILES_SUBST+=		USERADD=${USERADD:Q}
-FILES_SUBST+=		XARGS=${XARGS:Q}
+# Awk command to tailor commands based on script requirements
+
+TAILOR_COMMAND=	${AWK} -f ${PKGDIR:H:H}/mk/scripts/commands_needed.awk \
+		-vAWK="${AWK}" \
+		-vBASENAME="${BASENAME}" \
+		-vCAT="${CAT}" \
+		-vCHGRP="${CHGRP}" \
+		-vCHMOD="${CHMOD}" \
+		-vCHOWN="${CHOWN}" \
+		-vCMP="${CMP}" \
+		-vCP="${CP}" \
+		-vDIRNAME="${DIRNAME}" \
+		-vECHO="${ECHO}" \
+		-vECHO_N="${ECHO_N}" \
+		-vEGREP="${EGREP}" \
+		-vEXPR="${EXPR}" \
+		-vFALSE="${FALSE}" \
+		-vFIND="${FIND}" \
+		-vGREP="${GREP}" \
+		-vHEAD="${HEAD}" \
+		-vID="${ID}" \
+		-vLN="${LN}" \
+		-vLS="${LS}" \
+		-vMKDIR="${MKDIR}" \
+		-vMV="${MV}" \
+		-vPERL5="${PERL5}" \
+		-vPKG_ADMIN="${PKG_ADMIN_CMD}" \
+		-vPKG_INFO="${PKG_INFO_CMD}" \
+		-vPW="${PW}" \
+		-vPWD_CMD="${PWD_CMD}" \
+		-vRM="${RM}" \
+		-vRMDIR="${RMDIR}" \
+		-vSED="${SED}" \
+		-vSETENV="${SETENV}" \
+		-vSH="${SH}" \
+		-vSORT="${SORT}" \
+		-vSU="${SU}" \
+		-vTEST="${TEST}" \
+		-vTOUCH="${TOUCH}" \
+		-vTR="${TR}" \
+		-vTRUE="${TRUE}" \
+		-vXARGS="${XARGS} " \
+		-vPREFIX="${PREFIX}" \
+		-vLOCALBASE="${LOCALBASE}" \
+		-vX11BASE="${X11BASE}" \
+		-vVARBASE="${VARBASE}" \
+		-vPKG_SYSCONFBASE="${PKG_SYSCONFBASE}" \
+		-vPKG_SYSCONFBASEDIR="${PKG_SYSCONFBASEDIR}" \
+		-vPKG_SYSCONFDIR="${PKG_SYSCONFDIR}" \
+		-vPKGBASE="${PKGBASE}"
+
+# We still need to support FILES_SUBST from the makefiles
 
 FILES_SUBST_SED=	${FILES_SUBST:S/=/@!/:S/$/!g/:S/^/ -e s!@/}
+CVSID_SED=		'/$$NetBSD/d'
 
 .PHONY: generate-install-scripts
 generate-install-scripts: ${DEINSTALL_FILE} ${INSTALL_FILE}
 
 ${DEINSTALL_FILE}: ${DEINSTALL_SRC}
 	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	exec 1>>${.TARGET};						\
-	case ${.ALLSRC:Q}"" in						\
-	"")	${ECHO} "#!${SH}" ;					\
-		${ECHO} "exit 0" ;;					\
-	*)	${CAT} ${.ALLSRC} | ${SED} ${FILES_SUBST_SED} ;;	\
-	esac
+	${RUN}${CAT} ${_HEADER_TMPL} > ${.TARGET}
+	${RUN}${TAILOR_COMMAND} ${DEINSTALL_TEMPLATES} >> ${.TARGET}
+	${RUN}${SED} ${FILES_SUBST_SED} ${DEINSTALL_TEMPLATES} >> ${.TARGET}
+	${RUN}${SED} ${CVSID_SED} ${_FOOTER_TMPL} >> ${.TARGET}
 	${RUN}${CHMOD} +x ${.TARGET}
 
 ${INSTALL_FILE}: ${INSTALL_SRC}
 	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	exec 1>>${.TARGET};						\
-	case ${.ALLSRC:Q}"" in						\
-	"")	${ECHO} "#!${SH}" ;					\
-		${ECHO} "exit 0" ;;					\
-	*)	${CAT} ${.ALLSRC} | ${SED} ${FILES_SUBST_SED} ;;	\
-	esac
+	${RUN}${CAT} ${_HEADER_TMPL} > ${.TARGET}
+	${RUN}${TAILOR_COMMAND} ${INSTALL_TEMPLATES} >> ${.TARGET}
+	${RUN}${SED} ${FILES_SUBST_SED} ${INSTALL_TEMPLATES} >> ${.TARGET}
+	${RUN}${SED} ${CVSID_SED} ${_FOOTER_TMPL} >> ${.TARGET}
 	${RUN}${CHMOD} +x ${.TARGET}
 
 # rc.d scripts are automatically generated and installed into the rc.d
@@ -424,8 +413,8 @@ ${INSTALL_FILE}: ${INSTALL_SRC}
 # RCD_SCRIPTS			lists the basenames of the rc.d scripts
 #
 # RCD_SCRIPT_SRC.<script>	the source file for <script>; this will
-#				be run through FILES_SUBST to generate
-#				the rc.d script (defaults to
+#				be run through commands_needed awk script
+#                               to generate the rc.d script (defaults to
 #				${FILESDIR}/<script>.sh)
 #
 # If the source rc.d script is not present, then the automatic handling
@@ -447,7 +436,8 @@ generate-rcd-scripts: ${RCD_SCRIPT_WRK.${_script_}}
 ${RCD_SCRIPT_WRK.${_script_}}: ${RCD_SCRIPT_SRC.${_script_}}
 	@${STEP_MSG} "Creating ${.TARGET}"
 	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}${CAT} ${.ALLSRC} | ${SED} ${FILES_SUBST_SED} > ${.TARGET}
+	${RUN}${CAT} ${.ALLSRC} | ${SED} ${FILES_SUBST_SED} | \
+		${TAILOR_COMMAND} -vMODE="replace" > ${.TARGET}
 	${RUN}${CHMOD} +x ${.TARGET}
 
 install-rcd-scripts: install-rcd-${_script_}

@@ -181,7 +181,7 @@ function is_sample () {
 
     for (k = 0; k < num_CF; k++) {
        if (!used_CF[k]) {
-          if (candidate == CF[2*k+1]) {
+          if (candidate == CF[2*k+1] || $1 == CF[2*k+1]) {
              dump_CF(k);
              return 1;
           }

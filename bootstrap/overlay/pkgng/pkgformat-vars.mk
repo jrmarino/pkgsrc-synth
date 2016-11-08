@@ -17,12 +17,13 @@ USE_TOOLS+=	mail
 _PKG_DBDIR=		${_CROSS_DESTDIR}${PKG_DBDIR}
 _HOST_PKG_DBDIR=	${HOST_PKG_DBDIR:U${PKG_DBDIR}}
 
-PKG_CMD?=		${PKG_TOOLS_BIN}/pkg
-PKG_ADD_CMD?=		${PKG_CMD} add
-PKG_CREATE_CMD?=	${PKG_CMD} create
-PKG_DELETE_CMD?=	${PKG_CMD} delete
-PKG_INFO_CMD?=		${PKG_CMD} info
+PKG_CMD=		${PKG_TOOLS_BIN}/pkg
+PKG_ADD_CMD=		${PKG_CMD} add
+PKG_CREATE_CMD=		${PKG_CMD} create
+PKG_DELETE_CMD=		${PKG_CMD} delete
+PKG_INFO_CMD=		${PKG_CMD} info
 PKG_AUDIT_CMD=		${PKG_CMD} audit
+PKG_ADMIN_CMD=		${PKG_TOOLS_BIN}/pkgng_admin
 
 # This is the package database directory that pkg(8) is configured to use
 PKG_DBDIR!=		${PKG_CMD} config PKG_DBDIR
@@ -42,7 +43,7 @@ PKG_ADD?=		${SET_DBDIR} ${PKG_ADD_CMD}
 PKG_CREATE?=		${SET_DBDIR} ${PKG_CREATE_CMD}
 PKG_DELETE?=		${SET_DBDIR} ${PKG_DELETE_CMD}
 PKG_INFO?=		${SET_DBDIR} ${PKG_INFO_CMD}
-PKG_ADMIN?=		${PKG_TOOLS_BIN}/pkgng_admin
+PKG_ADMIN?=		${PKG_ADMIN_CMD}
 
 HOST_PKG_INFO?=		${HOST_SET_DBDIR} ${PKG_INFO_CMD}
 
