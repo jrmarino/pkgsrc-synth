@@ -6,15 +6,7 @@
 # scripts to the package.
 #
 _VARGROUPS+=		pkginstall
-_USER_VARS.pkginstall= \
-	PKG_CREATE_USERGROUP \
-	PKG_CONFIG PKG_CONFIG_PERMS \
-	PKG_RCD_SCRIPTS \
-	PKG_REGISTER_SHELLS \
-	PKG_UPDATE_FONTS_DB
 _PKG_VARS.pkginstall= \
-	DEINSTALL_TEMPLATES INSTALL_TEMPLATES \
-	DEINSTALL_SRC INSTALL_SRC \
 	FILES_SUBST \
 	PKG_USERS PKG_GROUPS USERGROUP_PHASE
 .for u in ${PKG_USERS}
@@ -26,8 +18,6 @@ _PKG_VARS.pkginstall+=	PKG_GID.${g}
 _SYS_VARS.pkginstall= \
 	SETUID_ROOT_PERMS \
 	SETGID_GAMES_PERMS
-
-_PKGINSTALL_DIR=	${WRKDIR}/.pkginstall
 
 # XXX This should not be duplicated from the install module, but we
 # XXX need this until pkginstall is refactored.
@@ -109,18 +99,16 @@ FILES_SUBST+=		PKGBASE=${PKGBASE:Q}
 #
 # USERGROUP_PHASE is set to the phase just before which users and
 #	groups need to be created.  Valid values are "configure" and
-#	"build" and "pre-install".
-#	If not defined, then by default users and groups are created
-#	as pare of the +INSTALL script.  If this is defined, then
-#	the numeric UIDs and GIDs of users and groups required by this
-#	package are hardcoded into the +INSTALL script.
+#	"build".  In this case, the variables PKG_UID.<user> and
+#	PKG_GID.<group> must be defined, otherwise a FAIL due to SKIP
+#	is defined.
 #
 PKG_GROUPS?=		# empty
 PKG_USERS?=		# empty
 _PKG_USER_HOME?=	/nonexistent
 _PKG_USER_SHELL?=	${NOLOGIN}
-FILES_SUBST+=		PKG_USER_HOME=${_PKG_USER_HOME:Q}
-FILES_SUBST+=		PKG_USER_SHELL=${_PKG_USER_SHELL:Q}
+_UG_INSTALL=		${PKG_DB_TMPDIR}/+PRE_INSTALL
+_UG_DEINSTALL=		${PKG_DB_TMPDIR}/+POST_DEINSTALL
 
 USE_GAMESGROUP?=	no
 SETGIDGAME?=            ${USE_GAMESGROUP}
@@ -138,157 +126,70 @@ SETGIDGAME?=            ${USE_GAMESGROUP}
 #
 # For now we also create the "games" user; this should not be used and
 # should be removed at some point.
-.if (defined(USE_GAMESGROUP) && !empty(USE_GAMESGROUP:M[yY][eE][sS])) ||\
-    (defined(SETGIDGAME) && !empty(SETGIDGAME:M[yY][eE][sS]))
+.if (defined(USE_GAMESGROUP) && !empty(USE_GAMESGROUP:tl:Myes)) ||\
+    (defined(SETGIDGAME) && !empty(SETGIDGAME:tl:Myes))
 PKG_GROUPS+=	${GAMES_GROUP}
 PKG_USERS+=	${GAMES_USER}:${GAMES_GROUP}
 _BUILD_DEFS+=	GAMES_GROUP GAMES_USER GAMEDATAMODE GAMEDIRMODE GAMEMODE
 .endif
 
-# Interix is very special in that users and groups cannot have the
-# same name.  Interix.mk tries to work around this by overriding
-# some specific package defaults.  If we get here and there's still a
-# conflict, add a breakage indicator to make sure the package won't
-# compile without changing something.
-#
-.if !empty(OPSYS:MInterix)
-.  for user in ${PKG_USERS:C/\\\\//g:C/:.*//}
-.    if !empty(PKG_GROUPS:M${user})
-PKG_FAIL_REASON+=	"User and group '${user}' cannot have the same name on Interix"
-.    endif
-.  endfor
+# predefined accounts from src/etc/master.passwd
+# alpha numeric sort order
+USERS_BLACKLIST=	_dhcp _pflogd _ypldap auditdistd bin bind daemon \
+			games hast kmem mailnull man news nobody operator \
+			pop proxy root smmsp sshd toor tty unbound uucp www
+
+# predefined accounts from src/etc/group
+# alpha numeric sort order
+GROUPS_BLACKLIST=	_dhcp _pflogd _ypldap audit authpf bin bind daemon \
+			dialer ftp games guest hast kmem mail mailnull man \
+			network news nobody nogroup operator proxy smmsp \
+			sshd staff sys tty unbound uucp wheel www
+
+.if defined(USERGROUP_PHASE) && (${USERGROUP_PHASE:Mconfigure} || ${USERGROUP_PHASE:Mbuild})
+. for _entry_ in ${PKG_USERS}
+PGE=PKG_GID.${_entry_:C|^.+:||}
+PUE=PKG_UID.${_entry_:C|:.*||}
+.  if !defined(${PGE}) || !defined(${PUE})
+PKG_SKIP_REASON+=	"Because USERGROUP_PHASE is set 'configure', the\
+	${PUE} and ${PGE} variables must be defined by the user"
+.  endif
+. endfor
 .endif
 
-.if !empty(PKG_USERS) || !empty(PKG_GROUPS)
-DEPENDS+=		${_USER_DEPENDS}
-.endif
-
-_INSTALL_USERGROUP_FILE=	${_PKGINSTALL_DIR}/usergroup
-.if exists(../../mk/pkginstall/usergroupfuncs.${OPSYS})
-_INSTALL_USERGROUPFUNCS_FILE?=	../../mk/pkginstall/usergroupfuncs.${OPSYS}
+.for _entry_ in ${PKG_USERS:u}
+usr=${_entry_:C|:.*||}
+grp=${_entry_:C|^.+:||}
+.if defined(PKG_GID.${grp})
+PGE=${PKG_GID.${grp}}
 .else
-_INSTALL_USERGROUPFUNCS_FILE?=	../../mk/pkginstall/usergroupfuncs
+PGE=${grp}
 .endif
-_INSTALL_USERGROUP_DATAFILE=	${_PKGINSTALL_DIR}/usergroup-data
-
-.for _group_ in ${PKG_GROUPS}
-.  if defined(USERGROUP_PHASE)
-# Determine the numeric GID of each group.
-USE_TOOLS+=	perl
-PKG_GID.${_group_}_cmd=							\
-	if ${TEST} ! -x ${PERL5}; then ${ECHO} ""; exit 0; fi;		\
-	${PERL5} -le 'print scalar getgrnam shift' ${_group_}
-PKG_GID.${_group_}?=	${PKG_GID.${_group_}_cmd:sh:M*}
-.  endif
-_PKG_GROUPS+=	${_group_}:${PKG_GID.${_group_}}
+PUE=${PKG_UID.${usr}}
+_P4=${PKG_GECOS.${usr}:Q:S|\ |~|g}
+_P5=${PKG_HOME.${usr}:Q:S|\ |~|g}
+_P6=${PKG_SHELL.${usr}:Q:S|\ |~|g}
+_PKG_USERS+=	${usr}:${PGE}:${PUE}:${_P4}:${_P5}:${_P6}:
 .endfor
 
-.for _entry_ in ${PKG_USERS}
-.  for e in ${_entry_:C/\:.*//}
-.    if defined(USERGROUP_PHASE)
-# Determine the numeric UID of each user.
-USE_TOOLS+=	perl
-PKG_UID.${e}_cmd=							\
-	if ${TEST} ! -x ${PERL5}; then ${ECHO} ""; exit 0; fi;		\
-	${PERL5} -le 'print scalar getpwnam shift' ${e}
-PKG_UID.${e}?=	${PKG_UID.${e}_cmd:sh:M*}
-.    endif
-_PKG_USERS+=	${_entry_}:${PKG_UID.${e}}:${PKG_GECOS.${e}:Q}:${PKG_HOME.${e}:Q}:${PKG_SHELL.${e}:Q}
-.  endfor
-.endfor
-
-${_INSTALL_USERGROUP_DATAFILE}:
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	set -- dummy ${_PKG_GROUPS:C/\:*$//}; shift;			\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		i="$$1"; shift;						\
-		${ECHO} "# GROUP: $$i";					\
-	done
-	${RUN}								\
-	set -- dummy ${_PKG_USERS:C/\:*$//}; shift;			\
-	exec 1>>${.TARGET};						\
-	while ${TEST} $$# -gt 0; do					\
-		i="$$1"; shift;						\
-		${ECHO} "# USER: $$i";					\
-	done
-
-${_INSTALL_USERGROUP_FILE}: ${_INSTALL_USERGROUP_DATAFILE}
-${_INSTALL_USERGROUP_FILE}:						\
-		../../mk/pkginstall/usergroup				\
-		${INSTALL_USERGROUPFUNCS_FILE}
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	${SED}	-e "/^# platform-specific adduser\/addgroup functions/r${_INSTALL_USERGROUPFUNCS_FILE}" ../../mk/pkginstall/usergroup |			\
-	${SED} ${FILES_SUBST_SED} > ${.TARGET}
-	${RUN}								\
-	if ${_ZERO_FILESIZE_P} ${_INSTALL_USERGROUP_DATAFILE}; then	\
-		${RM} -f ${.TARGET};					\
-		${TOUCH} ${TOUCH_ARGS} ${.TARGET};			\
-	fi
-
-_INSTALL_USERGROUP_UNPACKER=	${_PKGINSTALL_DIR}/usergroup-unpack
-
-${_INSTALL_USERGROUP_UNPACKER}:						\
-		${_INSTALL_USERGROUP_FILE}				\
-		${_INSTALL_USERGROUP_DATAFILE}
-	${RUN}${MKDIR} ${.TARGET:H}
-	${RUN}								\
-	exec 1>${.TARGET};						\
-	${ECHO} "#!${SH}";						\
-	${ECHO} "";							\
-	${ECHO} "CAT="${CAT:Q};						\
-	${ECHO} "CHMOD="${CHMOD:Q};					\
-	${ECHO} "SED="${SED:Q};						\
-	${ECHO} "";							\
-	${ECHO} "SELF=\$$0";						\
-	${ECHO} "STAGE=UNPACK";						\
-	${ECHO} "";							\
-	${CAT}	${_INSTALL_USERGROUP_FILE}				\
-		${_INSTALL_USERGROUP_DATAFILE}
-	${RUN}${CHMOD} +x ${.TARGET}
-
-.if defined(USERGROUP_PHASE)
-.  if !empty(USERGROUP_PHASE:M*configure)
-pre-configure: create-usergroup
-.  elif !empty(USERGROUP_PHASE:M*build)
-pre-build: create-usergroup
-.  elif !empty(USERGROUP_PHASE:Mpre-install)
 pre-install: create-usergroup
-.  endif
-.endif
-
-_INSTALL_USERGROUP_CHECK=						\
-	${PKGSRC_SETENV} PERL5=${PERL5:Q}					\
-	${SH} ${PKGSRCDIR}/mk/pkginstall/usergroup-check
 
 .PHONY: create-usergroup
 create-usergroup: su-target
 	@${STEP_MSG} "Requiring users and groups for ${PKGNAME}"
 
-PRE_CMD.su-create-usergroup=						\
-	if ${_INSTALL_USERGROUP_CHECK} -g ${_PKG_GROUPS:C/\:*$//} &&	\
-	   ${_INSTALL_USERGROUP_CHECK} -u ${_PKG_USERS:C/\:*$//}; then	\
-		exit 0;							\
-	fi
-
 .PHONY: su-create-usergroup
-su-create-usergroup: ${_INSTALL_USERGROUP_UNPACKER}
-	${RUN}								\
-	cd ${_PKGINSTALL_DIR} &&					\
-	${SH} ${_INSTALL_USERGROUP_UNPACKER};				\
-	exitcode=1;							\
-	if ${TEST} -f ./+USERGROUP &&					\
-	   ./+USERGROUP ADD ${_PKG_DBDIR}/${PKGNAME} &&			\
-	   ./+USERGROUP CHECK-ADD ${_PKG_DBDIR}/${PKGNAME}; then	\
-		exitcode=0;						\
-	fi;								\
-	${RM} -f ${_INSTALL_USERGROUP_FILE:Q}				\
-		${_INSTALL_USERGROUP_DATAFILE:Q}			\
-		${_INSTALL_USERGROUP_UNPACKER:Q}			\
-		./+USERGROUP;						\
-	exit $$exitcode
+su-create-usergroup: ${PKGDIR:H:H}/mk/scripts/do-users-groups
+	@${SETENV} \
+		dp_ECHO_MSG="${ECHO_MSG}" \
+		dp_GROUPS_BLACKLIST="${GROUPS_BLACKLIST}" \
+		dp_USERS_BLACKLIST="${USERS_BLACKLIST}" \
+		dp_OPSYS="${OPSYS}" \
+		dp_UG_DEINSTALL="${_UG_DEINSTALL}" \
+		dp_UG_INSTALL="${_UG_INSTALL}" \
+		dp_DFLT_SHELL="${_PKG_USER_SHELL}" \
+		dp_DFLT_HOME="${_PKG_USER_HOME}" \
+		${SH} ${.ALLSRC} "${_PKG_USERS}" "${PKG_GROUPS:u}"
 
 # SPECIAL_PERMS are lists that look like:
 #		file user group mode
@@ -441,56 +342,6 @@ USE_TOOLS+=		mkfontdir:run
 DEPENDS+=		encodings-[0-9]*:../../fonts/encodings
 .endif
 .endif
-
-# PKG_CREATE_USERGROUP indicates whether the INSTALL script should
-#	automatically add any needed users/groups to the system using
-#	useradd/groupadd.  It is either YES or NO and defaults to YES.
-#
-# PKG_CONFIG indicates whether the INSTALL/DEINSTALL scripts should do
-#	automatic config file and directory handling, or if it should
-#	merely inform the admin of the list of required files and
-#	directories needed to use the package.  It is either YES or NO
-#	and defaults to YES.
-#
-# PKG_CONFIG_PERMS indicates whether to automatically correct permissions
-#	and ownership on pre-existing files and directories, or if it
-#	should merely inform the admin of the list of files and
-#	directories whose permissions and ownership need to be fixed.  It
-#	is either YES or NO and defaults to NO.
-#
-# PKG_RCD_SCRIPTS indicates whether to automatically install rc.d scripts
-#	to ${RCD_SCRIPTS_DIR}.  It is either YES or NO and defaults to
-#	NO.  This variable only takes effect if ${PKG_CONFIG} == "YES".
-#
-# PKG_REGISTER_SHELLS indicates whether to automatically register shells
-#	in /etc/shells.  It is either YES or NO and defaults to YES.
-#
-# PKG_UPDATE_FONTS_DB indicates whether to automatically update the fonts
-#	databases in directories where fonts have been installed or
-#	removed.  It is either YES or NO and defaults to YES.
-#
-# These values merely set the defaults for INSTALL/DEINSTALL scripts, but
-# they may be overridden by resetting them in the environment.
-#
-.if ${PKG_DEVELOPER:Uno} != "no"
-FONTS_VERBOSE?=		YES
-OCAML_FINDLIB_REGISTER_VERBOSE?=	YES
-.else
-FONTS_VERBOSE?=		NO
-OCAML_FINDLIB_REGISTER_VERBOSE?=	NO
-.endif
-PKG_CREATE_USERGROUP?=	YES
-PKG_CONFIG?=		YES
-PKG_CONFIG_PERMS?=	NO
-PKG_RCD_SCRIPTS?=	NO
-PKG_REGISTER_SHELLS?=	YES
-PKG_UPDATE_FONTS_DB?=	YES
-FILES_SUBST+=		PKG_CREATE_USERGROUP=${PKG_CREATE_USERGROUP:Q}
-FILES_SUBST+=		PKG_CONFIG=${PKG_CONFIG:Q}
-FILES_SUBST+=		PKG_CONFIG_PERMS=${PKG_CONFIG_PERMS:Q}
-FILES_SUBST+=		PKG_RCD_SCRIPTS=${PKG_RCD_SCRIPTS:Q}
-FILES_SUBST+=		PKG_REGISTER_SHELLS=${PKG_REGISTER_SHELLS:Q}
-FILES_SUBST+=		PKG_UPDATE_FONTS_DB=${PKG_UPDATE_FONTS_DB:Q}
 
 # Substitute for various programs used in the DEINSTALL/INSTALL scripts and
 # in the rc.d scripts.
