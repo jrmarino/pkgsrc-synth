@@ -377,7 +377,11 @@ USE_TOOLS+=	file
 .endif
 
 # INSTALL/DEINSTALL script framework
+.if ${PKG_FORMAT:Mpkgng}
 .include "pkginstall/bsd.pkgng-install.mk"
+.else
+.include "pkginstall/bsd.pkginstall.mk"
+.endif
 
 # Locking
 .include "internal/locking.mk"
