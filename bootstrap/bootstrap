@@ -1106,7 +1106,11 @@ pkg)
 	echo "PKG_FORMAT=             pkg" >> ${TARGET_MKCONF};;
 *)
 	echo "PKG_FORMAT=             pkg"   >> ${BOOTSTRAP_MKCONF}
-	echo "PKG_FORMAT=             pkgng" >> ${TARGET_MKCONF};;
+	echo "PKG_FORMAT=             pkgng" >> ${TARGET_MKCONF}
+
+	# Redirect effects of pkg_install'ing pkg(8) and digest tools
+	echo "PKG_DBDIR=              $wrkdir/var/db" >> ${BOOTSTRAP_MKCONF}
+	;;
 esac
 
 # sbin is used by pkg_install, share/mk by bootstrap-mk-files
@@ -1320,6 +1324,7 @@ build_package() {
 	fi;
 	if [ "$pkgng_installed" = "no" ]; then
 		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none -DPKG_PRESERVE MAKECONF=${BOOTSTRAP_MKCONF} install)"
+		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake MAKECONF=${BOOTSTRAP_MKCONF} clean)"
 	else
 		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake MAKE_JOBS=${make_jobs} MAKECONF=${TARGET_MKCONF} install)"
 	fi;
@@ -1345,13 +1350,17 @@ esac
 #
 echo_msg "Installing packages"
 case "$format" in
-pkg)	;;
+pkg)	build_package "pkgtools/bootstrap-mk-files"
+	;;
 *)	build_package  "pkgtools/pkg"
 	pkgng_installed="yes";
+
+	# Rebuild pkg(8), it will install over and register itself
 	build_package "pkgtools/pkgng_admin"
+	build_package "pkgtools/bootstrap-mk-files"
+	build_package "pkgtools/pkg"
 	;;
 esac;
-build_package "pkgtools/bootstrap-mk-files"
 case "$need_bsd_install" in
 yes)
 	if [ "$use_bsdinstall" = "yes" ]; then

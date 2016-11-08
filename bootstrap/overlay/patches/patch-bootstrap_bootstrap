@@ -1,4 +1,4 @@
---- bootstrap/bootstrap.orig	2016-11-02 14:18:52 UTC
+--- bootstrap/bootstrap.orig	2016-11-08 21:06:46 UTC
 +++ bootstrap/bootstrap
 @@ -59,6 +59,7 @@ usage="Usage: $0 "'
      [ --binary-macpkg <pkg> ]
@@ -40,7 +40,7 @@
  
  if [ "$prefix" = "/usr" ]; then
  	[ -z "$pkginfodir" ] && pkginfodir=share/info
-@@ -1090,6 +1100,15 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$boots
+@@ -1090,6 +1100,19 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$boots
  	echo $opsys
  fi
  
@@ -50,13 +50,17 @@
 +	echo "PKG_FORMAT=             pkg" >> ${TARGET_MKCONF};;
 +*)
 +	echo "PKG_FORMAT=             pkg"   >> ${BOOTSTRAP_MKCONF}
-+	echo "PKG_FORMAT=             pkgng" >> ${TARGET_MKCONF};;
++	echo "PKG_FORMAT=             pkgng" >> ${TARGET_MKCONF}
++
++	# Redirect effects of pkg_install'ing pkg(8) and digest tools
++	echo "PKG_DBDIR=              $wrkdir/var/db" >> ${BOOTSTRAP_MKCONF}
++	;;
 +esac
 +
  # sbin is used by pkg_install, share/mk by bootstrap-mk-files
  mkdir_p $wrkdir/sbin $wrkdir/share/mk
  mkdir_p_early ${wrkdir}
-@@ -1144,6 +1163,7 @@ bootstrap_bmake() {
+@@ -1144,6 +1167,7 @@ bootstrap_bmake() {
  bootstrap_bmake
  
  bmake="$wrkdir/bin/bmake"
@@ -64,7 +68,7 @@
  
  # build libnbcompat
  echo_msg "Building libnbcompat"
-@@ -1286,10 +1306,23 @@ fi
+@@ -1286,10 +1310,24 @@ fi
  echo ".endif			# end pkgsrc settings" >> ${TARGET_MKCONF}
  echo ".endif			# end pkgsrc settings" >> ${BOOTSTRAP_MKCONF}
  
@@ -83,27 +87,34 @@
 +	fi;
 +	if [ "$pkgng_installed" = "no" ]; then
 +		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none -DPKG_PRESERVE MAKECONF=${BOOTSTRAP_MKCONF} install)"
++		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake MAKECONF=${BOOTSTRAP_MKCONF} clean)"
 +	else
 +		run_cmd "(cd $pkgsrcdir/$1 && $bsdmake MAKE_JOBS=${make_jobs} MAKECONF=${TARGET_MKCONF} install)"
 +	fi;
  }
  build_package_nopreserve() {
  	run_cmd "(cd $pkgsrcdir/$1 && $bmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none MAKECONF=${BOOTSTRAP_MKCONF} install)"
-@@ -1311,6 +1344,13 @@ esac
+@@ -1311,7 +1349,18 @@ esac
  # only the following packages set BOOTSTRAP_PKG=yes.
  #
  echo_msg "Installing packages"
+-build_package "pkgtools/bootstrap-mk-files"
 +case "$format" in
-+pkg)	;;
++pkg)	build_package "pkgtools/bootstrap-mk-files"
++	;;
 +*)	build_package  "pkgtools/pkg"
 +	pkgng_installed="yes";
++
++	# Rebuild pkg(8), it will install over and register itself
 +	build_package "pkgtools/pkgng_admin"
++	build_package "pkgtools/bootstrap-mk-files"
++	build_package "pkgtools/pkg"
 +	;;
 +esac;
- build_package "pkgtools/bootstrap-mk-files"
  case "$need_bsd_install" in
  yes)
-@@ -1325,6 +1365,7 @@ case "$need_ksh" in
+ 	if [ "$use_bsdinstall" = "yes" ]; then
+@@ -1325,6 +1374,7 @@ case "$need_ksh" in
  yes)	build_package "shells/pdksh";;
  esac
  build_package "devel/bmake"
@@ -111,7 +122,7 @@
  case "$need_awk" in
  yes)	build_package "lang/nawk";;
  esac
-@@ -1334,7 +1375,10 @@ esac
+@@ -1334,7 +1384,10 @@ esac
  case "$need_extras" in
  yes)	build_package "pkgtools/bootstrap-extras";;
  esac
