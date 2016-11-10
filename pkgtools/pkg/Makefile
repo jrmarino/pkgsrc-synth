@@ -16,6 +16,7 @@ USE_LANGUAGES=	c
 
 CPPFLAGS+=	-D_LOCALBASE="\"${PREFIX}\""
 CPPFLAGS+=	-DPORTSDIR="\"${PKG.portsdir}\""
+CPPFLAGS+=	-DDEFAULT_VULNXML_URL="\"http://muscles.dragonflybsd.org/pkgsrc-vuxml/vuln.xml.bz2\""
 
 AUTO_MKDIRS=	yes
 

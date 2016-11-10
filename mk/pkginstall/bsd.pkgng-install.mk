@@ -23,6 +23,11 @@ _SYS_VARS.pkginstall= \
 # XXX
 PKG_DB_TMPDIR?=		${WRKDIR}/.pkgdb
 
+# Set info dependency when INFO files are installed
+.if defined (INFO_FILES)
+USE_TOOLS+=	indexinfo:run
+.endif
+
 # If INSTALL template file exists in the PKGDIR directory, the +INSTALL
 # script will be created.  Likewise, the presence of a DEINSTALL template
 # file in the PKGDIR directory leads to the creation of the +DEINSTALL

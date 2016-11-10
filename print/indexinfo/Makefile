@@ -8,6 +8,7 @@ DISTFILES=	0.2.6.tar.gz
 
 MAINTAINER=	draco@marino.st
 HOMEPAGE=	https://github.com/bapt/indexinfo
+COMMENT=	Utility to regenerate the GNU info page index
 
 pre-install:
 	${MKDIR} ${DESTDIR}${PREFIX}/bin
