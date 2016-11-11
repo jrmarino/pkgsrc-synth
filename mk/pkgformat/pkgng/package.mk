@@ -61,6 +61,13 @@ ${WRKDIR}/.created_fixed_dirs:
 	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${D}
 .  endif
 .endfor
+.if ${PKG_SYSCONFDIR:M*}
+.  if ${PKG_SYSCONFDIR:M/*}
+	${RUN}${MKDIR} ${DESTDIR}${PKG_SYSCONFDIR}
+.  else
+	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${PKG_SYSCONFDIR}
+.  endif
+.endif
 .if ${PKG_SYSCONFSUBDIR:M*}
 .  if ${PKG_SYSCONFSUBDIR:M/*}
 	${RUN}${MKDIR} ${DESTDIR}${PKG_SYSCONFSUBDIR}
@@ -96,6 +103,7 @@ ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
 		-vFONTSDIR_X11="${FONTS_DIRS.x11}" \
 		-vFONTSDIR_TTF="${FONTS_DIRS.ttf}" \
 		-vFONTSDIR_TYPE1="${FONTS_DIRS.type1}" \
+		-vPKG_SYSCONFDIR="${PKG_SYSCONFDIR}" \
 		-f  ${PKGSRCDIR}/mk/pkgformat/pkgng/transform_plist.awk \
 		${PLIST} > ${.TARGET}
 	# Treat REQD_DIRS, MAKE_DIRS and OWN_DIRS identically

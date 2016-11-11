@@ -17,6 +17,7 @@
 #  FONTSDIR_X11= list of x11 font directories
 #  FONTSDIR_TTF= list of ttf font directories
 #  FONTSDIR_TYPE1= list of type1 font directories
+#  PKG_SYSCONFDIR= check for this directory for CONF_FILES insertions
 #  PREFIX= installation prefix
 #
 
@@ -79,6 +80,8 @@ BEGIN {
 
     set_ldconfig = (LDCONFIG == "yes") ? 1 : 0;
     fontdir_type = (X11_TYPE == "modular") ? "modular_x11" : "native_x11";
+    needs_sysconfdir = 0;
+    has_sysconfdir   = 0;
 }
 
 function dump_CF (k) {
@@ -87,6 +90,9 @@ function dump_CF (k) {
    else
       print "@sample(,," CONF_FILES_MODE ") " CF[2*k+1] " " CF[2*k+2];
    used_CF[k] = 1;
+   if (index(CF[2*k+2], PKG_SYSCONFDIR) == 1) {
+      needs_sysconfdir = 1;
+   }
 }
 
 function dump_RF (k) {
@@ -171,6 +177,11 @@ END {
       if (!used_FX11[k]) { dump_FX11(k) }
    }
 
+   # ensure PKG_SYSCONFDIR exists if it's used
+   if (needs_sysconfdir && !has_sysconfdir) {
+      print "@dir " PKG_SYSCONFDIR;
+   }
+
    # Output from here forward doesn't mean a bad plist
    if (set_ldconfig) { print "@ldconfig" }
 }
@@ -250,6 +261,7 @@ function is_special_perms () {
 {
     if ($1 == "@pkgdir") {
        print "@dir " $2;
+       if ($2 == PKG_SYSCONFDIR) { has_sysconfdir=1 }
     } else if (is_sample()) {
        # handled in function
     } else if (is_info()) {
