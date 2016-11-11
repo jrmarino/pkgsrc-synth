@@ -11,6 +11,7 @@ HOMEPAGE=	https://wiki.freebsd.org/pkgng
 COMMENT=	Package management tool for FreeBSD
 LICENSE=	2-clause-bsd
 
+BOOTSTRAP_PKG=	yes
 GNU_CONFIGURE=	yes
 USE_LANGUAGES=	c
 
@@ -114,6 +115,30 @@ post-install:
 		${DESTDIR}${EGDIR}/
 
 .include "../../mk/bsd.prefs.mk"
+
+# Disable checksum when pkg(8) is not installed and PKG_FORMAT is "pkgng".
+# This format requires pkg to be present for the "info" capability used
+# extensively, including for checksums.  It's bootstrap chicken/egg scenario.
+# This is here to allow someone to build and reinstall pkg(8) when a new
+# version comes out.
+
+# Note that pkgtools/pkgng_admin and pkgtools/bootstrap-mk-files must be
+# present before pkg(8) can be rebuilt.  There's is seemingly no way to
+# enforce this requirement because pkgng PKG_FORMAT requires pkgng_admin
+# to function properly.
+
+.if ${PKG_FORMAT:Mpkgng} && !exists(${PKG_CMD})
+NO_CHECKSUM=			yes
+SKIP_LICENSE_CHECK=		yes
+ALLOW_VULNERABLE_PACKAGES=	yes
+TOOLS_IGNORE.digest=		# block dependency on digest
+STATIC_PKG=			${DESTDIR}${LOCALBASE}/sbin/pkg-static
+PKG_ADD_CMD=			${SETENV} PKG_DBDIR=${PKG_DBDIR:Q} \
+				INSTALL_AS_USER=yes ${STATIC_PKG} add
+PKG_CREATE=			${SETENV} PKG_DBDIR=${PKG_DBDIR:Q} \
+				${STATIC_PKG} create
+.endif
+
 .if ${OPSYS} != "FreeBSD" && ${OPSYS} != "DragonFly" && ${OPSYS} != "NetBSD"
 .include "../../archivers/libarchive/buildlink3.mk"
 .endif
