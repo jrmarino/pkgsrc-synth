@@ -1,24 +1,53 @@
---- pkgtools/pkg/Makefile.orig	2016-11-12 05:41:49 UTC
+--- pkgtools/pkg/Makefile.orig	2016-11-12 15:47:17 UTC
 +++ pkgtools/pkg/Makefile
-@@ -11,11 +11,13 @@ HOMEPAGE=	https://wiki.freebsd.org/pkgng
+@@ -11,12 +11,16 @@ HOMEPAGE=	https://wiki.freebsd.org/pkgng
  COMMENT=	Package management tool for FreeBSD
  LICENSE=	2-clause-bsd
  
 +BOOTSTRAP_PKG=	yes
  GNU_CONFIGURE=	yes
++USE_CWRAPPERS=	no
  USE_LANGUAGES=	c
  
  CPPFLAGS+=	-D_LOCALBASE="\"${PREFIX}\""
  CPPFLAGS+=	-DPORTSDIR="\"${PKG.portsdir}\""
 +CPPFLAGS+=	-DDEFAULT_VULNXML_URL="\"http://muscles.dragonflybsd.org/pkgsrc-vuxml/vuln.xml.bz2\""
  
++PKGNG_DBDIR?=	/var/db/pkgng
  AUTO_MKDIRS=	yes
  
-@@ -71,6 +73,12 @@ SUBST_SED.portsdir=		-e "s|/usr/ports|${
+ EGDIR=		${PREFIX}/share/examples/pkg
+@@ -56,10 +60,9 @@ SUBST_FILES.pkgconf-prefix=	src/pkg.conf
+ SUBST_SED.pkgconf-prefix+=	-e "s|/usr/local|${PREFIX}|g"
+ SUBST_MESSAGE.pkgconf-prefix=	Correct the installation prefix in pkg.conf(5).
+ 
+-SUBST_CLASSES+=	portsdir
++SUBST_CLASSES+=			portsdir
+ SUBST_STAGE.portsdir=		pre-install
+-SUBST_FILES.portsdir=		libpkg/pkg_config.c \
+-				src/pkg.conf.sample \
++SUBST_FILES.portsdir=		src/pkg.conf.sample \
+ 				docs/pkg-create.8 \
+ 				docs/pkg-set.8 \
+ 				docs/pkg-repo.8 \
+@@ -67,10 +70,24 @@ SUBST_FILES.portsdir=		libpkg/pkg_config
+ 				docs/pkg-version.8 \
+ 				docs/pkg.8
+ SUBST_SED.portsdir=		-e "s|/usr/ports|${PKG.portsdir}|g" \
+-				-e "s|/var/db/pkg|${PKG_DBDIR}|g" \
++				-e "s|/var/db/pkg|${PKGNG_DBDIR}|g" \
  				-e "s|/var/cache/pkg|${VARBASE}/cache/pkgng|g"
  SUBST_MESSAGE.portsdir=		Correct reference to FreeBSD portsdir.
  
-+SUBST_CLASSES+=	vuxml
++SUBST_CLASSES+=			config
++SUBST_STAGE.config=		post-patch
++SUBST_FILES.config=		libpkg/pkg_config.c
++SUBST_SED.config=		-e "s|/usr/ports|${PKG.portsdir}|g" \
++				-e "s|/var/db/pkg|${PKGNG_DBDIR}|g" \
++				-e "s|/var/cache/pkg|${VARBASE}/cache/pkgng|g"
++SUBST_MESSAGE.config=		Update pkg(8) defaults.
++
++SUBST_CLASSES+=			vuxml
 +SUBST_STAGE.vuxml=		post-patch
 +SUBST_FILES.vuxml=		libpkg/pkg_audit.c
 +SUBST_SED.vuxml=		-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
@@ -27,10 +56,19 @@
  .if defined(PACKAGE_BUILDING) # set by Synth which has custom location, so use default path
  PKG.portsdir?=	/usr/pkgsrc
  .else
-@@ -113,6 +121,30 @@ post-install:
+@@ -113,6 +130,39 @@ post-install:
  		${DESTDIR}${EGDIR}/
  
  .include "../../mk/bsd.prefs.mk"
++
++.if ${OPSYS} == "NetBSD"
++SUBST_CLASSES+=		ldhints
++SUBST_STAGE.ldhints=	post-patch
++SUBST_FILES.ldhints=	libpkg/private/ldconfig.h libpkg/elfhints.c
++SUBST_SED.ldhints=	-e "s|/var/run/ld-elf.so.hints|/var/run/ld.so.hints|" \
++			-e 's,ifndef __linux__,if !(defined __linux__ || defined __NetBSD__),'
++SUBST_MESSAGE.ldhints=	Disable ldconfig hints for NetBSD
++.endif
 +
 +# Disable checksum when pkg(8) is not installed and PKG_FORMAT is "pkgng".
 +# This format requires pkg to be present for the "info" capability used

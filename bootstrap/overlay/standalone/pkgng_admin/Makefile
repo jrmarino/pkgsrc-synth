@@ -10,6 +10,7 @@ LICENSE=		modified-bsd
 
 BOOTSTRAP_PKG=		yes
 SKIP_LICENSE_CHECK=	yes
+USE_CWRAPPERS=		no
 CFLAGS+=		-DSYSCONFDIR=\"${PKG_SYSCONFDIR}\"
 ALLOW_VULNERABLE_PACKAGES=	# circular dependency, requires pkgng_admin
 

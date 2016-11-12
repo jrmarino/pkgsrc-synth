@@ -13,12 +13,14 @@ LICENSE=	2-clause-bsd
 
 BOOTSTRAP_PKG=	yes
 GNU_CONFIGURE=	yes
+USE_CWRAPPERS=	no
 USE_LANGUAGES=	c
 
 CPPFLAGS+=	-D_LOCALBASE="\"${PREFIX}\""
 CPPFLAGS+=	-DPORTSDIR="\"${PKG.portsdir}\""
 CPPFLAGS+=	-DDEFAULT_VULNXML_URL="\"http://muscles.dragonflybsd.org/pkgsrc-vuxml/vuln.xml.bz2\""
 
+PKGNG_DBDIR?=	/var/db/pkgng
 AUTO_MKDIRS=	yes
 
 EGDIR=		${PREFIX}/share/examples/pkg
@@ -58,10 +60,9 @@ SUBST_FILES.pkgconf-prefix=	src/pkg.conf.sample
 SUBST_SED.pkgconf-prefix+=	-e "s|/usr/local|${PREFIX}|g"
 SUBST_MESSAGE.pkgconf-prefix=	Correct the installation prefix in pkg.conf(5).
 
-SUBST_CLASSES+=	portsdir
+SUBST_CLASSES+=			portsdir
 SUBST_STAGE.portsdir=		pre-install
-SUBST_FILES.portsdir=		libpkg/pkg_config.c \
-				src/pkg.conf.sample \
+SUBST_FILES.portsdir=		src/pkg.conf.sample \
 				docs/pkg-create.8 \
 				docs/pkg-set.8 \
 				docs/pkg-repo.8 \
@@ -69,11 +70,19 @@ SUBST_FILES.portsdir=		libpkg/pkg_config.c \
 				docs/pkg-version.8 \
 				docs/pkg.8
 SUBST_SED.portsdir=		-e "s|/usr/ports|${PKG.portsdir}|g" \
-				-e "s|/var/db/pkg|${PKG_DBDIR}|g" \
+				-e "s|/var/db/pkg|${PKGNG_DBDIR}|g" \
 				-e "s|/var/cache/pkg|${VARBASE}/cache/pkgng|g"
 SUBST_MESSAGE.portsdir=		Correct reference to FreeBSD portsdir.
 
-SUBST_CLASSES+=	vuxml
+SUBST_CLASSES+=			config
+SUBST_STAGE.config=		post-patch
+SUBST_FILES.config=		libpkg/pkg_config.c
+SUBST_SED.config=		-e "s|/usr/ports|${PKG.portsdir}|g" \
+				-e "s|/var/db/pkg|${PKGNG_DBDIR}|g" \
+				-e "s|/var/cache/pkg|${VARBASE}/cache/pkgng|g"
+SUBST_MESSAGE.config=		Update pkg(8) defaults.
+
+SUBST_CLASSES+=			vuxml
 SUBST_STAGE.vuxml=		post-patch
 SUBST_FILES.vuxml=		libpkg/pkg_audit.c
 SUBST_SED.vuxml=		-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
@@ -121,6 +130,15 @@ post-install:
 		${DESTDIR}${EGDIR}/
 
 .include "../../mk/bsd.prefs.mk"
+
+.if ${OPSYS} == "NetBSD"
+SUBST_CLASSES+=		ldhints
+SUBST_STAGE.ldhints=	post-patch
+SUBST_FILES.ldhints=	libpkg/private/ldconfig.h libpkg/elfhints.c
+SUBST_SED.ldhints=	-e "s|/var/run/ld-elf.so.hints|/var/run/ld.so.hints|" \
+			-e 's,ifndef __linux__,if !(defined __linux__ || defined __NetBSD__),'
+SUBST_MESSAGE.ldhints=	Disable ldconfig hints for NetBSD
+.endif
 
 # Disable checksum when pkg(8) is not installed and PKG_FORMAT is "pkgng".
 # This format requires pkg to be present for the "info" capability used

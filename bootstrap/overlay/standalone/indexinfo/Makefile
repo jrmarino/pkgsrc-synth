@@ -13,4 +13,14 @@ COMMENT=	Utility to regenerate the GNU info page index
 pre-install:
 	${MKDIR} ${DESTDIR}${PREFIX}/bin
 
+.include "../../mk/bsd.prefs.mk"
+
+.if ${OPSYS} != "FreeBSD" && ${OPSYS} != "DragonFly"
+SUBST_CLASSES+=		reallocf
+SUBST_STAGE.reallocf=	post-patch
+SUBST_FILES.reallocf=	indexinfo.c
+SUBST_SED.reallocf=	-e "s|reallocf|realloc|"
+SUBST_MESSAGE.reallocf=	Replace reallocf with realloc on ${OPSYS}
+.endif
+
 .include "../../mk/bsd.pkg.mk"

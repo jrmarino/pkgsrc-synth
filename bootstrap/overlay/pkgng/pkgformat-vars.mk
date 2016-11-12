@@ -17,13 +17,13 @@ USE_TOOLS+=	mail
 _PKG_DBDIR=		${_CROSS_DESTDIR}${PKG_DBDIR}
 _HOST_PKG_DBDIR=	${HOST_PKG_DBDIR:U${PKG_DBDIR}}
 
-PKG_CMD?=		${PKG_TOOLS_BIN}/pkg
+PKG_CMD?=		${LOCALBASE}/sbin/pkg
 PKG_ADD_CMD?=		${PKG_CMD} add
 PKG_CREATE_CMD?=	${PKG_CMD} create
 PKG_DELETE_CMD?=	${PKG_CMD} delete
 PKG_INFO_CMD?=		${PKG_CMD} info
 PKG_AUDIT_CMD?=		${PKG_CMD} audit
-PKG_ADMIN_CMD?=		${PKG_TOOLS_BIN}/pkgng_admin
+PKG_ADMIN_CMD?=		${LOCALBASE}/sbin/pkgng_admin
 
 # If pkg is present and PKG_DBDIR is not yet defined, get the value
 # directly from pkg(8)
