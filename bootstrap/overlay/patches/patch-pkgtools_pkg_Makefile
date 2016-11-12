@@ -1,4 +1,4 @@
---- pkgtools/pkg/Makefile.orig	2016-11-11 17:39:33 UTC
+--- pkgtools/pkg/Makefile.orig	2016-11-12 05:41:49 UTC
 +++ pkgtools/pkg/Makefile
 @@ -11,11 +11,13 @@ HOMEPAGE=	https://wiki.freebsd.org/pkgng
  COMMENT=	Package management tool for FreeBSD
@@ -14,7 +14,20 @@
  
  AUTO_MKDIRS=	yes
  
-@@ -113,6 +115,30 @@ post-install:
+@@ -71,6 +73,12 @@ SUBST_SED.portsdir=		-e "s|/usr/ports|${
+ 				-e "s|/var/cache/pkg|${VARBASE}/cache/pkgng|g"
+ SUBST_MESSAGE.portsdir=		Correct reference to FreeBSD portsdir.
+ 
++SUBST_CLASSES+=	vuxml
++SUBST_STAGE.vuxml=		post-patch
++SUBST_FILES.vuxml=		libpkg/pkg_audit.c
++SUBST_SED.vuxml=		-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
++SUBST_MESSAGE.vuxml=		Direct audit reports to Pkgsrc vuxml
++
+ .if defined(PACKAGE_BUILDING) # set by Synth which has custom location, so use default path
+ PKG.portsdir?=	/usr/pkgsrc
+ .else
+@@ -113,6 +121,30 @@ post-install:
  		${DESTDIR}${EGDIR}/
  
  .include "../../mk/bsd.prefs.mk"

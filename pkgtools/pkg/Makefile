@@ -73,6 +73,12 @@ SUBST_SED.portsdir=		-e "s|/usr/ports|${PKG.portsdir}|g" \
 				-e "s|/var/cache/pkg|${VARBASE}/cache/pkgng|g"
 SUBST_MESSAGE.portsdir=		Correct reference to FreeBSD portsdir.
 
+SUBST_CLASSES+=	vuxml
+SUBST_STAGE.vuxml=		post-patch
+SUBST_FILES.vuxml=		libpkg/pkg_audit.c
+SUBST_SED.vuxml=		-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
+SUBST_MESSAGE.vuxml=		Direct audit reports to Pkgsrc vuxml
+
 .if defined(PACKAGE_BUILDING) # set by Synth which has custom location, so use default path
 PKG.portsdir?=	/usr/pkgsrc
 .else
