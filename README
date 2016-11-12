@@ -9,11 +9,77 @@ for use by FreeBSD's pkg(8) binary package management tool
 turn allows John Marino's local repository builder known as Synth
 (https://github.com/jrmarino/synth) to be adapted to pkgsrc.
 
-Differences between PkgSrc-Synth and vanilla PkgSrc:
+Differences between pkgsrc-synth and vanilla pkgsrc:
   1. Adds pkgng format (Initial work by Pierre Pronchery)
   2. Removes pkg_install dependency
-  3  Adds very small pkgng_admin dependency for licenses and matching
-  4. Stores overlay sources at bootstrap/overlay
-  5. Omits the unreliable (and thus extra useless) docs/CHANGES-* and
+  3. Adds a very small pkgng_admin dependency for licenses and matching
+  4. Adds a very small indexindo dependency to handle GNU INFO pages
+  5. Contains several patches to support new pkgng format
+  6. Stores overlay sources at bootstrap/overlay
+  7. Omits the unreliable (and thus extra useless) docs/CHANGES-* and
      docs/TODO* files
-  6. Contains synth source
+  8. Contains synth source (planned)
+
+------------------------------------------------
+ Instructions to switch pkgsrc driver to pkg(8)
+------------------------------------------------
+
+Note 1: pkg(8) only works on ELF-based platforms.
+Note 2: pkg(8) is heavily tested on FreeBSD and DragonFly
+Note 3: pkg(8) is lightly tested on NetBSD
+Note 4: pkg(8) is untested on Linux but was designed for its use
+Note 5: pkg(8) is untested on SunOS.  It would be amazing if it worked.  SunOS support TODO
+Note 6: pkg(8) is untested on OpenBSD, MirBSD, Bitrig but may work
+Note 7: This framework does not currently support any OPSYS not mentioned above
+
+Non-NetBSD systems
+------------------
+Start with a pristine system with only native tools installed.  Obtain a copy of this
+repository, e.g.
+
+ 1. cd ~/
+ 2. fetch https://github.com/jrmarino/pkgsrc-synth/archive/master.zip
+ 3. cd /usr
+ 4. unzip ~/master.zip
+
+Use the provide bootstrap tool.  After it completes, the system will have pkg(8)
+installed along with some fundamental packages.  Example:
+
+/usr/pkgsrc-synth-master/bootstrap/bootstrap \
+  --prefix=/usr/pkg \
+  --pkgdbdir=/var/db/pkgsrc \
+  --workdir=/tmp/pkgsrc-bootstrap \
+  --make-jobs=6 \
+  --format=pkgng
+
+Note that all of those parameters are optional.  The format defaults to pkgng and
+sane defaults exist for pkgdbdir, sysconfdir, varbase, etc.
+
+NetBSD systems
+------------------
+Start with a pristine system with only native tools installed.  Obtain a copy of
+this repository (see the example above).
+
+In order to obtain a registered version of pkg(8) from source, we will have to
+build a few packages twice: The first version of pkg(8) and its fundamental 
+dependencies will be installed using the old package tools, and then they will
+be rebuilt and reinstalled using the new format.
+
+1.  echo "PKG_FORMAT= pkg" >> /etc/mk.conf
+2.  cd /usr/pkgsrc-synth-master/pkgtools/pkgng_admin
+2a. make install
+2b. make clean
+3.  cd ../bootstrap-mk-files
+3a. make install
+3b. make clean
+4.  cd ../pkg
+4a. make install
+4b. make clean
+5.  vi /etc/mk.conf
+5a. (change PKG_FORMAT from "pkg" to "pkgng")
+6.  cd ../pkgng_admin && make install
+7.  cd ../bootstrap-mk-files && make install
+8.  cd ../pkg && make install
+
+If you've done everything correctly, "pkg info" from step 6 onwards should show
+installed packages.  Now use pkgsrc and pkg(8) normally.
