@@ -82,6 +82,10 @@ ${WRKDIR}/.created_fixed_dirs:
 	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${D}
 .  endif
 .endfor
+	${RUN}pkgdir=$$(${AWK} '/@pkgdir / {print $$2}' ${PLIST}); \
+		for pd in $${pkgdir}; do \
+			${MKDIR} ${DESTDIR}${PREFIX}/$${pd}; \
+		done
 	${RUN}${TOUCH} ${.TARGET}
 
 ${PLIST_PKGNG}: ${WRKDIR}/.created_fixed_dirs ${PLIST}
