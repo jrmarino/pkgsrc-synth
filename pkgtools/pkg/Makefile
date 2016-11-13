@@ -20,7 +20,6 @@ CPPFLAGS+=	-D_LOCALBASE="\"${PREFIX}\""
 CPPFLAGS+=	-DPORTSDIR="\"${PKG.portsdir}\""
 CPPFLAGS+=	-DDEFAULT_VULNXML_URL="\"http://muscles.dragonflybsd.org/pkgsrc-vuxml/vuln.xml.bz2\""
 
-PKGNG_DBDIR?=	/var/db/pkgng
 AUTO_MKDIRS=	yes
 
 EGDIR=		${PREFIX}/share/examples/pkg
@@ -130,6 +129,12 @@ post-install:
 		${DESTDIR}${EGDIR}/
 
 .include "../../mk/bsd.prefs.mk"
+
+.if defined (PKG_DBDIR)
+PKGNG_DBDIR?=	${PKG_DBDIR}
+.else
+PKGNG_DBDIR?=	/var/db/pkgng
+.endif
 
 .if ${OPSYS} == "NetBSD"
 SUBST_CLASSES+=		ldhints

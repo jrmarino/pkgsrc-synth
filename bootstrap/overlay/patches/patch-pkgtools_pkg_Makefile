@@ -1,6 +1,6 @@
---- pkgtools/pkg/Makefile.orig	2016-11-12 15:47:17 UTC
+--- pkgtools/pkg/Makefile.orig	2016-11-13 03:48:20 UTC
 +++ pkgtools/pkg/Makefile
-@@ -11,12 +11,16 @@ HOMEPAGE=	https://wiki.freebsd.org/pkgng
+@@ -11,11 +11,14 @@ HOMEPAGE=	https://wiki.freebsd.org/pkgng
  COMMENT=	Package management tool for FreeBSD
  LICENSE=	2-clause-bsd
  
@@ -13,11 +13,9 @@
  CPPFLAGS+=	-DPORTSDIR="\"${PKG.portsdir}\""
 +CPPFLAGS+=	-DDEFAULT_VULNXML_URL="\"http://muscles.dragonflybsd.org/pkgsrc-vuxml/vuln.xml.bz2\""
  
-+PKGNG_DBDIR?=	/var/db/pkgng
  AUTO_MKDIRS=	yes
  
- EGDIR=		${PREFIX}/share/examples/pkg
-@@ -56,10 +60,9 @@ SUBST_FILES.pkgconf-prefix=	src/pkg.conf
+@@ -56,10 +59,9 @@ SUBST_FILES.pkgconf-prefix=	src/pkg.conf
  SUBST_SED.pkgconf-prefix+=	-e "s|/usr/local|${PREFIX}|g"
  SUBST_MESSAGE.pkgconf-prefix=	Correct the installation prefix in pkg.conf(5).
  
@@ -30,7 +28,7 @@
  				docs/pkg-create.8 \
  				docs/pkg-set.8 \
  				docs/pkg-repo.8 \
-@@ -67,10 +70,24 @@ SUBST_FILES.portsdir=		libpkg/pkg_config
+@@ -67,10 +69,24 @@ SUBST_FILES.portsdir=		libpkg/pkg_config
  				docs/pkg-version.8 \
  				docs/pkg.8
  SUBST_SED.portsdir=		-e "s|/usr/ports|${PKG.portsdir}|g" \
@@ -56,10 +54,16 @@
  .if defined(PACKAGE_BUILDING) # set by Synth which has custom location, so use default path
  PKG.portsdir?=	/usr/pkgsrc
  .else
-@@ -113,6 +130,39 @@ post-install:
+@@ -113,6 +129,45 @@ post-install:
  		${DESTDIR}${EGDIR}/
  
  .include "../../mk/bsd.prefs.mk"
++
++.if defined (PKG_DBDIR)
++PKGNG_DBDIR?=	${PKG_DBDIR}
++.else
++PKGNG_DBDIR?=	/var/db/pkgng
++.endif
 +
 +.if ${OPSYS} == "NetBSD"
 +SUBST_CLASSES+=		ldhints
