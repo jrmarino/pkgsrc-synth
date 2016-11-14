@@ -1,7 +1,6 @@
 # $NetBSD: Makefile,v 1.14 2016/11/14 19:38:11 marino Exp $
 
-DISTNAME=	pkg-1.8.7
-PKGREVISION=	7
+DISTNAME=	pkg-1.9.99.2
 CATEGORIES=	pkgtools
 MASTER_SITES=	http://files.etoilebsd.net/pkg/
 EXTRACT_SUFX=	.tar.xz
@@ -91,6 +90,13 @@ SUBST_STAGE.vuxml=	post-patch
 SUBST_FILES.vuxml=	libpkg/pkg_audit.c
 SUBST_SED.vuxml=	-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
 SUBST_MESSAGE.vuxml=	Direct audit reports to Pkgsrc vuxml
+
+# These next two can removed with version 1.9.99.3+
+SUBST_CLASSES+=		sbuftype
+SUBST_STAGE.sbuftype=	post-patch
+SUBST_FILES.sbuftype=	external/libsbuf/sys/sbuf.h
+SUBST_SED.sbuftype=	-e "s|_types.h|types.h|"
+SUBST_MESSAGE.sbuftype=	gitfix 043e8f6 (sbuf.h)
 
 SUBST_CLASSES+=		ldhints
 SUBST_STAGE.ldhints=	post-patch
