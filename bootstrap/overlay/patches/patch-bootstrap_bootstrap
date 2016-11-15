@@ -29,13 +29,13 @@
  fi
  
  [ -z "$varbase" ] && varbase=${prefix}/var
--[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg
+-[ -z "$pkgdbdir" ] && pkgdbdir=${prefix}/pkgdb
 +
 +case "$format" in
 +pkg)
-+	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg;;
++	[ -z "$pkgdbdir" ] && pkgdbdir=${prefix}/pkgdb;;
 +*)
-+	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkgng;;
++	[ -z "$pkgdbdir" ] && pkgdbdir=${prefix}/pkgng-db;;
 +esac
  
  if [ "$prefix" = "/usr" ]; then

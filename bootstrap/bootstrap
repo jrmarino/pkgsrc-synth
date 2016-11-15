@@ -491,7 +491,13 @@ elif [ -z "$prefix" -o "$prefix" = "/usr/pkg" ]; then
 fi
 
 [ -z "$varbase" ] && varbase=${prefix}/var
-[ -z "$pkgdbdir" ] && pkgdbdir=${prefix}/pkgdb
+
+case "$format" in
+pkg)
+	[ -z "$pkgdbdir" ] && pkgdbdir=${prefix}/pkgdb;;
+*)
+	[ -z "$pkgdbdir" ] && pkgdbdir=${prefix}/pkgng-db;;
+esac
 
 if [ "$prefix" = "/usr" ]; then
 	[ -z "$pkginfodir" ] && pkginfodir=share/info
