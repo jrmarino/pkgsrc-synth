@@ -1,4 +1,4 @@
---- bootstrap/bootstrap.orig	2016-11-08 21:06:46 UTC
+--- bootstrap/bootstrap.orig	2016-11-15 00:10:19 UTC
 +++ bootstrap/bootstrap
 @@ -59,6 +59,7 @@ usage="Usage: $0 "'
      [ --binary-macpkg <pkg> ]
@@ -94,7 +94,7 @@
  }
  build_package_nopreserve() {
  	run_cmd "(cd $pkgsrcdir/$1 && $bmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none MAKECONF=${BOOTSTRAP_MKCONF} install)"
-@@ -1311,7 +1349,18 @@ esac
+@@ -1311,7 +1349,17 @@ esac
  # only the following packages set BOOTSTRAP_PKG=yes.
  #
  echo_msg "Installing packages"
@@ -106,7 +106,6 @@
 +	pkgng_installed="yes";
 +
 +	# Rebuild pkg(8), it will install over and register itself
-+	build_package "pkgtools/pkgng_admin"
 +	build_package "pkgtools/bootstrap-mk-files"
 +	build_package "pkgtools/pkg"
 +	;;
@@ -114,7 +113,7 @@
  case "$need_bsd_install" in
  yes)
  	if [ "$use_bsdinstall" = "yes" ]; then
-@@ -1325,6 +1374,7 @@ case "$need_ksh" in
+@@ -1325,6 +1373,7 @@ case "$need_ksh" in
  yes)	build_package "shells/pdksh";;
  esac
  build_package "devel/bmake"
@@ -122,7 +121,7 @@
  case "$need_awk" in
  yes)	build_package "lang/nawk";;
  esac
-@@ -1334,7 +1384,10 @@ esac
+@@ -1334,7 +1383,10 @@ esac
  case "$need_extras" in
  yes)	build_package "pkgtools/bootstrap-extras";;
  esac

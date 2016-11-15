@@ -34,11 +34,6 @@ PKG_DBDIR!=		${PKG_CMD} config PKG_DBDIR 2>/dev/null || echo /var/db/pkgng
 # Hardcode PKGTOOLS_VERSION to latest at time of writing
 PKGTOOLS_VERSION=	20160410
 
-# The pkgng PKG_FORMAT requires pkgng_admin to be present for most functions
-.if !defined(BOOTSTRAP_PKG) && empty(BOOTSTRAP_DEPENDS:Mpkgng_admin*)
-BOOTSTRAP_DEPENDS+=	pkgng_admin>=0:../../pkgtools/pkgng_admin
-.endif
-
 # The binary pkg_install tools all need to consistently refer to the
 # correct package database directory.
 #

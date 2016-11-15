@@ -1356,7 +1356,6 @@ pkg)	build_package "pkgtools/bootstrap-mk-files"
 	pkgng_installed="yes";
 
 	# Rebuild pkg(8), it will install over and register itself
-	build_package "pkgtools/pkgng_admin"
 	build_package "pkgtools/bootstrap-mk-files"
 	build_package "pkgtools/pkg"
 	;;

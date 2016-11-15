@@ -3,10 +3,12 @@ include/pkg.h
 lib/libpkg.la
 lib/libpkg_static.la
 libdata/pkgconfig/pkg.pc
+man/man1/pkgng_admin.1
 man/man3/pkg_printf.3
 man/man3/pkg_repos.3
 man/man5/pkg-repository.5
 man/man5/pkg.conf.5
+man/man5/pkgng_admin.conf.5
 man/man8/pkg-add.8
 man/man8/pkg-alias.8
 man/man8/pkg-annotate.8
@@ -44,6 +46,7 @@ man/man8/pkg-which.8
 man/man8/pkg.8
 sbin/pkg
 sbin/pkg-static
+sbin/pkgng_admin
 share/examples/pkg/bash_completion.d/_pkg.bash
 share/examples/pkg/periodic/daily/411.pkg-backup
 share/examples/pkg/periodic/daily/490.status-pkg-changes

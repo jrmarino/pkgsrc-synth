@@ -15,9 +15,15 @@ GNU_CONFIGURE=	yes
 USE_CWRAPPERS=	no
 USE_LANGUAGES=	c
 
+SKIP_LICENSE_CHECK=	yes
+FILESDIR.pkg_install=	${PKGDIR:H}/pkg_install/files
+FILESDIR.pkgng_admin=	${.CURDIR}/pkgng_files
+WRKSRC.pkgng=		${WRKDIR}/pkgng
+
 CPPFLAGS+=	-D_LOCALBASE="\"${PREFIX}\""
 CPPFLAGS+=	-DPORTSDIR="\"${PKG.portsdir}\""
 CPPFLAGS+=	-DDEFAULT_VULNXML_URL="\"http://muscles.dragonflybsd.org/pkgsrc-vuxml/vuln.xml.bz2\""
+CFLAGS+=	-DSYSCONFDIR=\"${PKG_SYSCONFDIR}\"
 
 .if defined(DEBUG_PKGNG)
 CFLAGS:=	${CFLAGS:N-O2} -ggdb -O0
@@ -117,6 +123,15 @@ PKG.portsdir?=	${PKGSRCDIR}
 BUILDLINK_PASSTHRU_RPATHDIRS=	/lib/priv
 .endif
 
+post-extract:
+	${CP} -R ${FILESDIR.pkgng_admin} ${WRKSRC.pkgng}
+	${CP} ${FILESDIR.pkg_install}/lib/dewey.[ch] \
+		${FILESDIR.pkg_install}/lib/license.c \
+		${FILESDIR.pkg_install}/lib/opattern.c ${WRKSRC.pkgng}/
+	${SED} -e "s|@SYSCONFDIR@|${PKG_SYSCONFDIR}|" \
+		${WRKSRC.pkgng}/pkgng_admin.conf.5.in > \
+		${WRKSRC.pkgng}/pkgng_admin.conf.5
+
 post-patch:
 	${CP} ${FILESDIR}/readpassphrase_compat.h \
 		${WRKSRC}/src/
@@ -136,6 +151,9 @@ post-patch:
 		${WRKSRC}/configure
 .endif
 
+pre-build:
+	@(cd ${WRKSRC.pkgng} && ${BUILD_MAKE_CMD} all)
+
 post-install:
 	${RM} ${DESTDIR}${PREFIX}/sbin/pkg2ng
 	${RM} -rf ${DESTDIR}${EGDIR}/periodic
@@ -145,6 +163,9 @@ post-install:
 		${DESTDIR}${EGDIR}/
 	${MV} ${DESTDIR}${PREFIX}/etc/pkg.conf.sample \
 		${DESTDIR}${EGDIR}/
+	(cd ${WRKSRC.pkgng} && ${PKGSRC_SETENV} ${INSTALL_ENV} ${MAKE_ENV} \
+		${MAKE_PROGRAM} ${MAKE_FLAGS} ${INSTALL_MAKE_FLAGS} \
+		-f Makefile install)
 
 .include "../../mk/bsd.prefs.mk"
 
