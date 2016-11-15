@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.14 2016/11/14 19:38:11 marino Exp $
+# $NetBSD: Makefile,v 1.16 2016/11/15 17:48:56 marino Exp $
 
 DISTNAME=	pkg-1.9.99.2
 CATEGORIES=	pkgtools
@@ -97,12 +97,18 @@ SUBST_FILES.vuxml=	libpkg/pkg_audit.c
 SUBST_SED.vuxml=	-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
 SUBST_MESSAGE.vuxml=	Direct audit reports to Pkgsrc vuxml
 
-# These next two can removed with version 1.9.99.3+
+# These next three can removed with version 1.9.99.3+
 SUBST_CLASSES+=		sbuftype
 SUBST_STAGE.sbuftype=	post-patch
 SUBST_FILES.sbuftype=	external/libsbuf/sys/sbuf.h
 SUBST_SED.sbuftype=	-e "s|_types.h|types.h|"
 SUBST_MESSAGE.sbuftype=	gitfix 043e8f6 (sbuf.h)
+
+SUBST_CLASSES+=		fpostype
+SUBST_STAGE.fpostype=	post-patch
+SUBST_FILES.fpostype=	external/libfetch/ftp.c
+SUBST_SED.fpostype=	-e "s|fpos_t|off_t|"
+SUBST_MESSAGE.fpostype=	gitfix 57cf34d (ftp.c)
 
 SUBST_CLASSES+=		ldhints
 SUBST_STAGE.ldhints=	post-patch
@@ -172,7 +178,7 @@ post-install:
 .if defined (PKG_DBDIR)
 PKGNG_DBDIR?=	${PKG_DBDIR}
 .else
-PKGNG_DBDIR?=	/var/db/pkgng
+PKGNG_DBDIR?=	${PREFIX}/pkgng-db
 .endif
 
 # Disable checksum when pkg(8) is not installed and PKG_FORMAT is "pkgng".

@@ -1,10 +1,10 @@
---- pkgtools/pkg/Makefile.orig	2016-11-15 00:15:07 UTC
+--- pkgtools/pkg/Makefile.orig	2016-11-15 18:04:19 UTC
 +++ pkgtools/pkg/Makefile
 @@ -1,7 +1,6 @@
- # $NetBSD: Makefile,v 1.14 2016/11/14 19:38:11 marino Exp $
+ # $NetBSD: Makefile,v 1.16 2016/11/15 17:48:56 marino Exp $
  
 -DISTNAME=	pkg-1.8.7
--PKGREVISION=	7
+-PKGREVISION=	8
 +DISTNAME=	pkg-1.9.99.2
  CATEGORIES=	pkgtools
  MASTER_SITES=	http://files.etoilebsd.net/pkg/
@@ -25,21 +25,27 @@
  
  .if defined(DEBUG_PKGNG)
  CFLAGS:=	${CFLAGS:N-O2} -ggdb -O0
-@@ -92,6 +97,13 @@ SUBST_FILES.vuxml=	libpkg/pkg_audit.c
+@@ -92,6 +97,19 @@ SUBST_FILES.vuxml=	libpkg/pkg_audit.c
  SUBST_SED.vuxml=	-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
  SUBST_MESSAGE.vuxml=	Direct audit reports to Pkgsrc vuxml
  
-+# These next two can removed with version 1.9.99.3+
++# These next three can removed with version 1.9.99.3+
 +SUBST_CLASSES+=		sbuftype
 +SUBST_STAGE.sbuftype=	post-patch
 +SUBST_FILES.sbuftype=	external/libsbuf/sys/sbuf.h
 +SUBST_SED.sbuftype=	-e "s|_types.h|types.h|"
 +SUBST_MESSAGE.sbuftype=	gitfix 043e8f6 (sbuf.h)
 +
++SUBST_CLASSES+=		fpostype
++SUBST_STAGE.fpostype=	post-patch
++SUBST_FILES.fpostype=	external/libfetch/ftp.c
++SUBST_SED.fpostype=	-e "s|fpos_t|off_t|"
++SUBST_MESSAGE.fpostype=	gitfix 57cf34d (ftp.c)
++
  SUBST_CLASSES+=		ldhints
  SUBST_STAGE.ldhints=	post-patch
  SUBST_FILES.ldhints=	libpkg/private/ldconfig.h libpkg/elfhints.c
-@@ -111,6 +123,15 @@ PKG.portsdir?=	${PKGSRCDIR}
+@@ -111,6 +129,15 @@ PKG.portsdir?=	${PKGSRCDIR}
  BUILDLINK_PASSTHRU_RPATHDIRS=	/lib/priv
  .endif
  
@@ -55,7 +61,7 @@
  post-patch:
  	${CP} ${FILESDIR}/readpassphrase_compat.h \
  		${WRKSRC}/src/
-@@ -130,6 +151,9 @@ post-patch:
+@@ -130,6 +157,9 @@ post-patch:
  		${WRKSRC}/configure
  .endif
  
@@ -65,7 +71,7 @@
  post-install:
  	${RM} ${DESTDIR}${PREFIX}/sbin/pkg2ng
  	${RM} -rf ${DESTDIR}${EGDIR}/periodic
-@@ -139,6 +163,9 @@ post-install:
+@@ -139,6 +169,9 @@ post-install:
  		${DESTDIR}${EGDIR}/
  	${MV} ${DESTDIR}${PREFIX}/etc/pkg.conf.sample \
  		${DESTDIR}${EGDIR}/
@@ -75,8 +81,8 @@
  
  .include "../../mk/bsd.prefs.mk"
  
-@@ -148,6 +175,29 @@ PKGNG_DBDIR?=	${PKG_DBDIR}
- PKGNG_DBDIR?=	/var/db/pkgng
+@@ -148,6 +181,29 @@ PKGNG_DBDIR?=	${PKG_DBDIR}
+ PKGNG_DBDIR?=	${PREFIX}/pkgng-db
  .endif
  
 +# Disable checksum when pkg(8) is not installed and PKG_FORMAT is "pkgng".

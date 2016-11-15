@@ -66,16 +66,12 @@ dependencies will be installed using the old package tools, and then they will
 be rebuilt and reinstalled using the new format.
 
 1.  echo "PKG_FORMAT= pkg" >> /etc/mk.conf
-2.  cd /usr/pkgsrc-synth-master/pkgtools/bootstrap-mk-files
+2.  cd /usr/pkgsrc-synth-master/pkgtools/pkg
 2a. make install
 2b. make clean clean-depends
-3.  cd ../pkg
-3a. make install
-3b. make clean clean-depends
-4.  vi /etc/mk.conf
-4a. (change PKG_FORMAT from "pkg" to "pkgng")
-5.  cd ../bootstrap-mk-files && make install
-6.  cd ../pkg && make install
+3.  vi /etc/mk.conf
+3a. (change PKG_FORMAT from "pkg" to "pkgng")
+4.  make install
 
-If you've done everything correctly, "pkg info" from step 5 onwards should show
-installed packages.  Now use pkgsrc and pkg(8) normally.
+If you've done everything correctly, "pkg info" should show that pkg has
+registered intself.  Now use pkgsrc and pkg(8) normally.
