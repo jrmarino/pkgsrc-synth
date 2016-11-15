@@ -66,7 +66,7 @@ dependencies will be installed using the old package tools, and then they will
 be rebuilt and reinstalled using the new format.
 
 1.  echo "PKG_FORMAT= pkg" >> /etc/mk.conf
-2.  cd ../bootstrap-mk-files
+2.  cd /usr/pkgsrc-synth-master/pkgtools/bootstrap-mk-files
 2a. make install
 2b. make clean
 3.  cd ../pkg
