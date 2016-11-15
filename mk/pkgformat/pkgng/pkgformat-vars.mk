@@ -28,7 +28,7 @@ PKG_ADMIN_CMD?=		${LOCALBASE}/sbin/pkgng_admin
 # If pkg is present and PKG_DBDIR is not yet defined, get the value
 # directly from pkg(8)
 .if !defined(PKG_DBDIR)
-PKG_DBDIR!=		${PKG_CMD} config PKG_DBDIR 2>/dev/null || echo /var/db/pkgng
+PKG_DBDIR!=		${PKG_CMD} config PKG_DBDIR 2>/dev/null || echo ${LOCALBASE}/pkgng-db
 .endif
 
 # Hardcode PKGTOOLS_VERSION to latest at time of writing
