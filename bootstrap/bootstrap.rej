@@ -1,0 +1,15 @@
+@@ -487,7 +491,13 @@
+ fi
+ 
+ [ -z "$varbase" ] && varbase=${prefix}/var
+-[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg
++
++case "$format" in
++pkg)
++	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkg;;
++*)
++	[ -z "$pkgdbdir" ] && pkgdbdir=${varbase}/db/pkgng;;
++esac
+ 
+ if [ "$prefix" = "/usr" ]; then
+ 	[ -z "$pkginfodir" ] && pkginfodir=share/info

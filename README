@@ -68,10 +68,10 @@ be rebuilt and reinstalled using the new format.
 1.  echo "PKG_FORMAT= pkg" >> /etc/mk.conf
 2.  cd /usr/pkgsrc-synth-master/pkgtools/bootstrap-mk-files
 2a. make install
-2b. make clean
+2b. make clean clean-depends
 3.  cd ../pkg
 3a. make install
-3b. make clean
+3b. make clean clean-depends
 4.  vi /etc/mk.conf
 4a. (change PKG_FORMAT from "pkg" to "pkgng")
 5.  cd ../bootstrap-mk-files && make install
