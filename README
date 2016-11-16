@@ -68,8 +68,8 @@ be rebuilt and reinstalled using the new format.
 1.  mkdir -p /tmp/pkgngboot
 2.  use vi to add/change the following lines to mk.conf
     PKG_FORMAT= pkg
-    LOCALBASE= /tmp/pkgngboot/
-    PKG_DBDIR= /tmp/pkgngboot/pkgdb
+    LOCALBASE=  /tmp/pkgngboot/
+    PKG_DBDIR=  /tmp/pkgngboot/pkgdb
     PKGNG_DBDIR= /usr/pkg/pkgng-db
 3.  cd /usr/pkgsrc-synth-master/pkgtools/pkg
 3.  make install
@@ -77,7 +77,7 @@ be rebuilt and reinstalled using the new format.
 5.  use vi to change the following line to mk.conf
     PKG_FORMAT= pkgng
     LOCALBASE=  /usr/pkg          # default; can remove line
-    PKG_DBDIR= /usr/pkg/pkgng-db
+    PKG_DBDIR=  /usr/pkg/pkgng-db
     #PKGNG_DBDIR= /usr/pkg/pkgng-db
 6.  make PKG_CMD=/tmp/pkgngboot/sbin/pkg-static PKG_ADMIN=/tmp/pkgngboot/sbin/pkgng_admin install
 7.  rm -rf /tmp/pkgngboot
