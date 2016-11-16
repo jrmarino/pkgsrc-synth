@@ -107,7 +107,7 @@ SUBST_MESSAGE.sbuftype=	gitfix 043e8f6 (sbuf.h)
 SUBST_CLASSES+=		fpostype
 SUBST_STAGE.fpostype=	post-patch
 SUBST_FILES.fpostype=	external/libfetch/ftp.c
-SUBST_SED.fpostype=	-e "s|fpos_t|off_t|"
+SUBST_SED.fpostype=	-e "s|fpos_t|off_t|g"
 SUBST_MESSAGE.fpostype=	gitfix 57cf34d (ftp.c)
 
 SUBST_CLASSES+=		ldhints
