@@ -85,9 +85,7 @@ be rebuilt and reinstalled using the new format.
 If you've done everything correctly, "pkg info" should show that pkg has
 registered intself.  Now use pkgsrc and pkg(8) normally.
 
-```
-> pkg info
+# pkg info
 cwrappers-20160908             pkgsrc compiler wrappers
 digest-20160304                Message digest wrapper utility
 pkg-1.9.99.2                   Package management tool for FreeBSD
-```
