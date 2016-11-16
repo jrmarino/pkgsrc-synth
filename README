@@ -62,8 +62,9 @@ this repository (see the example above).
 
 In order to obtain a registered version of pkg(8) from source, we will have to
 build a few packages twice: The first version of pkg(8) and its fundamental 
-dependencies will be installed using the old package tools, and then they will
-be rebuilt and reinstalled using the new format.
+dependencies will be installed to a temporary location using the old package
+tools, and then they will be rebuilt and reinstalled using the new format to
+the intended localbase.
 
 1.  mkdir -p /tmp/pkgngboot
 2.  use vi to add/change the following lines to mk.conf
