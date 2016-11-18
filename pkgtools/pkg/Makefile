@@ -181,6 +181,10 @@ PKGNG_DBDIR?=	${PKG_DBDIR}
 PKGNG_DBDIR?=	${PREFIX}/pkgng-db
 .endif
 
+.if ${OPSYS} == "NetBSD"
+BUILDLINK_TRANSFORM+=	rm:-Wl,--enable-new-dtags
+.endif
+
 # Disable checksum when pkg(8) is not installed and PKG_FORMAT is "pkgng".
 # This format requires pkg to be present for the "info" capability used
 # extensively, including for checksums.  It's bootstrap chicken/egg scenario.
