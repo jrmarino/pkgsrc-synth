@@ -150,6 +150,19 @@ post-install:
 		${MAKE_PROGRAM} ${MAKE_FLAGS} ${INSTALL_MAKE_FLAGS} \
 		-f Makefile install)
 
+deinstall:
+	@${ECHO} "*************************************************************"
+	@${ECHO} " Do not deinstall pkgtools/pkg!"
+	@${ECHO} " To upgrade, just 'install' which will update files in-place"
+	@${ECHO} "*************************************************************"
+
+su-real-package-install:
+	@${ECHO} "Force-installing ${PKGNAME}"
+	@${PKG_ADD_CMD} -f ${STAGE_PKGFILE}
+
+install:
+	# do nothing
+
 .include "../../mk/bsd.prefs.mk"
 
 .if defined (PKG_DBDIR)

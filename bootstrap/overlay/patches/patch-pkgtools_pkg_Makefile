@@ -1,4 +1,4 @@
---- pkgtools/pkg/Makefile.orig	2016-11-20 01:23:09 UTC
+--- pkgtools/pkg/Makefile.orig	2016-11-20 02:08:24 UTC
 +++ pkgtools/pkg/Makefile
 @@ -15,6 +15,11 @@ GNU_CONFIGURE=	yes
  USE_CWRAPPERS=	no
@@ -38,17 +38,30 @@
  post-install:
  	${RM} ${DESTDIR}${PREFIX}/sbin/pkg2ng
  	${RM} -rf ${DESTDIR}${EGDIR}/periodic
-@@ -129,6 +146,9 @@ post-install:
+@@ -129,6 +146,22 @@ post-install:
  		${DESTDIR}${EGDIR}/
  	${MV} ${DESTDIR}${PREFIX}/etc/pkg.conf.sample \
  		${DESTDIR}${EGDIR}/
 +	(cd ${WRKSRC.pkgng} && ${PKGSRC_SETENV} ${INSTALL_ENV} ${MAKE_ENV} \
 +		${MAKE_PROGRAM} ${MAKE_FLAGS} ${INSTALL_MAKE_FLAGS} \
 +		-f Makefile install)
++
++deinstall:
++	@${ECHO} "*************************************************************"
++	@${ECHO} " Do not deinstall pkgtools/pkg!"
++	@${ECHO} " To upgrade, just 'install' which will update files in-place"
++	@${ECHO} "*************************************************************"
++
++su-real-package-install:
++	@${ECHO} "Force-installing ${PKGNAME}"
++	@${PKG_ADD_CMD} -f ${STAGE_PKGFILE}
++
++install:
++	# do nothing
  
  .include "../../mk/bsd.prefs.mk"
  
-@@ -142,6 +162,28 @@ PKGNG_DBDIR?=	${PREFIX}/pkgng-db
+@@ -142,6 +175,28 @@ PKGNG_DBDIR?=	${PREFIX}/pkgng-db
  BUILDLINK_TRANSFORM+=	rm:-Wl,--enable-new-dtags
  .endif
  
