@@ -1,6 +1,6 @@
-# $NetBSD: Makefile,v 1.16 2016/11/15 17:48:56 marino Exp $
+# $NetBSD: Makefile,v 1.18 2016/11/20 01:18:46 marino Exp $
 
-DISTNAME=	pkg-1.9.99.2
+DISTNAME=	pkg-1.9.99.3
 CATEGORIES=	pkgtools
 MASTER_SITES=	http://files.etoilebsd.net/pkg/
 EXTRACT_SUFX=	.tar.xz
@@ -97,26 +97,6 @@ SUBST_FILES.vuxml=	libpkg/pkg_audit.c
 SUBST_SED.vuxml=	-e "s|https://vuxml.FreeBSD.org/freebsd|http://muscles.dragonflybsd.org/pkgsrc-vuxml/reports|"
 SUBST_MESSAGE.vuxml=	Direct audit reports to Pkgsrc vuxml
 
-# These next three can removed with version 1.9.99.3+
-SUBST_CLASSES+=		sbuftype
-SUBST_STAGE.sbuftype=	post-patch
-SUBST_FILES.sbuftype=	external/libsbuf/sys/sbuf.h
-SUBST_SED.sbuftype=	-e "s|_types.h|types.h|"
-SUBST_MESSAGE.sbuftype=	gitfix 043e8f6 (sbuf.h)
-
-SUBST_CLASSES+=		fpostype
-SUBST_STAGE.fpostype=	post-patch
-SUBST_FILES.fpostype=	external/libfetch/ftp.c
-SUBST_SED.fpostype=	-e "s|fpos_t|off_t|g"
-SUBST_MESSAGE.fpostype=	gitfix 57cf34d (ftp.c)
-
-SUBST_CLASSES+=		ldhints
-SUBST_STAGE.ldhints=	post-patch
-SUBST_FILES.ldhints=	libpkg/private/ldconfig.h libpkg/elfhints.c
-SUBST_SED.ldhints=	-e "s|/var/run/ld-elf.so.hints|/var/run/ld.so.hints|" \
-			-e 's,ifndef __linux__,if defined __FreeBSD__ || defined __DragonFly__,'
-SUBST_MESSAGE.ldhints=	Disable ldconfig hints for NetBSD
-
 .if defined(PACKAGE_BUILDING) # set by Synth which has custom location, so use default path
 PKG.portsdir?=	/usr/pkgsrc
 .else
@@ -139,9 +119,6 @@ post-extract:
 		${WRKSRC.pkgng}/pkgng_admin.conf.5
 
 post-patch:
-	${CP} ${FILESDIR}/readpassphrase_compat.h \
-		${WRKSRC}/src/
-
 # DragonFly SSL libraries are private.
 .if exists(/usr/lib/priv/libprivate_ssl.so)
 	${SED} -i.bak \
@@ -198,7 +175,6 @@ BUILDLINK_TRANSFORM+=	rm:-Wl,--enable-new-dtags
 
 .if ${PKG_FORMAT:Mpkgng} && !exists(${PKG_CMD})
 NO_CHECKSUM=			yes
-SKIP_LICENSE_CHECK=		yes
 ALLOW_VULNERABLE_PACKAGES=	yes
 TOOLS_IGNORE.digest=		# block dependency on digest
 STATIC_PKG=			${DESTDIR}${LOCALBASE}/sbin/pkg-static
