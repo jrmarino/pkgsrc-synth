@@ -38,14 +38,18 @@ _FOOTER_TMPL=		${.CURDIR}/../../mk/pkginstall/footer
 DEINSTALL_FILE=		# none
 INSTALL_FILE=		# none
 
-.if exists(${PKGDIR}/DEINSTALL)
+.if exists(${PKGDIR}/DEINSTALL) || defined (DEINSTALL_TEMPLATES)
 DEINSTALL_FILE=		${PKG_DB_TMPDIR}/+DEINSTALL
-DEINSTALL_TEMPLATES=	${PKGDIR}/DEINSTALL
+. if exists(${PKGDIR}/DEINSTALL)
+DEINSTALL_TEMPLATES+=	${PKGDIR}/DEINSTALL
+. endif
 .endif
 
-.if exists(${PKGDIR}/INSTALL)
+.if exists(${PKGDIR}/INSTALL) || defined (INSTALL_TEMPLATES)
 INSTALL_FILE=		${PKG_DB_TMPDIR}/+INSTALL
-INSTALL_TEMPLATES=	${PKGDIR}/INSTALL
+. if exists(${PKGDIR}/INSTALL)
+INSTALL_TEMPLATES+=	${PKGDIR}/INSTALL
+. endif
 .endif
 
 # These are the list of source files that are concatenated to form the

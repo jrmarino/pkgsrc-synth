@@ -4,7 +4,7 @@ SELF="$0" # pkg-install or pkg-deinstall
 PKGNAME="$1"
 shift
 
-# Now $1 is PRE-INSTALL, INSTALL, PRE-DEINSTALL, DEINSTALL
+# Now $1 is PRE-INSTALL, INSTALL, DEINSTALL, POST-DEINSTALL
 STAGE="$1"
 
 # PKG_PREFIX should be defined through the environment
