@@ -1,5 +1,4 @@
-#!@SH@
-#
+# pkg(8) script
 
 SELF="$0" # pkg-install or pkg-deinstall
 PKGNAME="$1"
