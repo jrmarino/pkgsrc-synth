@@ -28,6 +28,7 @@ USE_BUILTIN.termcap=	NO
 USE_BUILTIN.curses=	NO
 USE_BUILTIN.ncurses=	NO
 USE_BUILTIN.readline=	NO
+USE_BUILTIN.openssl=	NO
 CURSES_DEFAULT=		ncurses
 READLINE_DEFAULT=	readline
 
