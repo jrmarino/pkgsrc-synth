@@ -1,3 +1,4 @@
+SUBDIR+=	synth
 # $NetBSD: Makefile,v 1.114 2016/10/01 18:42:53 kamil Exp $
 #
 

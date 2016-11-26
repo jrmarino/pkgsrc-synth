@@ -1,3 +1,4 @@
+SUBDIR+=	adacurses
 # $NetBSD: Makefile,v 1.2336 2016/11/24 01:11:59 joerg Exp $
 #
 

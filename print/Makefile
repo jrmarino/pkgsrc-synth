@@ -1,3 +1,4 @@
+SUBDIR+=	indexinfo
 # $NetBSD: Makefile,v 1.676 2016/11/08 11:42:16 wiz Exp $
 #
 

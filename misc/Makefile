@@ -1,3 +1,4 @@
+SUBDIR+=	ini_file_manager
 # $NetBSD: Makefile,v 1.475 2016/11/16 10:40:05 leot Exp $
 #
 
