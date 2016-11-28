@@ -1,5 +1,5 @@
 SUBDIR+=	adacurses
-# $NetBSD: Makefile,v 1.2336 2016/11/24 01:11:59 joerg Exp $
+# $NetBSD: Makefile,v 1.2337 2016/11/28 19:17:17 joerg Exp $
 #
 
 COMMENT=	Development utilities
@@ -2197,6 +2197,7 @@ SUBDIR+=	subversion
 SUBDIR+=	subversion-base
 SUBDIR+=	sunifdef
 SUBDIR+=	svk
+SUBDIR+=	svn-bisect
 SUBDIR+=	swig
 SUBDIR+=	swig2
 SUBDIR+=	swig3
