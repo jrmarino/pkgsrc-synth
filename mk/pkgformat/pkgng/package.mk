@@ -21,6 +21,7 @@ STAGE_PKGFILE?=		${WRKDIR}/.packages/${PACKAGE_NAME}
 PKGREPOSITORY=		${PACKAGES}/All
 PKGREPOSITORYLATEST=	${PACKAGES}/Latest
 PKGLATESTFILE=		${PKGREPOSITORYLATEST}/pkg.txz
+BMAKELATESTFILE=	${PKGREPOSITORYLATEST}/bmake.txz
 
 ######################################################################
 ### package-check-installed (PRIVATE, pkgsrc/mk/package/package.mk)
@@ -43,6 +44,14 @@ package-create: ${PKGFILE}
 .if ${FILEBASE:Mpkg}
 	@${MKDIR} ${PKGREPOSITORYLATEST}
 	${LN} -sf ../All/${PACKAGE_NAME} ${PKGLATESTFILE}
+.endif
+.if ${FILEBASE:Mbmake}
+	@${MKDIR} ${PKGREPOSITORYLATEST}
+	${LN} -sf ../All/${PACKAGE_NAME} ${BMAKELATESTFILE}
+.endif
+.if ${FILEBASE:Mbootstrap-mk-files}
+	@${MKDIR} ${PKGREPOSITORYLATEST}
+	${LN} -sf ../All/${PACKAGE_NAME} ${PKGREPOSITORYLATEST}/${PACKAGE_NAME}
 .endif
 
 ######################################################################
