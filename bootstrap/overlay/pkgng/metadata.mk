@@ -170,12 +170,11 @@ ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 
 	${RUN}${ECHO} "options: {" >> ${.TARGET}
 .if defined(PKG_SUPPORTED_OPTIONS) && !empty(PKG_SUPPORTED_OPTIONS)
-.  for opt in ${PKG_SUPPORTED_OPTIONS:u:O}
-.    if ${PKG_OPTIONS:M${opt}}
+.  for opt in ${PKG_OPTIONS}
 	${RUN}${ECHO} " ${opt}: on," >> ${.TARGET}
-.    else
+.  endfor
+.  for opt in ${PKG_DESELECTED_OPTIONS}
 	${RUN}${ECHO} " ${opt}: off," >> ${.TARGET}
-.    endif
 .  endfor
 .endif
 	${RUN}${ECHO} "}" >> ${.TARGET}
