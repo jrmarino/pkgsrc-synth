@@ -207,7 +207,7 @@ MAKEFLAGS.su-real-package-install=	PKGNAME_REQD=${PKGNAME_REQD:Q}
 su-real-package-install:
 	@${PHASE_MSG} "Installing binary package of "${PKGNAME:Q}
 	${RUN} case ${_AUTOMATIC:Q}"" in \
-	[yY][eE][sS])	${PKG_ADD_CMD} -A ${STAGE_PKGFILE} ;; \
-	*)		${PKG_ADD_CMD} ${STAGE_PKGFILE} ;; \
+	[yY][eE][sS])	${PKG_ADD_CMD} -A ${PKGFILE} ;; \
+	*)		${PKG_ADD_CMD} ${PKGFILE} ;; \
 	esac
 .endif
