@@ -10,13 +10,14 @@ HOMEPAGE=	https://github.com/jrmarino/synth
 COMMENT=	Custom package repository builder for pkgsrc
 
 SYNVERSION=	1.66
-TAGNAME=	55f7842
+TAGNAME=	4fc6a8a
 LICENSE=	isc
 
 BUILD_DEPENDS=	ncurses>=6:../../devel/ncurses
 BUILD_DEPENDS+=	ini_file_manager>=03:../../misc/ini_file_manager
 BUILD_DEPENDS+=	adacurses>=20150808:../../devel/adacurses
 DEPENDS=	bmake>=20150505:../../devel/bmake
+DEPENDS+=	digest>=20160304:../../pkgtools/digest
 
 USE_LANGUAGES=	c ada
 WRKSRC=		${WRKDIR}/synth-${TAGNAME}
