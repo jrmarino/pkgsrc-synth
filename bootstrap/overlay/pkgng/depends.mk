@@ -4,6 +4,14 @@
 # dependencies of the package.
 #
 # This is used in install.mk and metadata.mk.
+
+#
+# From FreeBSD Ports Collection:
+#
+# USE_PACKAGE_DEPENDS		- Try to install dependencies from existing packages instead
+#				  of building the port from scratch. Fallback on source
+#				  if an existing package is not present.
+# USE_PACKAGE_DEPENDS_ONLY	- Like USE_PACKAGE_DEPENDS, but do not fallback on source.
 #
 
 # ${_DEPENDS_FILE} contains all the dependency information
@@ -117,7 +125,21 @@ _DEPENDS_INSTALL_CMD= \
 	esac;								\
 	case "$$pkg" in							\
 	"")								\
-		${STEP_MSG} "$$Type dependency $$pattern: NOT found";	\
+	    ${STEP_MSG} "$$Type dependency $$pattern: NOT found";	\
+	    if [ -n "${USE_PACKAGE_DEPENDS}" -o -n "${USE_PACKAGE_DEPENDS_ONLY}" ]; then \
+		pkgfile=$$(${MAKE} -C $$dir .MAKE.EXPAND_VARIABLES=yes -VPKGFILE); \
+		if [ -r "$$pkgfile" ]; then				\
+			${PKG_ADD_CMD} -A $$pkgfile;			\
+			${STEP_MSG} "Returning to build of ${PKGNAME}";	\
+			exit 0;						\
+		fi							\
+	    fi;								\
+	    if [ -n "${USE_PACKAGE_DEPENDS_ONLY}" ]; then		\
+		${ERROR_MSG} "[depends.mk] A package named \`\`$$pkgfile'' is not installed, nor"; \
+		${ERROR_MSG} "is it present in the packages directory."; \
+		${ERROR_MSG} "USE_PACKAGE_DEPENDS_ONLY is set (source building not allowed)"; \
+		exit 1;							\
+	    else							\
 		target=${DEPENDS_TARGET:Q};				\
 		${STEP_MSG} "Verifying $$target for $$dir";		\
 		[ -d "$$dir" ] || ${FAIL_MSG} "[depends.mk] The directory \`\`$$dir'' does not exist."; \
@@ -141,7 +163,8 @@ _DEPENDS_INSTALL_CMD= \
 			exit 1;						\
 		esac;							\
 		${STEP_MSG} "Returning to build of ${PKGNAME}";		\
-		;;							\
+	    fi;								\
+	    ;;								\
 	*)								\
 		silent=${_BOOTSTRAP_VERBOSE:Dyes};			\
 		if ${TEST} -z "$${silent}"; then			\

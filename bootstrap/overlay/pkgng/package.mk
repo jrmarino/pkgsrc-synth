@@ -18,8 +18,9 @@ FILEBASE?=		${PKGBASE}
 PACKAGE_NAME=		${FILEBASE}-${PKGVERSION}${PKGNG_SUFX}
 PKGFILE?=		${PKGREPOSITORY}/${PACKAGE_NAME}
 STAGE_PKGFILE?=		${WRKDIR}/.packages/${PACKAGE_NAME}
-PKGREPOSITORY?=		${PACKAGES}/${PKGREPOSITORYSUBDIR}
-PKGREPOSITORYSUBDIR?=	All
+PKGREPOSITORY=		${PACKAGES}/All
+PKGREPOSITORYLATEST=	${PACKAGES}/Latest
+PKGLATESTFILE=		${PKGREPOSITORYLATEST}/pkg.txz
 
 ######################################################################
 ### package-check-installed (PRIVATE, pkgsrc/mk/package/package.mk)
@@ -39,6 +40,10 @@ package-check-installed:
 ###
 .PHONY: package-create
 package-create: ${PKGFILE}
+.if ${FILEBASE:Mpkg}
+	@${MKDIR} ${PKGREPOSITORYLATEST}
+	${LN} -sf ../All/${PACKAGE_NAME} ${PKGLATESTFILE}
+.endif
 
 ######################################################################
 ### stage-package-create (PRIVATE, pkgsrc/mk/package/package.mk)
