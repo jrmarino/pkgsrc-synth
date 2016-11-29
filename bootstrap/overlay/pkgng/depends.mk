@@ -114,27 +114,28 @@ _DEPENDS_INSTALL_CMD= \
 		fi;							\
 		cross=no;						\
 		archopt=TARGET_ARCH=${MACHINE_ARCH};			\
-		pkg=`${_HOST_PKG_BEST_EXISTS} "$$pattern" || ${TRUE}`;	\
+		pkg=`${_HOST_PKG_BEST_EXISTS} "$$pattern" 2>/dev/null || ${TRUE}`;	\
 		;;							\
 	build|full)							\
 		extradep=" ${PKGNAME}";					\
 		cross=${USE_CROSS_COMPILE:Uno};				\
 		archopt=;						\
-		pkg=`${_PKG_BEST_EXISTS} "$$pattern" || ${TRUE}`;	\
+		pkg=`${_PKG_BEST_EXISTS} "$$pattern" 2>/dev/null || ${TRUE}`;	\
 		;;							\
 	esac;								\
 	case "$$pkg" in							\
 	"")								\
-	    ${STEP_MSG} "$$Type dependency $$pattern: NOT found";	\
 	    package_installed=0;					\
 	    if [ -n "${USE_PACKAGE_DEPENDS}" -o -n "${USE_PACKAGE_DEPENDS_ONLY}" ]; then \
 		pkgfile=$$(${MAKE} -C $$dir .MAKE.EXPAND_VARIABLES=yes -VPKGFILE); \
 		if [ -r "$$pkgfile" ]; then				\
+			${STEP_MSG} "$$Type dependency $$pattern not installed, but package found."; \
 			${PKG_ADD_CMD} -A $$pkgfile;			\
 			package_installed=1;				\
 		fi							\
 	    fi;								\
 	    if [ $$package_installed -eq 0 ]; then			\
+	    ${STEP_MSG} "$$Type dependency $$pattern required";		\
 	    if [ -n "${USE_PACKAGE_DEPENDS_ONLY}" ]; then		\
 		${ERROR_MSG} "[depends.mk] A package named \`\`$$pkgfile'' is not installed, nor"; \
 		${ERROR_MSG} "is it present in the packages directory."; \
