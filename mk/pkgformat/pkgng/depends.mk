@@ -126,14 +126,15 @@ _DEPENDS_INSTALL_CMD= \
 	case "$$pkg" in							\
 	"")								\
 	    ${STEP_MSG} "$$Type dependency $$pattern: NOT found";	\
+	    package_installed=0;					\
 	    if [ -n "${USE_PACKAGE_DEPENDS}" -o -n "${USE_PACKAGE_DEPENDS_ONLY}" ]; then \
 		pkgfile=$$(${MAKE} -C $$dir .MAKE.EXPAND_VARIABLES=yes -VPKGFILE); \
 		if [ -r "$$pkgfile" ]; then				\
 			${PKG_ADD_CMD} -A $$pkgfile;			\
-			${STEP_MSG} "Returning to build of ${PKGNAME}";	\
-			exit 0;						\
+			package_installed=1;				\
 		fi							\
 	    fi;								\
+	    if [ $$package_installed -eq 0 ]; then			\
 	    if [ -n "${USE_PACKAGE_DEPENDS_ONLY}" ]; then		\
 		${ERROR_MSG} "[depends.mk] A package named \`\`$$pkgfile'' is not installed, nor"; \
 		${ERROR_MSG} "is it present in the packages directory."; \
@@ -163,6 +164,7 @@ _DEPENDS_INSTALL_CMD= \
 			exit 1;						\
 		esac;							\
 		${STEP_MSG} "Returning to build of ${PKGNAME}";		\
+	    fi;								\
 	    fi;								\
 	    ;;								\
 	*)								\
