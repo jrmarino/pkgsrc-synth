@@ -137,7 +137,7 @@ ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 	${RUN} { \
 	${ECHO} "name: \"${PKGNAME:C/(.*)-.*/\1/}\""; \
 	${ECHO} "version: \"${PKGVERSION}\""; \
-	${ECHO} "origin: ${CATEGORIES}/${PKGNAME:C/(.*)-.*/\1/}"; \
+	${ECHO} "origin: ${PKGDIR:H:T}/${PKGDIR:T}"; \
 	${ECHO} "comment: <<EOD"; \
 	${ECHO} ${COMMENT:Q}; \
 	${ECHO} "EOD"; \
