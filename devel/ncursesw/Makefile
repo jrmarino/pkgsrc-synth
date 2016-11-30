@@ -34,8 +34,8 @@ do-install:
 		    ${WRKSRC}/lib/lib$${LIB}w.la ${DESTDIR}${PREFIX}/lib;	\
 	done
 
-BUILDLINK_API_DEPENDS.ncurses+=	ncurses-${NC_VERS}{,nb*}
-BUILDLINK_ABI_DEPENDS.ncurses+=	ncurses-${NC_VERS}{,nb*}
+BUILDLINK_API_DEPENDS.ncurses+=	ncurses>=${NC_VERS}<${NC_VERS}nb999
+BUILDLINK_ABI_DEPENDS.ncurses+=	ncurses>=${NC_VERS}<${NC_VERS}nb999
 USE_NCURSES=			yes
 
 .include "../../devel/ncurses/buildlink3.mk"
