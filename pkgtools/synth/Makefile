@@ -10,7 +10,7 @@ HOMEPAGE=	https://github.com/jrmarino/synth
 COMMENT=	Custom package repository builder for pkgsrc
 
 SYNVERSION=	1.66
-TAGNAME=	4fc6a8a
+TAGNAME=	c4822b6
 LICENSE=	isc
 
 BUILD_DEPENDS=	ncurses>=6:../../devel/ncurses
@@ -25,6 +25,7 @@ GPR=		${LOCALBASE}/lib/gnat
 MAKE_ENV=	NCURSES_LINK=static \
 		ADA_PROJECT_PATH=${LOCALBASE}/lib/gnat
 
+USE_LANGUAGES+=		c++ fortran # not used but avoids bogus warnings
 ONLY_FOR_PLATFORM=	FreeBSD-*-* DragonFly-*-* NetBSD-*-*
 # TO-DO			Linux-*-* SunOS-*-*
 
