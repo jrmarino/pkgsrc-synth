@@ -22,4 +22,10 @@ USE_TOOLS+=	pkg-config perl
 PKGCONFIG_OVERRIDE+=	pixman-1.pc.in
 PKGCONFIG_OVERRIDE+=	pixman-1-uninstalled.pc.in
 
+SUBST_CLASSES=		subdirs
+SUBST_STAGE.subdirs=	post-patch
+SUBST_FILES.subdirs=	Makefile.in
+SUBST_SED.subdirs=	-e "s|pixman demos test|pixman|"
+SUBST_MESSAGE.lbase=	Skip building demos and test SUBDIRS
+
 .include "../../mk/bsd.pkg.mk"
