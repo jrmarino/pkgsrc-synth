@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.64 2016/07/09 10:22:29 rillig Exp $
+# $NetBSD: Makefile,v 1.65 2016/12/01 15:47:24 marino Exp $
 
 DISTNAME=	pixman-0.34.0
 PKGREVISION=	1
