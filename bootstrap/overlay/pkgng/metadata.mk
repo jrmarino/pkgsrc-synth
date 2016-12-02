@@ -173,7 +173,7 @@ ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 .  for opt in ${PKG_OPTIONS}
 	${RUN}${ECHO} " ${opt}: on," >> ${.TARGET}
 .  endfor
-.  for opt in ${PKG_DESELECTED_OPTIONS}
+.  for opt in ${PKG_DISABLED_OPTIONS}
 	${RUN}${ECHO} " ${opt}: off," >> ${.TARGET}
 .  endfor
 .endif
