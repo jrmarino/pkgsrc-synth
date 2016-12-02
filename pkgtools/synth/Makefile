@@ -10,7 +10,7 @@ HOMEPAGE=	https://github.com/jrmarino/synth
 COMMENT=	Custom package repository builder for pkgsrc
 
 SYNVERSION=	1.66
-TAGNAME=	5b71678
+TAGNAME=	ed70624
 LICENSE=	isc
 
 BUILD_DEPENDS=	ncurses>=6:../../devel/ncurses
