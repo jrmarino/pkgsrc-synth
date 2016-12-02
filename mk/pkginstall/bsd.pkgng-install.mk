@@ -148,8 +148,9 @@ GROUPS_BLACKLIST=	_dhcp _pflogd _ypldap audit authpf bin bind daemon \
 PGE=PKG_GID.${_entry_:C|^.+:||}
 PUE=PKG_UID.${_entry_:C|:.*||}
 .  if !defined(${PGE}) || !defined(${PUE})
-PKG_SKIP_REASON+=	"Because USERGROUP_PHASE is set 'configure', the\
-	${PUE} and ${PGE} variables must be defined by the user"
+_TMP_REASON:=	Because USERGROUP_PHASE is set 'configure', the\
+	${PUE} and ${PGE} variables must be defined by the user
+PKG_SKIP_REASON+=	${_TMP_REASON}
 .  endif
 . endfor
 .endif

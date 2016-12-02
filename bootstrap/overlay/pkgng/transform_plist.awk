@@ -246,9 +246,12 @@ function is_shell () {
 }
 
 function is_special_perms () {
+    if (substr($1, 1, 1) == "/") { candidate = $1  }
+    else                         { candidate = PREFIX "/" $1 }
+
     for (k = 0; k < num_SP; k++) {
        if (!used_SP[k]) {
-          if ($1 == SP[k+1]) {
+          if (candidate == SP[4*k+1]) {
              dump_SP(k);
              return 1;
           }
