@@ -4,8 +4,8 @@
 
 COMMENT=	Tools for providing messages in different languages
 
-DEPENDS+=	gettext-m4-${PKGVERSION_NOREV}{,nb[0-9]*}:../../devel/gettext-m4
-DEPENDS+=	gettext-tools-${PKGVERSION_NOREV}{,nb[0-9]*}:../../devel/gettext-tools
+DEPENDS+=	gettext-m4>=${PKGVERSION_NOREV}<=${PKGVERSION_NOREV}nb999:../../devel/gettext-m4
+DEPENDS+=	gettext-tools>=${PKGVERSION_NOREV}<=${PKGVERSION_NOREV}nb999:../../devel/gettext-tools
 BUILDLINK_API_DEPENDS.gettext+=	gettext-lib>=0.18
 
 USE_LANGUAGES=		c c++
