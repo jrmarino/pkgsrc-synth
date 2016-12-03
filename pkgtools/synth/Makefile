@@ -10,7 +10,7 @@ HOMEPAGE=	https://github.com/jrmarino/synth
 COMMENT=	Custom package repository builder for pkgsrc
 
 SYNVERSION=	1.66
-TAGNAME=	ed70624
+TAGNAME=	c8a361a
 LICENSE=	isc
 
 BUILD_DEPENDS=	ncurses>=6:../../devel/ncurses
@@ -29,7 +29,7 @@ USE_LANGUAGES+=		c++ fortran # not used but avoids bogus warnings
 ONLY_FOR_PLATFORM=	FreeBSD-*-* DragonFly-*-* NetBSD-*-*
 # TO-DO			Linux-*-* SunOS-*-*
 
-SUBST_CLASSES=		defs lbase tamper pkgng
+SUBST_CLASSES=		defs lbase tamper pkgng web pdir
 
 SUBST_STAGE.defs=	post-patch
 SUBST_FILES.defs=	src/definitions.ads
@@ -53,6 +53,16 @@ SUBST_STAGE.pkgng=	post-patch
 SUBST_FILES.pkgng=	src/portscan-pilot.ads
 SUBST_SED.pkgng=	-e "s|ports-mgmt/pkg|pkgtools/pkg|"
 SUBST_MESSAGE.pkgng=	Reset location for pkg(8) port
+
+SUBST_STAGE.web=	post-patch
+SUBST_FILES.web=	www/progress.js
+SUBST_SED.web=		-e "s|return FPClink|return NPSlink|"
+SUBST_MESSAGE.web=	Change web interface links from portsmon to pkgsrc.se
+
+SUBST_STAGE.pdir=	post-patch
+SUBST_FILES.pdir=	synth.1
+SUBST_SED.pdir=		-e "s|PORTSDIR|PKGSRCDIR|g"
+SUBST_MESSAGE.pdir=	Replace PORTSDIR with PKGSRCDIR on synth man page
 
 SUBST_STAGE.popen=	post-patch
 SUBST_FILES.popen=	src/unix.adb
