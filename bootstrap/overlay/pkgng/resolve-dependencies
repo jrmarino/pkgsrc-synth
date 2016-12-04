@@ -22,6 +22,7 @@
 
 set -e
 
+SEQPROG='{n=split(substr($0,2,length($0)-2),a,","); for (j=1;j<=n;j++) {print a[j] " "}}'
 DEPENDS_FILE=${_DEPENDS_FILE}
 unset _DEPENDS_FILE
 
@@ -39,10 +40,20 @@ find_best() {
 }
 
 ${CAT} ${DEPENDS_FILE} | while read type pattern dir; do
-	pkg=$(find_best "$type" "$pattern")
+	case ${pattern} in
+	{*})	list=$(echo ${pattern} | awk "${SEQPROG}")
+		for item in ${list}; do
+			pkg=$(find_best "${type}" "${item}")
+			[ -n "${pkg}" ] && break;
+		done
+		;;
+	*)	pkg=$(find_best "$type" "$pattern")
+		;;
+	esac
+
 	case "$pkg" in
 	"")
-		error_msg "[resolve-dependencies] A package matching \`\`$pattern'' should"
+		error_msg "[resolve-dependencies] A package matching '$pattern' should"
 		error_msg "    be installed, but one cannot be found.  Perhaps there is a"
 		error_msg "    stale work directory for $dir?"
 		exit 1

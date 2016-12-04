@@ -49,9 +49,20 @@ absolute_path() {
 }
 
 find_dep() {
+	local SEQPROG='{n=split(substr($0,2,length($0)-2),a,","); for (j=1;j<=n;j++) {print a[j] " "}}'
+	local nojoy="actual-package-depends: dependency on ${pattern} not registered"
 	pattern=$1
-	${PKG_BIN} info -Eg "${pattern}" 2>/dev/null ||
-		echo "actual-package-depends: dependency on ${pattern} not registered" >&2
+	case ${pattern} in
+	{*})	list=$(echo ${pattern} | awk "${SEQPROG}")
+		for item in ${list}; do
+			${PKG_BIN} info -Eg "${item}" 2>/dev/null && break;
+		done
+		echo ${nojoy} >&2
+		;;
+	*)	${PKG_BIN} info -Eg "${pattern}" 2>/dev/null ||
+		echo ${nojoy} >&2
+		;;
+	esac;
 }
 
 for lookup; do

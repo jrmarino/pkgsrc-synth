@@ -99,6 +99,7 @@ _RESOLVE_DEPENDS_CMD=	\
 #		build, full.
 #
 _DEPENDS_INSTALL_CMD= \
+	SEQPROG='{n=split(substr($$0,2,length($$0)-2),a,","); for (j=1;j<=n;j++) {print a[j] " "}}'; \
 	case $$type in \
 		bootstrap) Type=Bootstrap;; \
 		tool) Type=Tool;; \
@@ -120,7 +121,16 @@ _DEPENDS_INSTALL_CMD= \
 		extradep=" ${PKGNAME}";					\
 		cross=${USE_CROSS_COMPILE:Uno};				\
 		archopt=;						\
-		pkg=`${_PKG_BEST_EXISTS} "$$pattern" 2>/dev/null || ${TRUE}`;	\
+		case $$pattern in					\
+		{*})	list=$$(echo $$pattern | awk "$$SEQPROG");	\
+			for item in $$list; do				\
+			pkg=`${_PKG_BEST_EXISTS} "$$item" 2>/dev/null || ${TRUE}`;	\
+			[ -n "$$pkg" ] && break;			\
+			done;						\
+			;;						\
+		*)	pkg=`${_PKG_BEST_EXISTS} "$$pattern" 2>/dev/null || ${TRUE}`;	\
+			;;						\
+		esac							\
 		;;							\
 	esac;								\
 	case "$$pkg" in							\
@@ -137,14 +147,14 @@ _DEPENDS_INSTALL_CMD= \
 	    if [ $$package_installed -eq 0 ]; then			\
 	    ${STEP_MSG} "$$Type dependency $$pattern required";		\
 	    if [ -n "${USE_PACKAGE_DEPENDS_ONLY}" ]; then		\
-		${ERROR_MSG} "[depends.mk] A package named \`\`$$pkgfile'' is not installed, nor"; \
+		${ERROR_MSG} "[depends.mk] A package named '$$pkgfile' is not installed, nor"; \
 		${ERROR_MSG} "is it present in the packages directory."; \
 		${ERROR_MSG} "USE_PACKAGE_DEPENDS_ONLY is set (source building not allowed)"; \
 		exit 1;							\
 	    else							\
 		target=${DEPENDS_TARGET:Q};				\
 		${STEP_MSG} "Verifying $$target for $$dir";		\
-		[ -d "$$dir" ] || ${FAIL_MSG} "[depends.mk] The directory \`\`$$dir'' does not exist."; \
+		[ -d "$$dir" ] || ${FAIL_MSG} "[depends.mk] The directory '$$dir' does not exist."; \
 		cd $$dir;						\
 		${PKGSRC_SETENV} ${PKGSRC_MAKE_ENV}			\
 			_PKGSRC_DEPS="$$extradep${_PKGSRC_DEPS}"	\
