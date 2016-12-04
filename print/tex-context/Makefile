@@ -11,7 +11,7 @@ COMMENT=	The ConTeXt macro package
 CONFLICTS+=	teTeX-bin<=3.0nb44
 DEPENDS+=	tex-lm>=2.004nb1:../../fonts/tex-lm
 DEPENDS+=	tex-manfnt-font>=2014:../../fonts/tex-manfnt-font
-DEPENDS+=	tex-mflogo-font>=1.002:../../fonts/tex-mflogo-font
+DEPENDS+=	tex-mflogo-font>=1.002pl36898:../../fonts/tex-mflogo-font
 DEPENDS+=	tex-luatex>=0.70.1pl30581nb1:../../print/tex-luatex
 DEPENDS+=	tex-metapost>=1.211:../../graphics/tex-metapost
 DEPENDS+=	tex-mptopdf>=2010:../../graphics/tex-mptopdf

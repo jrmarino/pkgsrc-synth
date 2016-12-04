@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.145 2016/12/04 10:01:15 simonb Exp $
+# $NetBSD: Makefile,v 1.147 2016/12/04 22:02:00 rodent Exp $
 #
 
 COMMENT=	Document format and character code converters
