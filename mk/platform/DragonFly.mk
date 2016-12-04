@@ -1,4 +1,4 @@
-# $NetBSD: DragonFly.mk,v 1.50 2016/10/25 20:00:47 marino Exp $
+# $NetBSD: DragonFly.mk,v 1.51 2016/12/04 15:37:41 bsiegert Exp $
 #
 # Variable definitions for the DragonFly operating system.
 
@@ -32,7 +32,7 @@ USE_BUILTIN.openssl=	NO
 CURSES_DEFAULT=		ncurses
 READLINE_DEFAULT=	readline
 
-_OPSYS_EMULDIR.linux=	/compat/linux
+_OPSYS_EMULDIR.linux=	# empty
 
 _OPSYS_SYSTEM_RPATH?=		/lib:/usr/lib:/usr/lib/gcc47:/usr/lib/gcc50
 _OPSYS_LIB_DIRS?=		/lib /usr/lib
@@ -59,6 +59,7 @@ _STRIPFLAG_INSTALL?=	${_INSTALL_UNSTRIPPED:D:U-s}	# install(1) option to strip
 DEFAULT_SERIAL_DEVICE?=	/dev/cuaa0
 SERIAL_DEVICES?=	/dev/cuaa0
 
+_OPSYS_SUPPORTS_CWRAPPERS=	yes
 _OPSYS_CAN_CHECK_SHLIBS=	yes # use readelf in check/bsd.check-vars.mk
 
 # check for kqueue(2) support
