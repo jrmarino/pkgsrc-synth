@@ -99,7 +99,7 @@ _RESOLVE_DEPENDS_CMD=	\
 #		build, full.
 #
 _DEPENDS_INSTALL_CMD= \
-	SEQPROG='{n=split(substr($$0,2,length($$0)-2),a,","); for (j=1;j<=n;j++) {print a[j] " "}}'; \
+	SEQPROG='{b=index($$0,"{")+1; p=substr($$0,1,b-2); n=split(substr($$0,b,length($$0)-b),a,","); for (j=1;j<=n;j++) {print p a[j] " "}}'; \
 	case $$type in \
 		bootstrap) Type=Bootstrap;; \
 		tool) Type=Tool;; \
@@ -115,14 +115,23 @@ _DEPENDS_INSTALL_CMD= \
 		fi;							\
 		cross=no;						\
 		archopt=TARGET_ARCH=${MACHINE_ARCH};			\
-		pkg=`${_HOST_PKG_BEST_EXISTS} "$$pattern" 2>/dev/null || ${TRUE}`;	\
+		case $$pattern in					\
+		*{*})	list=$$(echo $$pattern | awk "$$SEQPROG");	\
+			for item in $$list; do				\
+			pkg=`${_HOST_PKG_BEST_EXISTS} "$$item" 2>/dev/null || ${TRUE}`;	\
+			[ -n "$$pkg" ] && break;			\
+			done;						\
+			;;						\
+		*)	pkg=`${_HOST_PKG_BEST_EXISTS} "$$pattern" 2>/dev/null || ${TRUE}`;	\
+			;;						\
+		esac							\
 		;;							\
 	build|full)							\
 		extradep=" ${PKGNAME}";					\
 		cross=${USE_CROSS_COMPILE:Uno};				\
 		archopt=;						\
 		case $$pattern in					\
-		{*})	list=$$(echo $$pattern | awk "$$SEQPROG");	\
+		*{*})	list=$$(echo $$pattern | awk "$$SEQPROG");	\
 			for item in $$list; do				\
 			pkg=`${_PKG_BEST_EXISTS} "$$item" 2>/dev/null || ${TRUE}`;	\
 			[ -n "$$pkg" ] && break;			\

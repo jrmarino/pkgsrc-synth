@@ -22,7 +22,7 @@
 
 set -e
 
-SEQPROG='{n=split(substr($0,2,length($0)-2),a,","); for (j=1;j<=n;j++) {print a[j] " "}}'
+SEQPROG='{b=index($0,"{")+1; p=substr($0,1,b-2); n=split(substr($0,b,length($0)-b),a,","); for (j=1;j<=n;j++) {print p a[j] " "}}'
 DEPENDS_FILE=${_DEPENDS_FILE}
 unset _DEPENDS_FILE
 
@@ -41,7 +41,7 @@ find_best() {
 
 ${CAT} ${DEPENDS_FILE} | while read type pattern dir; do
 	case ${pattern} in
-	{*})	list=$(echo ${pattern} | awk "${SEQPROG}")
+	*{*})	list=$(echo ${pattern} | awk "${SEQPROG}")
 		for item in ${list}; do
 			pkg=$(find_best "${type}" "${item}")
 			[ -n "${pkg}" ] && break;
