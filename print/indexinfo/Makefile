@@ -1,4 +1,4 @@
-# $NetBSD$
+# $NetBSD: Makefile,v 1.1 2016/12/05 19:54:15 marino Exp $
 
 PKGNAME=	indexinfo-0.2.6
 CATEGORIES=	print
