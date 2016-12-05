@@ -66,7 +66,11 @@ _PKG_ARGS_PACKAGE+=	${_PKG_CREATE_ARGS} ${_PKG_FORMAT}
 
 ${WRKDIR}/.created_fixed_dirs:
 .for D in ${OWN_DIRS} ${OWN_DIRS_PERMS} ${MAKE_DIRS} ${MAKE_DIRS_PERMS}
+.  if ${D:M/*}
 	${RUN}${MKDIR} ${DESTDIR}${D}
+.  else
+	${RUN}${MKDIR} ${DESTDIR}${PREFIX}/${D}
+.  endif
 .endfor
 .for D in ${REQD_DIRS} ${REQD_DIRS_PERMS}
 .  if ${D:M/*}
