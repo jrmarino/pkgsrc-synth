@@ -148,7 +148,7 @@ ${_MANIFEST_FILE}: ${_MANIFEST_TARGETS}
 		} > ${.TARGET}
 
 .if defined(HOMEPAGE)
-	${RUN}${ECHO} "www: ${HOMEPAGE}" >> ${.TARGET}
+	${RUN}${ECHO} "www: \"${HOMEPAGE}\"" >> ${.TARGET}
 .endif
 .if defined(LICENSE) && !empty(LICENSE)
 	${RUN}${ECHO} "licenses: [ ${LICENSE:NAND:NOR:u:S/$/,/} ]" >> ${.TARGET}
