@@ -1,4 +1,4 @@
-# $NetBSD$
+# $NetBSD: Makefile,v 1.1 2016/12/12 00:36:19 marino Exp $
 
 PKGNAME=	adacurses-${ACVERSION}
 CATEGORIES=	devel

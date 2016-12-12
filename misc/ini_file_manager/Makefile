@@ -1,4 +1,4 @@
-# $NetBSD$
+# $NetBSD: Makefile,v 1.1 2016/12/12 00:40:17 marino Exp $
 
 PKGNAME=	ini_file_manager-${IFM_VERSION}
 CATEGORIES=	misc
