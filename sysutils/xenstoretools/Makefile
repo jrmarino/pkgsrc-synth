@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.7 2017/01/04 16:40:11 sborrill Exp $
+# $NetBSD: Makefile,v 1.10 2017/01/05 12:44:54 sborrill Exp $
 #
 
 # VERSION is set in xentool46/version.mk
@@ -18,14 +18,26 @@ HOMEPAGE=		http://xen.org/
 COMMENT=		Xenstore Tools for Xen 4.6.x
 
 LICENSE=		gnu-gpl-v2
-DISTINFO_FILE=		${.CURDIR}/../xentools46/distinfo
-PATCHDIR=		${.CURDIR}/../xentools46/patches
+DISTINFO_FILE=		${.CURDIR}/../../sysutils/xentools46/distinfo
+PATCHDIR=		${.CURDIR}/../../sysutils/xentools46/patches
 BUILD_DIRS=		xenstore
 BUILD_TARGET=		clients
 INSTALL_DIRS=		xenstore
 INSTALL_MAKE_FLAGS+=	XENSTORE_XENSTORED=n
 
 GNU_CONFIGURE=		yes
+# configure checks for more components than are required to build the
+# xenstore subdirectory, so provide dummy args to allow it to complete
+# without adding unnecessary dependencies
+CONFIGURE_ARGS+=	ac_cv_path_AS86=/dummy
+CONFIGURE_ARGS+=	ac_cv_path_LD86=/dummy
+CONFIGURE_ARGS+=	ac_cv_path_BCC=/dummy
+CONFIGURE_ARGS+=	ac_cv_lib_yajl_yajl_alloc=yes
+CONFIGURE_ARGS+=	ac_cv_lib_z_deflateCopy=yes
+CONFIGURE_ARGS+=	ac_cv_header_argp_h=yes
+CONFIGURE_ARGS+=	ac_cv_lib_argp_argp_usage=yes
+CONFIGURE_ARGS+=	pixman_CFLAGS=dummy
+CONFIGURE_ARGS+=	pixman_LIBS=/dummy
 
 PKG_SYSCONFSUBDIR=	xen
 WRKSRC=			${WRKDIR}/xen-${VERSION}/tools
@@ -39,7 +51,7 @@ CONFLICTS+=		xentools20-[0-9]*
 CONFLICTS+=		xentools3*
 CONFLICTS+=		xentools4*
 
-USE_TOOLS+=		gmake pkg-config
+USE_TOOLS+=		bash gmake pkg-config
 
 MAKE_ENV+=		PREFIX=${prefix:Q} WRKSRC=${WRKSRC}
 MAKE_ENV+=		MV=${MV:Q} PYTHON=${PYTHONBIN:Q} SED=${SED:Q}
@@ -58,8 +70,5 @@ pre-build:
 .include "../../lang/python/application.mk"
 .include "../../lang/python/extension.mk"
 .include "../../devel/glib2/buildlink3.mk"
-.include "../../devel/yajl/buildlink3.mk"
-.include "../../devel/argp/buildlink3.mk"
-.include "../../x11/pixman/buildlink3.mk"
 
 .include "../../mk/bsd.pkg.mk"
