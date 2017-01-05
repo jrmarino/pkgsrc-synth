@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/01/03 18:35:54 fhajny Exp $
+# $NetBSD: Makefile,v 1.3 2017/01/04 23:16:18 wiz Exp $
 
 DISTNAME=	xmpp-1.1.4
 CATEGORIES=	net
