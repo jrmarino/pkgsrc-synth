@@ -1,4 +1,4 @@
-# $NetBSD: buildlink3.mk,v 1.14 2017/01/09 07:55:15 ryoon Exp $
+# $NetBSD: buildlink3.mk,v 1.16 2017/01/09 08:14:33 ryoon Exp $
 
 BUILDLINK_TREE+=	libVNCServer
 
