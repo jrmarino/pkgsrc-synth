@@ -1,5 +1,5 @@
 SUBDIR+=	synth
-# $NetBSD: Makefile,v 1.115 2017/02/12 10:48:55 jmmv Exp $
+# $NetBSD: Makefile,v 1.117 2017/02/17 21:27:38 jmmv Exp $
 #
 
 COMMENT=	Tools for use in the packages collection
@@ -35,6 +35,8 @@ SUBDIR+=	pbulk-base
 SUBDIR+=	pkg
 SUBDIR+=	pkg_alternatives
 SUBDIR+=	pkg_chk
+SUBDIR+=	pkg_comp
+SUBDIR+=	pkg_comp-cron
 SUBDIR+=	pkg_comp1
 SUBDIR+=	pkg_distinst
 SUBDIR+=	pkg_filecheck
