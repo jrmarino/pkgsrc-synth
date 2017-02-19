@@ -1,6 +1,6 @@
-# $NetBSD: Makefile,v 1.5 2017/02/19 02:09:04 minskim Exp $
+# $NetBSD: Makefile,v 1.1 2017/02/19 02:00:58 minskim Exp $
 
-DISTNAME=	builder-3.1.4
+DISTNAME=	builder-3.0.4
 CATEGORIES=	textproc
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
