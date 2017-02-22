@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2368 2017/02/21 06:31:46 minskim Exp $
+# $NetBSD: Makefile,v 1.2371 2017/02/22 13:14:55 wiz Exp $
 #
 
 COMMENT=	Development utilities
@@ -1868,6 +1868,7 @@ SUBDIR+=	py-ode
 SUBDIR+=	py-olefile
 SUBDIR+=	py-open-vcdiff
 SUBDIR+=	py-packaging
+SUBDIR+=	py-pathlib2
 SUBDIR+=	py-pbr
 SUBDIR+=	py-pep8
 SUBDIR+=	py-pexpect
@@ -1944,6 +1945,7 @@ SUBDIR+=	py-rply
 SUBDIR+=	py-ruamel-base
 SUBDIR+=	py-ruamel-ordereddict
 SUBDIR+=	py-ruamel-yaml
+SUBDIR+=	py-scandir
 SUBDIR+=	py-serpent
 SUBDIR+=	py-setuptools
 SUBDIR+=	py-setuptools_scm
@@ -1970,6 +1972,7 @@ SUBDIR+=	py-tox
 SUBDIR+=	py-traceback2
 SUBDIR+=	py-tryton
 SUBDIR+=	py-trytond
+SUBDIR+=	py-txaio
 SUBDIR+=	py-typing
 SUBDIR+=	py-unit
 SUBDIR+=	py-unitgui
