@@ -1,19 +1,19 @@
-# $NetBSD: Makefile,v 1.12 2017/03/16 10:07:27 wiz Exp $
+# $NetBSD: Makefile,v 1.1 2017/03/16 10:02:57 wiz Exp $
 
-DISTNAME=	guile-2.0.14
-PKGNAME=	${DISTNAME:S/guile/guile20/}
-PKGREVISION=	2
+DISTNAME=	guile-2.2.0
+PKGNAME=	${DISTNAME:S/guile/guile22/}
 CATEGORIES=	lang
-MASTER_SITES=	ftp://ftp.gnu.org/gnu/guile/
+MASTER_SITES=	ftp://ftp.gnu.org/gnu/guile/ \
+		ftp://alpha.gnu.org/gnu/guile/
 
-MAINTAINER=	root@zta.lk
+MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://www.gnu.org/software/guile/
-COMMENT=	Official extension language for the GNU operating system (2.0 branch)
+COMMENT=	Official extension language for the GNU operating system
 LICENSE=	gnu-lgpl-v3
 
 # Currently, 2.0 is primary.
-#GUILE_PREFIX=	${PREFIX}/guile/2.0
-GUILE_PREFIX=	${PREFIX}
+GUILE_PREFIX=	${PREFIX}/guile/2.1
+#GUILE_PREFIX=	${PREFIX}
 
 # guile does not like the --build and --host triplets on NetBSD
 HAS_CONFIGURE=	yes
@@ -27,14 +27,14 @@ CONFIGURE_ARGS+=	--infodir=${GUILE_PREFIX}/${PKGINFODIR}
 CONFIGURE_ARGS+=	SHELL=${CONFIG_SHELL}
 
 # When GUILE_PREFIX is non-default, these must be enabled.
-#BUILDLINK_PASSTHRU_DIRS+=	${GUILE_PREFIX}
-#LDFLAGS+=			${COMPILER_RPATH_FLAG}${GUILE_PREFIX}/lib
+BUILDLINK_PASSTHRU_DIRS+=	${GUILE_PREFIX}
+LDFLAGS+=			${COMPILER_RPATH_FLAG}${GUILE_PREFIX}/lib
 
 INFO_FILES=	yes
 USE_LIBTOOL=	yes
 USE_TOOLS+=	gmake pkg-config
 
-PKGCONFIG_OVERRIDE+=	meta/guile-2.0.pc.in
+PKGCONFIG_OVERRIDE+=	meta/guile-2.2.pc.in
 # known broken: test-loose-ends on NetBSD/current
 # https://debbugs.gnu.org/cgi/bugreport.cgi?bug=24003
 TEST_TARGET=		check
