@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2382 2017/03/16 22:43:50 minskim Exp $
+# $NetBSD: Makefile,v 1.2384 2017/03/17 21:31:24 minskim Exp $
 #
 
 COMMENT=	Development utilities
@@ -1851,6 +1851,7 @@ SUBDIR+=	py-lazy-object-proxy
 SUBDIR+=	py-libevent-rpcgen
 SUBDIR+=	py-libmc
 SUBDIR+=	py-limits
+SUBDIR+=	py-line_profiler
 SUBDIR+=	py-linecache2
 SUBDIR+=	py-lockfile
 SUBDIR+=	py-logan
@@ -1943,6 +1944,7 @@ SUBDIR+=	py-pyutil
 SUBDIR+=	py-queuelib
 SUBDIR+=	py-quixote
 SUBDIR+=	py-radare2
+SUBDIR+=	py-rauth
 SUBDIR+=	py-readline
 SUBDIR+=	py-rednose
 SUBDIR+=	py-repoze.lru

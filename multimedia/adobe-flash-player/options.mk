@@ -1,4 +1,4 @@
-# $NetBSD: options.mk,v 1.1 2017/02/24 18:33:38 tsutsui Exp $
+# $NetBSD: options.mk,v 1.1 2017/03/17 21:56:29 tsutsui Exp $
 #
 
 PKG_OPTIONS_VAR=	PKG_OPTIONS.adobe-flash-plugin
