@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2387 2017/03/20 12:27:36 mef Exp $
+# $NetBSD: Makefile,v 1.2389 2017/03/20 21:59:45 minskim Exp $
 #
 
 COMMENT=	Development utilities
@@ -1764,6 +1764,7 @@ SUBDIR+=	py-boost
 SUBDIR+=	py-buildbot
 SUBDIR+=	py-buildbot-slave
 SUBDIR+=	py-cached-property
+SUBDIR+=	py-cachetools
 SUBDIR+=	py-capstone
 SUBDIR+=	py-cffi
 SUBDIR+=	py-characteristic
@@ -1836,6 +1837,7 @@ SUBDIR+=	py-hgview
 SUBDIR+=	py-hypothesis
 SUBDIR+=	py-idle
 SUBDIR+=	py-incremental
+SUBDIR+=	py-intervaltree
 SUBDIR+=	py-iowait
 SUBDIR+=	py-ipaddr
 SUBDIR+=	py-ipython
