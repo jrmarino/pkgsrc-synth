@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.106 2016/12/30 11:15:00 jaapb Exp $
+# $NetBSD: Makefile,v 1.108 2017/03/27 12:54:59 jperkin Exp $
 
 .include "Makefile.common"
 
@@ -34,7 +34,6 @@ BUILD_TARGET+=	opt opt.opt
 PLIST_SRC+=	${PKGDIR}/PLIST.opt
 .  if empty(MACHINE_PLATFORM:MDarwin-*-powerpc) && \
       empty(MACHINE_PLATFORM:MSunOS-*-i386) && \
-      empty(MACHINE_PLATFORM:MSunOS-*-x86_64) && \
       empty(MACHINE_PLATFORM:MNetBSD-*-powerpc) && \
       empty(MACHINE_PLATFORM:MNetBSD-*-arm) && \
       empty(MACHINE_PLATFORM:MNetBSD-*-sparc)
@@ -53,6 +52,11 @@ PLIST_SRC+=	${PKGDIR}/PLIST.prof
       !empty(MACHINE_PLATFORM:MSunOS-*-*)
 PLIST_SRC+=	${PKGDIR}/PLIST.natdynlink
 .  endif
+.endif
+
+# Spacetime profiling is only available for native code on 64-bit targets.
+.if ${MACHINE_ARCH} == "x86_64"
+PLIST_SRC+=	${PKGDIR}/PLIST.raw_spacetime
 .endif
 
 # Common ocaml files.
