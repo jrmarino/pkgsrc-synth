@@ -1,11 +1,11 @@
-# $NetBSD: Makefile,v 1.11 2017/04/10 10:33:43 ryoon Exp $
+# $NetBSD: Makefile,v 1.1 2017/04/10 10:43:22 ryoon Exp $
 #
 
 DISTNAME=	apache-tomcat-${TOMCAT_VER}
 CATEGORIES=	www
 MASTER_SITES=	${MASTER_SITE_APACHE:=tomcat/tomcat-8/v${TOMCAT_VER}/bin/}
 
-MAINTAINER=	pkgsrc-users@NetBSD.org
+MAINTAINER=	ryoon@NetBSD.org
 HOMEPAGE=	http://tomcat.apache.org/
 COMMENT=	Implementation of Java Servlet and JavaServer Pages technologies
 LICENSE=	apache-2.0
@@ -21,7 +21,7 @@ USE_TOOLS+=	pax
 
 .include "../../mk/bsd.prefs.mk"
 
-TOMCAT_VER=		8.0.43
+TOMCAT_VER=		8.5.13
 TOMCAT_HOME=		${PREFIX}/share/tomcat
 EGDIR=			${PREFIX}/share/examples/tomcat
 DOCDIR=			${PREFIX}/share/doc/tomcat
