@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2400 2017/04/13 06:45:16 jnemeth Exp $
+# $NetBSD: Makefile,v 1.2403 2017/04/14 12:31:38 leot Exp $
 #
 
 COMMENT=	Development utilities
@@ -1805,6 +1805,7 @@ SUBDIR+=	py-docopt
 SUBDIR+=	py-docstyle
 SUBDIR+=	py-doctor
 SUBDIR+=	py-dulwich
+SUBDIR+=	py-editorconfig-core
 SUBDIR+=	py-enum
 SUBDIR+=	py-enum34
 SUBDIR+=	py-expect
@@ -1858,6 +1859,7 @@ SUBDIR+=	py-iso3166
 SUBDIR+=	py-isort
 SUBDIR+=	py-jaraco_util
 SUBDIR+=	py-jersey
+SUBDIR+=	py-kaitaistruct
 SUBDIR+=	py-kjbuckets
 SUBDIR+=	py-kqueue
 SUBDIR+=	py-lama
@@ -2063,6 +2065,7 @@ SUBDIR+=	ruby-SDL
 SUBDIR+=	ruby-abstract
 SUBDIR+=	ruby-activemodel32
 SUBDIR+=	ruby-activesupport32
+SUBDIR+=	ruby-activesupport42
 SUBDIR+=	ruby-algorithms
 SUBDIR+=	ruby-amstd
 SUBDIR+=	ruby-assistance
