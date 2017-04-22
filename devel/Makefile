@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2407 2017/04/20 08:02:26 fhajny Exp $
+# $NetBSD: Makefile,v 1.2409 2017/04/21 21:23:59 minskim Exp $
 #
 
 COMMENT=	Development utilities
@@ -2066,6 +2066,7 @@ SUBDIR+=	rt4
 SUBDIR+=	rubigen
 SUBDIR+=	ruby-SDL
 SUBDIR+=	ruby-abstract
+SUBDIR+=	ruby-activejob42
 SUBDIR+=	ruby-activemodel32
 SUBDIR+=	ruby-activemodel42
 SUBDIR+=	ruby-activesupport32
@@ -2115,6 +2116,7 @@ SUBDIR+=	ruby-gettext
 SUBDIR+=	ruby-gettext-activerecord
 SUBDIR+=	ruby-gettext-rails
 SUBDIR+=	ruby-gettext_i18n_rails
+SUBDIR+=	ruby-globalid
 SUBDIR+=	ruby-gnome2-atk
 SUBDIR+=	ruby-gnome2-gio
 SUBDIR+=	ruby-gnome2-glib
