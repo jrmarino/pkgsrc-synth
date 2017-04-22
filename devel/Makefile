@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2410 2017/04/22 10:18:13 minskim Exp $
+# $NetBSD: Makefile,v 1.2412 2017/04/22 18:20:34 taca Exp $
 #
 
 COMMENT=	Development utilities
@@ -2091,7 +2091,6 @@ SUBDIR+=	ruby-contracts
 SUBDIR+=	ruby-cucumber-core
 SUBDIR+=	ruby-cucumber-wire
 SUBDIR+=	ruby-curses
-SUBDIR+=	ruby-curses-gem
 SUBDIR+=	ruby-daemon_controller
 SUBDIR+=	ruby-delayer
 SUBDIR+=	ruby-delayer-deferred
@@ -2182,7 +2181,6 @@ SUBDIR+=	ruby-randexp
 SUBDIR+=	ruby-rb-fsevent
 SUBDIR+=	ruby-rb-kqueue
 SUBDIR+=	ruby-rbtree
-SUBDIR+=	ruby-rcov
 SUBDIR+=	ruby-rcsparse
 SUBDIR+=	ruby-rd-mode
 SUBDIR+=	ruby-rdoc
