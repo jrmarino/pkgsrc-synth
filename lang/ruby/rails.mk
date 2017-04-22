@@ -1,4 +1,4 @@
-# $NetBSD: rails.mk,v 1.57 2017/04/21 21:23:59 minskim Exp $
+# $NetBSD: rails.mk,v 1.59 2017/04/22 10:46:18 minskim Exp $
 
 .if !defined(_RUBY_RAILS_MK)
 _RUBY_RAILS_MK=	# defined
@@ -9,7 +9,7 @@ _RUBY_RAILS_MK=	# defined
 # RUBY_RAILS_DEFAULT
 #	Select default Ruby on Rails version.
 #
-#	Possible values: 32
+#	Possible values: 32 42
 #	Default: 32
 #
 #
@@ -18,7 +18,7 @@ _RUBY_RAILS_MK=	# defined
 # RUBY_RAILS_SUPPORTED
 #	The Ruby on Rails versions that are acceptable for the package.
 #
-#	Possible values: 32
+#	Possible values: 32 42
 #	Default: (empty)
 #
 # RUBY_RAILS_STRICT_DEP
@@ -32,7 +32,7 @@ _RUBY_RAILS_MK=	# defined
 # RUBY_RAILS
 #	Selected Ruby on Rails version.
 #
-#	Possible values: 32
+#	Possible values: 32 42
 #
 
 #
@@ -136,7 +136,7 @@ RUBY_ACTIONPACK_DEPENDS= \
 RUBY_ACTIONVIEW_DEPENDS= \
 	${RUBY_PKGPREFIX}-actionview${_RAILS_DEP}:${RUBY_RAILS42_ACTIONVIEW}
 RUBY_ACTIVEJOB_DEPENDS= \
-	${RUBY_PKGPREFIX}-activejob{_RAILS_DEP}:${RUBY_RAILS42_ACTIVEJOB}
+	${RUBY_PKGPREFIX}-activejob${_RAILS_DEP}:${RUBY_RAILS42_ACTIVEJOB}
 RUBY_ACTIVERECORD_DEPENDS= \
 	${RUBY_PKGPREFIX}-activerecord${_RAILS_DEP}:${RUBY_RAILS42_ACTIVERECORD}
 RUBY_ACTIONMAILER_DEPENDS= \
