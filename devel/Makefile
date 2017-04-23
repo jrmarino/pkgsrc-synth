@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2412 2017/04/22 18:20:34 taca Exp $
+# $NetBSD: Makefile,v 1.2418 2017/04/23 05:29:44 markd Exp $
 #
 
 COMMENT=	Development utilities
@@ -129,6 +129,7 @@ SUBDIR+=	clisp-pcre
 SUBDIR+=	clisp-syscalls
 SUBDIR+=	clisp-wildcard
 SUBDIR+=	clisp-zlib
+SUBDIR+=	cloc
 SUBDIR+=	cmake
 SUBDIR+=	cmake-fedora
 SUBDIR+=	cmake-mode
@@ -1759,6 +1760,7 @@ SUBDIR+=	py-attrs
 SUBDIR+=	py-automat
 SUBDIR+=	py-babel
 SUBDIR+=	py-backports.functools_lru_cache
+SUBDIR+=	py-backports.shutil_get_terminal_size
 SUBDIR+=	py-backports_abc
 SUBDIR+=	py-binaryornot
 SUBDIR+=	py-blessings
@@ -1810,6 +1812,7 @@ SUBDIR+=	py-dulwich
 SUBDIR+=	py-editorconfig-core
 SUBDIR+=	py-enum
 SUBDIR+=	py-enum34
+SUBDIR+=	py-entrypoints
 SUBDIR+=	py-expect
 SUBDIR+=	py-extras
 SUBDIR+=	py-fann2
@@ -1851,6 +1854,7 @@ SUBDIR+=	py-incremental
 SUBDIR+=	py-intervaltree
 SUBDIR+=	py-iowait
 SUBDIR+=	py-ipaddr
+SUBDIR+=	py-ipykernel
 SUBDIR+=	py-ipython
 SUBDIR+=	py-ipython010
 SUBDIR+=	py-ipython013
@@ -1861,6 +1865,8 @@ SUBDIR+=	py-iso3166
 SUBDIR+=	py-isort
 SUBDIR+=	py-jaraco_util
 SUBDIR+=	py-jersey
+SUBDIR+=	py-jupyter_client
+SUBDIR+=	py-jupyter_core
 SUBDIR+=	py-kaitaistruct
 SUBDIR+=	py-kjbuckets
 SUBDIR+=	py-kqueue
@@ -1998,6 +2004,7 @@ SUBDIR+=	py-test
 SUBDIR+=	py-test-cov
 SUBDIR+=	py-test-mock
 SUBDIR+=	py-test-runner
+SUBDIR+=	py-testpath
 SUBDIR+=	py-testresources
 SUBDIR+=	py-testscenarios
 SUBDIR+=	py-testtools
