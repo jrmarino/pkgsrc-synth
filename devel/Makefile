@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2420 2017/04/24 16:38:54 darcy Exp $
+# $NetBSD: Makefile,v 1.2422 2017/04/25 17:48:37 fhajny Exp $
 #
 
 COMMENT=	Development utilities
@@ -1745,8 +1745,11 @@ SUBDIR+=	py-Optik
 SUBDIR+=	py-ParamUnittest
 SUBDIR+=	py-Pyro
 SUBDIR+=	py-ZopeComponent
+SUBDIR+=	py-ZopeConfiguration
 SUBDIR+=	py-ZopeEvent
 SUBDIR+=	py-ZopeInterface
+SUBDIR+=	py-ZopeI18NMessageid
+SUBDIR+=	py-ZopeSchema
 SUBDIR+=	py-appdirs
 SUBDIR+=	py-argcomplete
 SUBDIR+=	py-argh
@@ -1756,6 +1759,7 @@ SUBDIR+=	py-astroid
 SUBDIR+=	py-at-spi
 SUBDIR+=	py-at-spi2
 SUBDIR+=	py-atomicwrites
+SUBDIR+=	py-atpublic
 SUBDIR+=	py-attrs
 SUBDIR+=	py-automat
 SUBDIR+=	py-babel
