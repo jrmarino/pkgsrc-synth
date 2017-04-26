@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2422 2017/04/25 17:48:37 fhajny Exp $
+# $NetBSD: Makefile,v 1.2426 2017/04/25 20:56:08 fhajny Exp $
 #
 
 COMMENT=	Development utilities
@@ -1803,6 +1803,7 @@ SUBDIR+=	py-d2to1
 SUBDIR+=	py-daemon
 SUBDIR+=	py-daemonize
 SUBDIR+=	py-darcsver
+SUBDIR+=	py-ddt
 SUBDIR+=	py-decorator
 SUBDIR+=	py-dialog
 SUBDIR+=	py-dialog2
@@ -1820,6 +1821,7 @@ SUBDIR+=	py-entrypoints
 SUBDIR+=	py-expect
 SUBDIR+=	py-extras
 SUBDIR+=	py-faker
+SUBDIR+=	py-falcon
 SUBDIR+=	py-fann2
 SUBDIR+=	py-fastimport
 SUBDIR+=	py-filebytes
@@ -1876,6 +1878,8 @@ SUBDIR+=	py-kaitaistruct
 SUBDIR+=	py-kjbuckets
 SUBDIR+=	py-kqueue
 SUBDIR+=	py-lama
+SUBDIR+=	py-lazr.config
+SUBDIR+=	py-lazr.delegates
 SUBDIR+=	py-lazy-object-proxy
 SUBDIR+=	py-libevent-rpcgen
 SUBDIR+=	py-libmc
@@ -1903,6 +1907,7 @@ SUBDIR+=	py-multiprocessing
 SUBDIR+=	py-newt
 SUBDIR+=	py-nose
 SUBDIR+=	py-nose-exclude
+SUBDIR+=	py-nose2
 SUBDIR+=	py-nosexcover
 SUBDIR+=	py-ode
 SUBDIR+=	py-olefile
