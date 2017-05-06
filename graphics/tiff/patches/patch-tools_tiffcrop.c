@@ -1,4 +1,4 @@
-$NetBSD: patch-tools_tiffcrop.c,v 1.2 2017/05/05 20:14:05 sevan Exp $
+$NetBSD$
 
 CVE-2016-10092
 http://bugzilla.maptools.org/show_bug.cgi?id=2620
