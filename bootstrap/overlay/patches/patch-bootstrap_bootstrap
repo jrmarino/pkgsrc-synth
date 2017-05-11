@@ -1,14 +1,14 @@
---- bootstrap/bootstrap.orig	2016-11-15 00:10:19 UTC
+--- bootstrap/bootstrap.orig	2017-05-11 16:26:49 UTC
 +++ bootstrap/bootstrap
 @@ -59,6 +59,7 @@ usage="Usage: $0 "'
      [ --binary-macpkg <pkg> ]
      [ --compiler <compiler> ]
-     [ --cwrappers ]
+     [ --cwrappers <auto|yes|no> ]
 +    [ --format <pkg|pkgng> ]
      [ --full ]
      [ --gzip-binary-kit <tarball> ]
      [ --help ]
-@@ -414,6 +415,7 @@ full=no
+@@ -412,6 +413,7 @@ full=no
  make_jobs=1
  mk_fragment=
  quiet=no
@@ -16,7 +16,7 @@
  
  while [ $# -gt 0 ]; do
  	case $1 in
-@@ -421,6 +423,8 @@ while [ $# -gt 0 ]; do
+@@ -419,6 +421,8 @@ while [ $# -gt 0 ]; do
  	--workdir)	wrkdir="$2"; shift ;;
  	--prefix=*)	prefix=`get_optarg "$1"` ;;
  	--prefix)	prefix="$2"; shift ;;
@@ -25,7 +25,7 @@
  	--pkgdbdir=*)	pkgdbdir=`get_optarg "$1"` ;;
  	--pkgdbdir)	pkgdbdir="$2"; shift ;;
  	--pkginfodir=*)	pkginfodir=`get_optarg "$1"` ;;
-@@ -487,7 +491,13 @@ elif [ -z "$prefix" -o "$prefix" = "/usr
+@@ -486,7 +490,13 @@ elif [ -z "$prefix" -o "$prefix" = "/usr
  fi
  
  [ -z "$varbase" ] && varbase=${prefix}/var
@@ -40,7 +40,7 @@
  
  if [ "$prefix" = "/usr" ]; then
  	[ -z "$pkginfodir" ] && pkginfodir=share/info
-@@ -1090,6 +1100,19 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$boots
+@@ -1101,6 +1111,19 @@ if [ "$opsys" = "GNUkFreeBSD" -a "$boots
  	echo $opsys
  fi
  
@@ -60,7 +60,7 @@
  # sbin is used by pkg_install, share/mk by bootstrap-mk-files
  mkdir_p $wrkdir/sbin $wrkdir/share/mk
  mkdir_p_early ${wrkdir}
-@@ -1144,6 +1167,7 @@ bootstrap_bmake() {
+@@ -1155,6 +1178,7 @@ bootstrap_bmake() {
  bootstrap_bmake
  
  bmake="$wrkdir/bin/bmake"
@@ -68,7 +68,7 @@
  
  # build libnbcompat
  echo_msg "Building libnbcompat"
-@@ -1286,10 +1310,24 @@ fi
+@@ -1297,10 +1321,24 @@ fi
  echo ".endif			# end pkgsrc settings" >> ${TARGET_MKCONF}
  echo ".endif			# end pkgsrc settings" >> ${BOOTSTRAP_MKCONF}
  
@@ -94,7 +94,7 @@
  }
  build_package_nopreserve() {
  	run_cmd "(cd $pkgsrcdir/$1 && $bmake $make_quiet_flags MAKE_JOBS=${make_jobs} PKG_COMPRESSION=none MAKECONF=${BOOTSTRAP_MKCONF} install)"
-@@ -1311,7 +1349,17 @@ esac
+@@ -1322,7 +1360,17 @@ esac
  # only the following packages set BOOTSTRAP_PKG=yes.
  #
  echo_msg "Installing packages"
@@ -113,7 +113,7 @@
  case "$need_bsd_install" in
  yes)
  	if [ "$use_bsdinstall" = "yes" ]; then
-@@ -1325,6 +1373,7 @@ case "$need_ksh" in
+@@ -1336,6 +1384,7 @@ case "$need_ksh" in
  yes)	build_package "shells/pdksh";;
  esac
  build_package "devel/bmake"
@@ -121,7 +121,7 @@
  case "$need_awk" in
  yes)	build_package "lang/nawk";;
  esac
-@@ -1334,7 +1383,10 @@ esac
+@@ -1345,7 +1394,10 @@ esac
  case "$need_extras" in
  yes)	build_package "pkgtools/bootstrap-extras";;
  esac

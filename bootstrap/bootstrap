@@ -59,6 +59,7 @@ usage="Usage: $0 "'
     [ --binary-macpkg <pkg> ]
     [ --compiler <compiler> ]
     [ --cwrappers <auto|yes|no> ]
+    [ --format <pkg|pkgng> ]
     [ --full ]
     [ --gzip-binary-kit <tarball> ]
     [ --help ]

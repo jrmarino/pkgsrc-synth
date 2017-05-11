@@ -1,8 +1,0 @@
-@@ -59,6 +59,7 @@
-     [ --binary-macpkg <pkg> ]
-     [ --compiler <compiler> ]
-     [ --cwrappers ]
-+    [ --format <pkg|pkgng> ]
-     [ --full ]
-     [ --gzip-binary-kit <tarball> ]
-     [ --help ]
