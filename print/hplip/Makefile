@@ -1,6 +1,7 @@
-# $NetBSD: Makefile,v 1.57 2016/11/30 18:00:08 schnoebe Exp $
+# $NetBSD: Makefile,v 1.59 2017/05/19 13:29:04 prlw1 Exp $
 
 DISTNAME=	hplip-3.16.11
+PKGREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	${MASTER_SITE_SOURCEFORGE:=hplip/}
 
@@ -176,7 +177,7 @@ post-install:
 .include "../../lang/python/extension.mk"
 .include "../../mk/jpeg.buildlink3.mk"
 .include "../../net/net-snmp/buildlink3.mk"
-.include "../../print/cups15/buildlink3.mk"
+.include "../../print/cups/buildlink3.mk"
 .include "../../print/ghostscript/buildlink3.mk"
 .include "../../devel/libusb1/buildlink3.mk"
 .include "../../security/openssl/buildlink3.mk"
