@@ -1,5 +1,5 @@
 SUBDIR+=	synth
-# $NetBSD: Makefile,v 1.117 2017/02/17 21:27:38 jmmv Exp $
+# $NetBSD: Makefile,v 1.118 2017/06/01 01:58:34 jlam Exp $
 #
 
 COMMENT=	Tools for use in the packages collection
@@ -63,6 +63,7 @@ SUBDIR+=	pkglint4
 SUBDIR+=	pkgse
 SUBDIR+=	pkgsrc-todo
 SUBDIR+=	pkgsurvey
+SUBDIR+=	pkgtasks
 SUBDIR+=	plist-utils
 SUBDIR+=	port2pkg
 #SUBDIR+=	prereq-readme	# Only used by the README.html generation

@@ -1,4 +1,4 @@
-#	$NetBSD: bsd.pkg.mk,v 1.2024 2017/05/31 22:56:41 jlam Exp $
+#	$NetBSD: bsd.pkg.mk,v 1.2026 2017/06/01 03:41:44 jlam Exp $
 #
 # This file is in the public domain.
 #
@@ -309,8 +309,10 @@ OVERRIDE_DIRDEPTH?=	2
 
 # Handle alternative init systems
 #
+.if ${_USE_NEW_PKGINSTALL:Uno} == "no"
 .if ${INIT_SYSTEM} == "smf"
 .  include "smf.mk"
+.endif
 .endif
 
 # Define SMART_MESSAGES in /etc/mk.conf for messages giving the tree
@@ -371,10 +373,14 @@ USE_TOOLS+=								\
 # bsd.wrapper.mk
 USE_TOOLS+=	expr
 
-# INSTALL/DEINSTALL script framework
-.if ${PKG_FORMAT:Mpkgng}
-.include "pkginstall/bsd.pkgng-install.mk"
+.if ${_USE_NEW_PKGINSTALL:Uno} != "no"
+# Init services framework
+.include "init/bsd.init.mk"
+
+# Package tasks framework
+.include "pkgtasks/bsd.pkgtasks.mk"
 .else
+# INSTALL/DEINSTALL script framework
 .include "pkginstall/bsd.pkginstall.mk"
 .endif
 
