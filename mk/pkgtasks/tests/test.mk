@@ -1,4 +1,4 @@
-# $NetBSD: test.mk,v 1.1 2017/06/01 02:06:05 jlam Exp $
+# $NetBSD: test.mk,v 1.3 2017/06/02 16:12:26 jlam Exp $
 #
 # Copyright (c) 2017 The NetBSD Foundation, Inc.
 # All rights reserved.
@@ -39,7 +39,7 @@ LOCALBASE?=		/usr/pkg
 MKDIR?=			mkdir -p
 MV?=			mv
 NOLOGIN?=		/sbin/nologin
-PKG_SYSCONFDIR?=	/etc
+PKG_SYSCONFBASE?=	/etc
 PREFIX?=		${LOCALBASE}
 RM?=			rm
 RUN?=			@
@@ -48,13 +48,7 @@ STEP_MSG?=		${ECHO} ">>>"
 TEST?=			test
 VARBASE?=		/var
 
-_PKGTASKS_NEEDARGS=							\
-	needargs() {							\
-		if ${TEST} $$3 -lt $$2; then				\
-			${FAIL_MSG} "$$1 must have a multiple of $$2 words. Rest: $$4"; \
-			return 1;					\
-		fi;							\
-	}
+PKG_SYSCONFDIR=		${PKG_SYSCONFSUBDIR:D${PKG_SYSCONFBASE}/${PKG_SYSCONFSUBDIR}:U${PKG_SYSCONFBASE}}
 
 # Override any other default definitions so that generated files go into
 # the current directory.
@@ -67,3 +61,7 @@ all: _all
 .PHONY: _all
 _all:
 	${RUN}: "do nothing"
+
+# Target to write the value of a variable to standard output.
+show-var: .PHONY
+	@echo ${${VARNAME}:Q}

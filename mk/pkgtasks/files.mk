@@ -1,4 +1,4 @@
-# $NetBSD: files.mk,v 1.1 2017/06/01 02:06:04 jlam Exp $
+# $NetBSD: files.mk,v 1.3 2017/06/02 16:12:25 jlam Exp $
 #
 # Copyright (c) 2017 The NetBSD Foundation, Inc.
 # All rights reserved.
@@ -111,35 +111,50 @@ __INIT_SCRIPTS_PERMS=	${_INIT_SCRIPTS_PERMS:S|^${PREFIX}/||g}
 # that no target file is listed in more than one variable.
 #
 _ALL_FILES.files=	# empty
-.if !empty(_VALID.files)
-.  for _var_ in CONF_FILES REQD_FILES _INIT_SCRIPTS
-.    if empty(${_var_}) || empty(${_var_}:C/.*/2/:M*:S/2 2//gW)
+.for _var_ in CONF_FILES REQD_FILES _INIT_SCRIPTS
+.  if empty(${_var_}) || empty(${_var_}:C/.*/2/:M*:S/2 2//gW)
 # ${_var_} has a multiple of 2 words.
-.      for s t in ${${_var_}}
+.    for s t in ${${_var_}}
 _FILES.${t}+=		${_var_}
 _ALL_FILES.files+=	${t}
-.      endfor
-.    else
+.    endfor
+.  else
 PKG_FAIL_REASON+=	${_var_:Q}" must have a multiple of 2 words."
-.    endif
-.  endfor
-.  for _var_ in CONF_FILES_PERMS REQD_FILES_PERMS _INIT_SCRIPT_PERMS
-.    if empty(${_var_}) || empty(${_var_}:C/.*/5/:M*:S/5 5 5 5 5//gW)
+.  endif
+.endfor
+.for _var_ in CONF_FILES_PERMS REQD_FILES_PERMS _INIT_SCRIPT_PERMS
+.  if empty(${_var_}) || empty(${_var_}:C/.*/5/:M*:S/5 5 5 5 5//gW)
 # ${_var_} has a multiple of 5 words.
-.      for s t o g m in ${${_var_}}
+.    for s t o g m in ${${_var_}}
 _FILES.${t}+=		${_var_}
 _ALL_FILES.files+=	${t}
-.      endfor
-.    else
+.    endfor
+.  else
 PKG_FAIL_REASON+=	${_var_:Q}" must have a multiple of 5 words."
-.    endif
-.  endfor
-.endif
+.  endif
+.endfor
 .for t in ${_ALL_FILES.files:O:u}
 .  if ${_FILES.${t}:[#]} != 1
 PKG_FAIL_REASON+=       ${t:Q}" is listed more than once: "${_FILES.${t}:Q}
 .  endif
 .endfor
+
+# Hook into directories.mk to create ${PKG_SYSCONFDIR} in the package
+# tasks.
+#
+# The following variables used are set within bsd.pkg.mk:
+#
+#	PKG_SYSCONFDIR
+#	PKG_SYSCONFDIR_PERMS
+#	PKG_SYSCONFSUBDIR
+#
+.if defined(PKG_SYSCONFSUBDIR) && !empty(PKG_SYSCONFSUBDIR)
+# Always create ${PKG_SYSCONFDIR} if ${PKG_SYSCONFSUBDIR} is non-empty.
+MAKE_DIRS_PERMS+=	${PKG_SYSCONFDIR} ${PKG_SYSCONFDIR_PERMS}
+.elif !empty(_ALL_FILES.files:M${PKG_SYSCONFDIR}/*)
+# Create ${PKG_SYSCONFDIR} if any target files are in that directory.
+MAKE_DIRS+=		${PKG_SYSCONFDIR}
+.endif
 
 _PKGTASKS_DATA.files=	${_PKGTASKS_DIR}/files
 _PKGTASKS_DATAFILES+=	${_PKGTASKS_DATA.files}
