@@ -1,4 +1,4 @@
-# $NetBSD: bsd.pkgtasks.mk,v 1.1 2017/06/01 02:06:04 jlam Exp $
+# $NetBSD: bsd.pkgtasks.mk,v 1.3 2017/06/02 19:13:34 jlam Exp $
 #
 # Copyright (c) 2017 The NetBSD Foundation, Inc.
 # All rights reserved.
@@ -92,7 +92,7 @@ FILES_SUBST+=		PKG_REGISTER_SHELLS=${PKG_REGISTER_SHELLS:tl:Q}
 FILES_SUBST+=		PKG_UPDATE_FONTS_DB=${PKG_UPDATE_FONTS_DB:tl:Q}
 
 # FILES_SUBST
-#	Package-settable varibable that lists "variable=value" pairs
+#	Package-settable variable that lists "variable=value" pairs
 #	that is turned into a sed(1) script for substituting
 #	"@variable@" with "value".
 #
@@ -142,9 +142,8 @@ USE_PKGTASKS=		no
 .include "${PKGSRCDIR}/mk/pkgtasks/usergroup.mk"
 
 # Add a dependency on pkgtasks if package tasks are needed.
-.if "${USE_PKGTASKS:tl}" == "yes"
-DEPENDS+=		pkgtasks-1>=1.9:../../pkgtools/pkgtasks
-.endif
+_PKGTASKS_DEPENDS=	pkgtasks-1>=1.9:../../pkgtools/pkgtasks
+DEPENDS+=		${"${USE_PKGTASKS:tl}" == "yes":?${_PKGTASKS_DEPENDS}:}
 TASK_MODULE_DIR?=	${LOCALBASE}/share/pkgtasks-1
 
 # PKGTASKS_DATAFILE
