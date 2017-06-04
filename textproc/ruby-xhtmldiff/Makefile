@@ -1,7 +1,7 @@
-# $NetBSD: Makefile,v 1.11 2017/04/18 01:16:54 minskim Exp $
+# $NetBSD: Makefile,v 1.1 2017/06/04 16:49:35 taca Exp $
 
 DISTNAME=	xhtmldiff-1.2.2
-PKGREVISION=	3
+PKGNAME=	${RUBY_PKGPREFIX}-${DISTNAME}
 CATEGORIES=	textproc
 MASTER_SITES=	http://theinternetco.net/projects/ruby/
 # necessary since it will be overwritten by gem.mk
@@ -13,10 +13,11 @@ COMMENT=	Tool for generating valid XHTML redline documents
 
 DEPENDS+=	${RUBY_PKGPREFIX}-diff-lcs>=1.1.1:../../textproc/ruby-diff-lcs
 
-CONFLICTS+=	ruby[1-9][0-9]-xhtmldiff-[0-9]* xhtmldiff-[0-9]*
+RUBYGEM_OPTIONS+=	--format-executable
 
-post-extract:
-	cp ${WRKSRC}/packaging/xhtmldiff.gemspec ${GEM_SPECFILE}
+pre-configure:
+	${CP} ${WRKSRC}/packaging/xhtmldiff.gemspec ${GEM_SPECFILE}
+	${RM} -fr ${WRKSRC}/packaging
 
 .include "../../lang/ruby/gem.mk"
 .include "../../mk/bsd.pkg.mk"

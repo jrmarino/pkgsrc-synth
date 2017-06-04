@@ -1,7 +1,9 @@
-$NetBSD: patch-aa,v 1.1 2008/04/04 15:30:01 jlam Exp $
+$NetBSD: patch-packaging_xhtmldiff.gemspec,v 1.1 2017/06/04 16:49:36 taca Exp $
 
---- ../xhtmldiff-1.2.2.gemspec.orig	2008-03-20 02:49:25.000000000 -0400
-+++ ../xhtmldiff-1.2.2.gemspec
+Fix versuion in gemspec.
+
+--- packaging/xhtmldiff.gemspec.orig	2006-09-07 00:15:50.000000000 +0000
++++ packaging/xhtmldiff.gemspec
 @@ -1,6 +1,6 @@
  Gem::Specification.new do |s|
    s.name = %q{xhtmldiff}
