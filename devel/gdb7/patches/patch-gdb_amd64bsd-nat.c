@@ -1,4 +1,4 @@
-$NetBSD: patch-gdb_amd64bsd-nat.c,v 1.1 2017/02/18 17:43:37 kamil Exp $
+$NetBSD: patch-gdb_amd64bsd-nat.c,v 1.1 2017/06/05 10:41:28 maya Exp $
 
 --- gdb/amd64bsd-nat.c.orig	2016-02-10 03:19:39.000000000 +0000
 +++ gdb/amd64bsd-nat.c

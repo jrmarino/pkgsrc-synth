@@ -1,7 +1,7 @@
-# $NetBSD: Makefile,v 1.57 2017/06/05 11:38:51 maya Exp $
+# $NetBSD: Makefile,v 1.1 2017/06/05 10:41:28 maya Exp $
 
-DISTNAME=	gdb-8.0
-#PKGREVISION=	
+DISTNAME=	gdb-7.11
+PKGREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	${MASTER_SITE_GNU:=gdb/}
 
@@ -9,8 +9,6 @@ MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	http://www.gnu.org/software/gdb/gdb.html
 COMMENT=	Symbolic debugger for multiple language frontends
 LICENSE=	gnu-gpl-v3
-
-USE_LANGUAGES=		c c++11
 
 BROKEN_GETTEXT_DETECTION=	yes
 GNU_CONFIGURE=		YES
@@ -57,7 +55,6 @@ TEST_ENV=		DEJAGNU=${WRKDIR}/../files/dragonfly-default.exp
 .endif
 
 post-install:
-	${RM} -f ${DESTDIR}/${PREFIX}/lib/charset.alias
 .if ${OPSYS} == "DragonFly"
 # Following are installed by binutils
 #. for f in ansidecl.h bfdlink.h dis-asm.h symcat.h

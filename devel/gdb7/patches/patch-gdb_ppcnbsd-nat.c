@@ -1,4 +1,4 @@
-$NetBSD: patch-gdb_ppcnbsd-nat.c,v 1.1 2015/03/15 14:56:46 bsiegert Exp $
+$NetBSD: patch-gdb_ppcnbsd-nat.c,v 1.1 2017/06/05 10:41:28 maya Exp $
 
 Absorb membername difference.
 
