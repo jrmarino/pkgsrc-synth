@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2443 2017/06/05 10:42:12 maya Exp $
+# $NetBSD: Makefile,v 1.2447 2017/06/10 16:25:55 taca Exp $
 #
 
 COMMENT=	Development utilities
@@ -1853,6 +1853,7 @@ SUBDIR+=	py-futures
 SUBDIR+=	py-game
 SUBDIR+=	py-generate
 SUBDIR+=	py-gflags
+SUBDIR+=	py-gitinspector
 SUBDIR+=	py-gobject
 SUBDIR+=	py-gobject-shared
 SUBDIR+=	py-gobject3
@@ -2148,6 +2149,7 @@ SUBDIR+=	ruby-getopt
 SUBDIR+=	ruby-gettext
 SUBDIR+=	ruby-gettext-activerecord
 SUBDIR+=	ruby-gettext-rails
+SUBDIR+=	ruby-gettext-setup
 SUBDIR+=	ruby-gettext_i18n_rails
 SUBDIR+=	ruby-globalid
 SUBDIR+=	ruby-gnome2-atk
@@ -2236,10 +2238,12 @@ SUBDIR+=	ruby-rgl
 SUBDIR+=	ruby-rspec
 SUBDIR+=	ruby-rspec-core
 SUBDIR+=	ruby-rspec-expectations
+SUBDIR+=	ruby-rspec-its
 SUBDIR+=	ruby-rspec-logsplit
 SUBDIR+=	ruby-rspec-mocks
 SUBDIR+=	ruby-rspec-rails
 SUBDIR+=	ruby-rspec-support
+SUBDIR+=	ruby-rspec_junit_formatter
 SUBDIR+=	ruby-rugged
 SUBDIR+=	ruby-setup
 SUBDIR+=	ruby-sexp-processor
