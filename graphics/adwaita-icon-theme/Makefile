@@ -1,6 +1,7 @@
-# $NetBSD: Makefile,v 1.7 2016/09/30 13:09:10 wiz Exp $
+# $NetBSD: Makefile,v 1.9 2017/06/14 16:25:16 prlw1 Exp $
 
 DISTNAME=		adwaita-icon-theme-3.22.0
+PKGREVISION=		1
 CATEGORIES=		graphics gnome
 MASTER_SITES=		${MASTER_SITE_GNOME:=/sources/adwaita-icon-theme/3.22/}
 EXTRACT_SUFX=		.tar.xz
@@ -26,11 +27,7 @@ PKGCONFIG_OVERRIDE+=	adwaita-icon-theme.pc.in
 # but isn't
 INSTALLATION_DIRS+=	share/icons/Adwaita/96x96/places
 
-FILES_SUBST+=		GTK_UPDATE_ICON_CACHE="${LOCALBASE}/bin/gtk-update-icon-cache"
-FILES_SUBST+=		ICON_THEME_DIR="${LOCALBASE}/share/icons/Adwaita"
-INSTALL_TEMPLATES+=	../../graphics/adwaita-icon-theme/files/icon-cache.tmpl
-DEINSTALL_TEMPLATES+=	../../graphics/adwaita-icon-theme/files/icon-cache.tmpl
-PRINT_PLIST_AWK+=	/^share\/icons\/gnome\/icon-theme.cache$$/ { next; }
+ICON_THEMES=		yes
 
 post-install:
 .for s in 16 22 24 32 48 96 256
