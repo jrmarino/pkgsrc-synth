@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.13 2017/06/05 13:39:25 taca Exp $
+# $NetBSD: Makefile,v 1.1 2017/06/18 16:12:54 taca Exp $
 #
 
 DISTNAME=	contao-${CT_PKGVER}
@@ -13,22 +13,22 @@ HOMEPAGE=	https://contao.org/
 COMMENT=	Contao Open Source CMS ${CT_VERSION}
 LICENSE=	gnu-lgpl-v3
 
-DEPENDS+=	${PHP_PKG_PREFIX}-gd>=5.4.0:../../graphics/php-gd
-DEPENDS+=	${PHP_PKG_PREFIX}-mbstring>=5.4.0:../../converters/php-mbstring
-DEPENDS+=	${PHP_PKG_PREFIX}-mysqli>=5.4.0:../../databases/php-mysqli
-DEPENDS+=	${PHP_PKG_PREFIX}-soap>=5.4.0:../../net/php-soap
-DEPENDS+=	${PHP_PKG_PREFIX}-intl>=5.4.0:../../textproc/php-intl
-DEPENDS+=	${PHP_PKG_PREFIX}-curl>=5.4.0:../../www/php-curl
-DEPENDS+=	${PHP_PKG_PREFIX}-zlib>=5.4.0:../../archivers/php-zlib
+DEPENDS+=	${PHP_PKG_PREFIX}-gd>=5.5.0:../../graphics/php-gd
+DEPENDS+=	${PHP_PKG_PREFIX}-mbstring>=5.5.0:../../converters/php-mbstring
+DEPENDS+=	${PHP_PKG_PREFIX}-mysqli>=5.5.0:../../databases/php-mysqli
+DEPENDS+=	${PHP_PKG_PREFIX}-soap>=5.5.0:../../net/php-soap
+DEPENDS+=	${PHP_PKG_PREFIX}-intl>=5.5.0:../../textproc/php-intl
+DEPENDS+=	${PHP_PKG_PREFIX}-curl>=5.5.0:../../www/php-curl
+DEPENDS+=	${PHP_PKG_PREFIX}-zlib>=5.5.0:../../archivers/php-zlib
 DEPENDS+=	bash>=4.0:../../shells/bash
 
-CT_VERSION=	4.3.11
+CT_VERSION=	4.4.0
 USE_TOOLS=	bash pax
 NO_BUILD=	yes
 
 EG_DATA=	app/config
 
-RESTRICT_DIRS=	app/config var/cache var/logs
+RESTRICT_DIRS=	${EG_DATA} var/cache var/logs
 
 CONF_FILES+=	${CT_EGDIR}/contao.conf ${PKG_SYSCONFDIR}/contao.conf
 
@@ -38,32 +38,32 @@ OWN_DIRS_PERMS+= ${CT_WEBDIR}/${d} ${APACHE_USER} ${APACHE_GROUP} 0770
 
 WWW_FILES=	README.md assets composer.json composer.lock vendor web
 
-INSTALLATION_DIRS+=	${CT_DOCDIR} ${CT_EGDIR}/app/config \
-			 ${CT_WEBDIR}/app/config
+INSTALLATION_DIRS+=	${CT_DOCDIR} ${CT_EGDIR}/${EG_DATA} \
+			${CT_WEBDIR}/${EG_DATA}
 
 PKG_GROUPS_VARS+=	APACHE_GROUP
 PKG_USERS_VARS+=	APACHE_USER
 
 REPLACE_BASH+=	vendor/paragonie/random_compat/build-phar.sh \
 	vendor/sensio/distribution-bundle/Resources/bin/build.sh \
-	vendor/sensio/distribution-bundle/Resources/bin/build_demo.sh
+	vendor/sensio/distribution-bundle/Resources/bin/build_demo.sh \
+	vendor/ua-parser/uap-php/update-resources.sh
 
 REPLACE_INTERPRETER+=	php
 REPLACE.php.old=	.*php[^ ]*
 REPLACE.php.new=	${PREFIX}/bin/php
 REPLACE_FILES.php= \
 	vendor/contao/manager-bundle/bin/contao-console \
-	vendor/bin/doctrine-dbal vendor/bin/lessc \
-	vendor/bin/minifycss vendor/bin/minifyjs vendor/bin/pscss \
-	vendor/bin/security-checker vendor/doctrine/dbal/bin/doctrine-dbal \
+	vendor/doctrine/dbal/bin/doctrine-dbal \
+	vendor/oyejorge/less.php/bin/lessc \
+	vendor/matthiasmullie/minify/bin/minifycss \
+	vendor/matthiasmullie/minify/bin/minifyjs \
 	vendor/jeremykendall/php-domain-parser/bin/parse \
 	vendor/jeremykendall/php-domain-parser/bin/update-psl \
 	vendor/leafo/scssphp/bin/pscss \
-	vendor/matthiasmullie/minify/bin/minifycss \
-	vendor/matthiasmullie/minify/bin/minifyjs \
-	vendor/oyejorge/less.php/bin/lessc \
-	vendor/sensio/distribution-bundle/Resources/bin/build_bootstrap.php \
 	vendor/sensiolabs/security-checker/security-checker \
+	vendor/ua-parser/uap-php/bin/uaparser \
+	vendor/sensio/distribution-bundle/Resources/bin/build_bootstrap.php \
 	vendor/swiftmailer/swiftmailer/lib/swiftmailer_generate_mimes_config.php \
 	vendor/symfony/symfony/phpunit \
 	vendor/symfony/symfony/src/Symfony/Bridge/PhpUnit/bin/simple-phpunit \
@@ -84,7 +84,7 @@ PERMFIXFILES=	vendor/oyejorge/less.php/lib/Less/Less.php.combine \
 .include "../../lang/php/phpversion.mk"
 
 .if ${PKG_PHP_VERSION} < 71
-DEPENDS+=	${PHP_PKG_PREFIX}-mcrypt>=5.4.0:../../security/php-mcrypt
+DEPENDS+=	${PHP_PKG_PREFIX}-mcrypt>=5.5.0:../../security/php-mcrypt
 .else
 DEPENDS+=	${PHP_PKG_PREFIX}-pecl-mcrypt>=1.0.1:../../security/php-pecl-mcrypt
 .endif
