@@ -1,7 +1,7 @@
-# $NetBSD: Makefile,v 1.5 2013/04/06 03:45:08 rodent Exp $
+# $NetBSD: Makefile,v 1.7 2017/06/21 15:42:10 taca Exp $
 
 DISTNAME=	dm-active_model-1.2.1
-PKGREVISION=	2
+PKGREVISION=	3
 CATEGORIES=	databases
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
@@ -12,7 +12,7 @@ LICENSE=	mit
 DEPENDS+=	${RUBY_PKGPREFIX}-dm-core>=1.2.0<1.3:../../databases/ruby-dm-core
 DEPENDS+=	${RUBY_ACTIVEMODEL_DEPENDS}
 
-RUBY_RAILS_SUPPORTED=	3 31 32
+RUBY_RAILS_SUPPORTED=	32
 
 .include "../../lang/ruby/gem.mk"
 .include "../../mk/bsd.pkg.mk"

@@ -1,4 +1,4 @@
-$NetBSD: patch-libtransmission_platform-quota.c,v 1.5 2017/06/19 13:33:46 maya Exp $
+$NetBSD$
 
 Fix dragonflybsd build
 
