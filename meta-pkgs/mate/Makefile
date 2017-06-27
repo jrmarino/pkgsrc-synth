@@ -1,6 +1,4 @@
-# $NetBSD: Makefile,v 1.4 2017/06/25 23:22:33 youri Exp $
-
-.include "../../meta-pkgs/mate/Makefile.common"
+# $NetBSD: Makefile,v 1.6 2017/06/27 16:17:09 jperkin Exp $
 
 MAINTAINER=	youri@NetBSD.org
 HOMEPAGE=	http://www.mate-desktop.org/
@@ -13,11 +11,13 @@ COMMENT=	Meta-package for MATE desktop environment
 
 META_PACKAGE=	yes
 
+.include "../../meta-pkgs/mate/Makefile.common"
+
 DEPENDS+=	atril>=${VERSION}:../../print/atril
 DEPENDS+=	caja>=${VERSION}:../../sysutils/caja
 DEPENDS+=	caja-dropbox>=${VERSION}:../../sysutils/caja-dropbox
 DEPENDS+=	caja-extensions>=${VERSION}:../../sysutils/caja-extensions
-DEPENDS+=	engrampa>=${VIRSION}:../../archivers/engrampa
+DEPENDS+=	engrampa>=${VERSION}:../../archivers/engrampa
 DEPENDS+=	eom>=${VERSION}:../../graphics/eom
 DEPENDS+=	libmatekbd>=${VERSION}:../../x11/libmatekbd
 DEPENDS+=	libmateweather>=${VERSION}:../../misc/libmateweather
