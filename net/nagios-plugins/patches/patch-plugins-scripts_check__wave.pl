@@ -1,8 +1,10 @@
-$NetBSD: patch-ae,v 1.1.1.1 2006/02/18 17:23:43 bouyer Exp $
+$NetBSD: patch-plugins-scripts_check__wave.pl,v 1.1 2017/07/04 19:45:18 jperkin Exp $
 
---- plugins-scripts/check_wave.pl.orig	2002-10-28 05:05:08.000000000 -0800
-+++ plugins-scripts/check_wave.pl	2005-08-10 13:50:01.000000000 -0700
-@@ -8,7 +8,7 @@
+Fix path to snmpget.
+
+--- plugins-scripts/check_wave.pl.orig	2017-01-16 17:24:03.000000000 +0000
++++ plugins-scripts/check_wave.pl
+@@ -9,7 +9,7 @@ use lib '@libexecdir@';
  use utils qw($TIMEOUT %ERRORS &print_revision &support);
  use vars qw($PROGNAME);
  use Getopt::Long;
@@ -11,7 +13,7 @@ $NetBSD: patch-ae,v 1.1.1.1 2006/02/18 17:23:43 bouyer Exp $
  my (@test, $low1, $med1, $high1, $snr, $low2, $med2, $high2);
  my ($low, $med, $high, $lowavg, $medavg, $highavg, $tot, $ss);
  
-@@ -27,6 +27,7 @@
+@@ -28,7 +28,8 @@ GetOptions
  	 "v" => \$verbose, "verbose"  => \$verbose,
  	 "w=s" => \$opt_w, "warning=s"  => \$opt_w,
  	 "c=s" => \$opt_c, "critical=s" => \$opt_c,
@@ -20,7 +22,8 @@ $NetBSD: patch-ae,v 1.1.1.1 2006/02/18 17:23:43 bouyer Exp $
 +	 "C=s" => \$opt_C, "community=s" => \$opt_C);
  
  if ($opt_V) {
-@@ -40,6 +41,7 @@
+ 	print_revision($PROGNAME,'@NP_VERSION@'); #'
+@@ -41,6 +42,7 @@ if ($opt_h) {
  }
  
  $opt_H = shift unless ($opt_H);
@@ -28,7 +31,7 @@ $NetBSD: patch-ae,v 1.1.1.1 2006/02/18 17:23:43 bouyer Exp $
  print_usage() unless ($opt_H);
  my $host = $1 if ($opt_H =~ m/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+|[a-zA-Z][-a-zA-Z0]+(\.[a-zA-Z][-a-zA-Z0]+)*)$/);
  print_usage() unless ($host);
-@@ -50,34 +52,34 @@
+@@ -51,34 +53,34 @@ my $critical = $1 if ($opt_c =~ /([0-9]+
  ($opt_w) || ($opt_w = shift) || ($opt_w = 60);
  my $warning = $1 if ($opt_w =~ /([0-9]+)/);
  
@@ -70,7 +73,7 @@ $NetBSD: patch-ae,v 1.1.1.1 2006/02/18 17:23:43 bouyer Exp $
  @test = split(/ /,$high2);
  $high2 = $test[2];
  
-@@ -108,7 +110,7 @@
+@@ -109,7 +111,7 @@ if ($ss<$critical) {
  
  
  sub print_usage () {

@@ -1,8 +1,10 @@
-$NetBSD: patch-aa,v 1.3 2011/05/20 05:02:13 taca Exp $
+$NetBSD: patch-plugins_check__radius.c,v 1.1 2017/07/04 19:45:18 jperkin Exp $
 
---- plugins/check_radius.c.orig	2010-07-27 20:47:16.000000000 +0000
+Support radius config.
+
+--- plugins/check_radius.c.orig	2017-01-16 17:24:03.000000000 +0000
 +++ plugins/check_radius.c
-@@ -78,7 +78,7 @@ char *password = NULL;
+@@ -86,7 +86,7 @@ char *password = NULL;
  char *nasid = NULL;
  char *nasipaddress = NULL;
  char *expect = NULL;
