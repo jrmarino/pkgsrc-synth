@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.482 2017/04/22 18:08:22 taca Exp $
+# $NetBSD: Makefile,v 1.484 2017/07/11 10:35:09 jaapb Exp $
 #
 
 COMMENT=	Miscellaneous utilities
@@ -210,6 +210,8 @@ SUBDIR+=	nxtvepg
 SUBDIR+=	nyancat
 SUBDIR+=	ocaml-cudf
 SUBDIR+=	ocaml-opam
+SUBDIR+=	ocaml-opam-file-format
+SUBDIR+=	ocaml-topkg
 SUBDIR+=	open2300
 SUBDIR+=	open2300-mysql
 SUBDIR+=	orca
