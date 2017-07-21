@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2469 2017/07/20 16:44:13 adam Exp $
+# $NetBSD: Makefile,v 1.2473 2017/07/21 10:37:19 jaapb Exp $
 #
 
 COMMENT=	Development utilities
@@ -706,6 +706,7 @@ SUBDIR+=	ocaml-base64
 SUBDIR+=	ocaml-batteries
 SUBDIR+=	ocaml-biniou
 SUBDIR+=	ocaml-cmdliner
+SUBDIR+=	ocaml-compiler-libs
 SUBDIR+=	ocaml-cppo
 SUBDIR+=	ocaml-deriving-ocsigen
 SUBDIR+=	ocaml-extlib
@@ -713,9 +714,11 @@ SUBDIR+=	ocaml-findlib
 SUBDIR+=	ocaml-jbuilder
 SUBDIR+=	ocaml-js-build-tools
 SUBDIR+=	ocaml-lwt
+SUBDIR+=	ocaml-migrate-parsetree
 SUBDIR+=	ocaml-oasis
 SUBDIR+=	ocaml-odn
 SUBDIR+=	ocaml-optcomp
+SUBDIR+=	ocaml-ppx_ast
 SUBDIR+=	ocaml-ppx_core
 SUBDIR+=	ocaml-ppx_deriving
 SUBDIR+=	ocaml-ppx_driver
@@ -729,6 +732,7 @@ SUBDIR+=	ocaml-react
 SUBDIR+=	ocaml-reactiveData
 SUBDIR+=	ocaml-result
 SUBDIR+=	ocaml-sexplib
+SUBDIR+=	ocaml-stdio
 SUBDIR+=	ocaml-type_conv
 SUBDIR+=	ocaml-yojson
 SUBDIR+=	ocamlbuild
