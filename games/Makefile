@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.408 2017/06/24 01:44:03 kamil Exp $
+# $NetBSD: Makefile,v 1.410 2017/07/30 13:22:05 leot Exp $
 #
 
 COMMENT=	Games
@@ -112,6 +112,7 @@ SUBDIR+=	fortunes-calvin
 SUBDIR+=	fortunes-de
 SUBDIR+=	fortunes-futurama
 SUBDIR+=	fortunes-h2g2
+SUBDIR+=	fortunes-it
 SUBDIR+=	freeciv-client
 SUBDIR+=	freeciv-manual
 SUBDIR+=	freeciv-server
@@ -124,6 +125,7 @@ SUBDIR+=	frozen-bubble
 SUBDIR+=	fruit
 SUBDIR+=	galaxa
 SUBDIR+=	gamazons
+SUBDIR+=	gargoyle
 SUBDIR+=	gate88
 SUBDIR+=	gbrainy
 SUBDIR+=	gcompris
