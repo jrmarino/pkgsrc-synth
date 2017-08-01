@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2478 2017/07/31 13:16:14 adam Exp $
+# $NetBSD: Makefile,v 1.2480 2017/08/01 15:55:25 maya Exp $
 #
 
 COMMENT=	Development utilities
@@ -701,6 +701,7 @@ SUBDIR+=	nsis
 SUBDIR+=	nspr
 SUBDIR+=	nspr-reference
 SUBDIR+=	nss
+SUBDIR+=	objfw
 SUBDIR+=	ocaml-base
 SUBDIR+=	ocaml-base64
 SUBDIR+=	ocaml-batteries
@@ -1176,6 +1177,7 @@ SUBDIR+=	p5-Lexical-Persistence
 SUBDIR+=	p5-Lexical-SealRequireHints
 SUBDIR+=	p5-List-AllUtils
 SUBDIR+=	p5-List-MoreUtils
+SUBDIR+=	p5-List-MoreUtils-XS
 SUBDIR+=	p5-List-Pairwise
 SUBDIR+=	p5-List-SomeUtils
 SUBDIR+=	p5-List-SomeUtils-XS
@@ -1464,6 +1466,7 @@ SUBDIR+=	p5-ShipIt
 SUBDIR+=	p5-Signal-Mask
 SUBDIR+=	p5-Smart-Comments
 SUBDIR+=	p5-Software-License
+SUBDIR+=	p5-Sort-Key
 SUBDIR+=	p5-Sort-Maker
 SUBDIR+=	p5-Sort-Naturally
 SUBDIR+=	p5-Sort-Versions

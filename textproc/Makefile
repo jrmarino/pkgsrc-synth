@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.942 2017/07/11 11:21:45 jaapb Exp $
+# $NetBSD: Makefile,v 1.946 2017/08/01 15:32:08 kleink Exp $
 #
 
 COMMENT=	Text processing utilities (does not include desktop publishing)
@@ -374,11 +374,10 @@ SUBDIR+=	lua-xapian
 SUBDIR+=	lucene++
 SUBDIR+=	makeindexk
 SUBDIR+=	makeztxt
+SUBDIR+=	mandoc
 SUBDIR+=	marisa
 SUBDIR+=	markdown-mode
 SUBDIR+=	markdown2social
-SUBDIR+=	mdoclint
-SUBDIR+=	mdocml
 SUBDIR+=	mecab
 SUBDIR+=	mecab-base
 SUBDIR+=	mecab-ipadic
@@ -425,6 +424,9 @@ SUBDIR+=	p5-Data-HexDump
 SUBDIR+=	p5-Dist-Zilla-Plugin-PodWeaver
 SUBDIR+=	p5-Encode
 SUBDIR+=	p5-Encode-Detect
+SUBDIR+=	p5-Encode-EUCJPASCII
+SUBDIR+=	p5-Encode-HanExtra
+SUBDIR+=	p5-Encode-JIS2K
 SUBDIR+=	p5-Encode-Locale
 SUBDIR+=	p5-Feed-Find
 SUBDIR+=	p5-File-ReadBackwards
@@ -453,6 +455,7 @@ SUBDIR+=	p5-Lingua-Stem-It
 SUBDIR+=	p5-Lingua-Stem-Ru
 SUBDIR+=	p5-Lingua-Stem-Snowball
 SUBDIR+=	p5-Lingua-Stem-Snowball-Da
+SUBDIR+=	p5-Lingua-Translit
 SUBDIR+=	p5-List-Compare
 SUBDIR+=	p5-Locale-Maketext-Gettext
 SUBDIR+=	p5-Net-Dict
@@ -789,6 +792,7 @@ SUBDIR+=	py-sphinxcontrib-websupport
 SUBDIR+=	py-tabulate
 SUBDIR+=	py-textile
 SUBDIR+=	py-tinycss
+SUBDIR+=	py-tinycss2
 SUBDIR+=	py-ujson
 SUBDIR+=	py-uritemplate
 SUBDIR+=	py-validators
