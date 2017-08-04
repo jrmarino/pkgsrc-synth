@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.767 2017/07/23 21:05:21 markd Exp $
+# $NetBSD: Makefile,v 1.769 2017/08/04 18:46:46 kleink Exp $
 #
 
 COMMENT=	Graphics tools and libraries
@@ -293,6 +293,7 @@ SUBDIR+=	libcaca
 SUBDIR+=	libepoxy
 SUBDIR+=	libexif
 SUBDIR+=	libexif-gtk
+SUBDIR+=	libfpx
 SUBDIR+=	libgdiplus
 SUBDIR+=	libggi
 SUBDIR+=	libggigcp
@@ -460,6 +461,7 @@ SUBDIR+=	py-mcomix
 SUBDIR+=	py-nwdiag
 SUBDIR+=	py-openexr
 SUBDIR+=	py-piddle
+SUBDIR+=	py-piexif
 SUBDIR+=	py-pycha
 SUBDIR+=	py-pygal
 SUBDIR+=	py-qrcode
