@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.19 2017/07/30 22:32:15 wiz Exp $
+# $NetBSD: Makefile,v 1.21 2017/08/07 10:31:41 jperkin Exp $
 
 DISTNAME=	libuv-1.13.1
 CATEGORIES=	devel
@@ -18,6 +18,13 @@ TEST_TARGET=	check
 
 HEADERS=	uv-aix.h uv-bsd.h uv-darwin.h uv-linux.h uv-sunos.h	\
 		uv-unix.h uv-win.h pthread-barrier.h
+
+.include "../../mk/bsd.prefs.mk"
+
+.if !empty(MACHINE_PLATFORM:MSunOS-5.[0-9]-*) || \
+    !empty(MACHINE_PLATFORM:MSunOS-5.10-*)
+CFLAGS+=	-DSUNOS_NO_IFADDRS
+.endif
 
 pre-configure:
 	${RUN} cd ${WRKSRC} && ${SH} ./autogen.sh
