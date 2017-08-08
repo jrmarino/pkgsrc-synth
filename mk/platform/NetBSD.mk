@@ -1,4 +1,4 @@
-# $NetBSD: NetBSD.mk,v 1.53 2017/07/24 08:19:08 maya Exp $
+# $NetBSD: NetBSD.mk,v 1.55 2017/08/07 23:54:09 maya Exp $
 #
 # Variable definitions for the NetBSD operating system.
 
@@ -84,12 +84,6 @@ _PATCH_CAN_BACKUP=	yes	# native patch(1) can make backups
 _PATCH_BACKUP_ARG?=	-V simple --suffix # switch to patch(1) for backup suffix
 _USE_RPATH=		yes	# add rpath to LDFLAGS
 
-# for programs which use dlopen()
-# not necessary since 1.6 (shared libs are linked against libgcc_pic)
-.if !empty(OS_VERSION:M1.5*)
-LINK_ALL_LIBGCC_HACK=	-Wl,--whole-archive -lgcc -Wl,--no-whole-archive
-.endif
-
 _STRIPFLAG_CC?=		${_INSTALL_UNSTRIPPED:D:U-s}	# cc(1) option to strip
 _STRIPFLAG_INSTALL?=	${_INSTALL_UNSTRIPPED:D:U-s}	# install(1) option to strip
 
@@ -129,7 +123,12 @@ PKG_HAVE_KQUEUE=	# defined
 .endif
 
 # Register support for FORTIFY (with GCC)
+.if !empty(OS_VERSION:M[2-6].*)
+# Disable on older versions, see:
+# http://mail-index.netbsd.org/pkgsrc-users/2017/08/07/msg025435.html
+.else
 _OPSYS_SUPPORTS_FORTIFY=yes
+.endif
 
 # Register support for PIE on supported architectures (with GCC)
 .if (${MACHINE_ARCH} == "i386") || \
