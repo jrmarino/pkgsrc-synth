@@ -1,3 +1,7 @@
+#!/usr/bin/env atf-sh
+#
+# $NetBSD: icon_themes_test,v 1.1 2017/08/10 05:41:07 jlam Exp $
+#
 # Copyright (c) 2017 The NetBSD Foundation, Inc.
 # All rights reserved.
 #
@@ -25,99 +29,75 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-task_load createfile
-task_load preremove
-task_load unittest
+# ENVIRONMENT
+#	The following variables are used if they are set:
+#
+#	MAKE	The name or path to the BSD make(1) utility.  The default
+#		is "make".
+#
+#	PKGSRCDIR
+#		The location of the pkgsrc source tree.  The default is
+#		"/usr/pkgsrc".
+#
 
-test_setup()
+setup()
 {
-	datafile="empty"
-	task_createfile "$datafile"
+	cat > Makefile << 'EOF'
+.include "${PKGSRCDIR}/mk/pkgtasks/tests/test.mk"
+.sinclude "mk.conf"
+.include "${PKGSRCDIR}/mk/pkgtasks/icon_themes.mk"
 
-	TASK_FILES_SUCCESS="yes"
-	TASK_FUNCTION_SUCCESS="yes"
-	TASK_ICON_THEMES_SUCCESS="yes"
-	TASK_INFO_FILES_SUCCESS="yes"
+all: value
+value: ${_PKGTASKS_DATA.icon_themes}
+	${RUN}${CP} ${.ALLSRC:Q} ${.TARGET:Q}
+EOF
 }
 
-# Mock actions whose return values are ignored.
-task_files()
+###
+### test1
+###
+
+atf_test_case test1
+
+test1_head()
 {
-	[ "${TASK_FILES_SUCCESS}" = "yes" ]
+	atf_set "descr" "pkgsrc/mk/pkgtasks/icon_themes.mk"
 }
 
-task_function()
+test1_body()
 {
-	[ "${TASK_FUNCTION_SUCCESS}" = "yes" ]
+	: ${MAKE:=make}
+	: ${PKGSRCDIR:=/usr/pkgsrc}
+
+	setup
+
+	cat > mk.conf << 'EOF'
+# Create mock ${ICON_THEMES_cmd}.
+ICON_THEMES=		yes
+ICON_THEMES_cmd=	( echo "icon_theme1"; echo "icon_theme2" )
+EOF
+	# Expected output is each path stripped of leading "share/icons/"
+	# and inserted into the following template:
+	#
+	#    # ICON_THEMES: <themedir>
+	#
+	cat > expected << 'EOF'
+# ICON_THEME: icon_theme1
+# ICON_THEME: icon_theme2
+EOF
+	echo ">>> expected"
+	cat expected
+
+	${MAKE} PKGSRCDIR="${PKGSRCDIR}" || atf_fail "make(1) failed"
+
+	echo ">>> value"
+	cat value
+
+	cmp expected value || atf_fail "expected differs from value"
+	atf_pass
 }
 
-task_icon_themes()
+atf_init_test_cases()
 {
-	[ "${TASK_ICON_THEMES_SUCCESS}" = "yes" ]
+	atf_add_test_case test1
 }
-
-task_info_files()
-{
-	[ "${TASK_INFO_FILES_SUCCESS}" = "yes" ]
-}
-
-# Always succeed except if "function" task fails.
-
-test1()
-{
-	describe="files fail"
-	TASK_FILES_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-test2()
-{
-	describe="function fail"
-	TASK_FUNCTION_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		return 1
-	fi
-	return 0
-}
-
-test3()
-{
-	describe="icon_themes fail"
-	TASK_ICON_THEMES_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-test4()
-{
-	describe="info_files fail"
-	TASK_INFO_FILES_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-test5()
-{
-	describe="all succeed"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-task_run_tests "$@"

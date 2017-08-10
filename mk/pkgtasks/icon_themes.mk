@@ -1,3 +1,5 @@
+# $NetBSD: icon_themes.mk,v 1.1 2017/08/10 05:41:07 jlam Exp $
+#
 # Copyright (c) 2017 The NetBSD Foundation, Inc.
 # All rights reserved.
 #
@@ -25,99 +27,38 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-task_load createfile
-task_load preremove
-task_load unittest
+# Generate the data file for the icon_themes package task.
 
-test_setup()
-{
-	datafile="empty"
-	task_createfile "$datafile"
+# ICON_THEMES
+#	Package-settable variable for whether to automatically update
+#	the GTK+ icon theme directory caches.
+#
+#	Possible: yes, no
+#	Default: yes
+#
+_PKG_VARS.pkgtasks+=	ICON_THEMES
+ICON_THEMES?=		no
 
-	TASK_FILES_SUCCESS="yes"
-	TASK_FUNCTION_SUCCESS="yes"
-	TASK_ICON_THEMES_SUCCESS="yes"
-	TASK_INFO_FILES_SUCCESS="yes"
-}
+FILES_SUBST+=	GTK_UPDATE_ICON_CACHE=${LOCALBASE:Q}/bin/gtk-update-icon-cache
+FILES_SUBST+=	GTK2_UPDATE_ICON_CACHE=${LOCALBASE:Q}/bin/gtk2-update-icon-cache
+FILES_SUBST+=	GTK3_UPDATE_ICON_CACHE=${LOCALBASE:Q}/bin/gtk-update-icon-cache
 
-# Mock actions whose return values are ignored.
-task_files()
-{
-	[ "${TASK_FILES_SUCCESS}" = "yes" ]
-}
+# Trigger pkgtasks dependency if needed.
+.if "${ICON_THEMES:tl}" == "yes"
+USE_PKGTASKS=		yes
+.endif
 
-task_function()
-{
-	[ "${TASK_FUNCTION_SUCCESS}" = "yes" ]
-}
+_PKGTASKS_DATA.icon_themes=	${_PKGTASKS_DIR}/icon_themes
+_PKGTASKS_DATAFILES+=		${_PKGTASKS_DATA.icon_themes}
 
-task_icon_themes()
-{
-	[ "${TASK_ICON_THEMES_SUCCESS}" = "yes" ]
-}
-
-task_info_files()
-{
-	[ "${TASK_INFO_FILES_SUCCESS}" = "yes" ]
-}
-
-# Always succeed except if "function" task fails.
-
-test1()
-{
-	describe="files fail"
-	TASK_FILES_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-test2()
-{
-	describe="function fail"
-	TASK_FUNCTION_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		return 1
-	fi
-	return 0
-}
-
-test3()
-{
-	describe="icon_themes fail"
-	TASK_ICON_THEMES_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-test4()
-{
-	describe="info_files fail"
-	TASK_INFO_FILES_SUCCESS="no"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-test5()
-{
-	describe="all succeed"
-	if task_preremove "$datafile"; then
-		: "success"
-	else
-		return 1
-	fi
-	return 0
-}
-
-task_run_tests "$@"
+# ${ICON_THEMES_cmd} is defined by the plist module.
+${_PKGTASKS_DATA.icon_themes}:
+	${RUN}${MKDIR} ${.TARGET:H:Q}
+	${RUN}exec > ${.TARGET:Q}.tmp
+	${RUN}${TEST} "${ICON_THEMES:tl}" = "yes" || exit 0;		\
+	cmd=${ICON_THEMES_cmd:Q}"";					\
+	${TEST} -n "$$cmd" || cmd=${TRUE:Q}"";				\
+	eval $$cmd | while IFS= read themedir; do			\
+		${ECHO} "# ICON_THEME: $$themedir";			\
+	done >> ${.TARGET:Q}.tmp
+	${RUN}${MV} ${.TARGET:Q}.tmp ${.TARGET:Q}
