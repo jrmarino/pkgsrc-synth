@@ -1,7 +1,8 @@
-# $NetBSD: Makefile,v 1.57 2017/06/20 20:50:50 markd Exp $
+# $NetBSD: Makefile,v 1.59 2017/08/15 11:40:24 nros Exp $
 
 DISTNAME=	texlive-20170524-source
 PKGNAME=	luatex-1.0.4
+PKGREVISION=	1
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2017/
 EXTRACT_SUFX=	.tar.xz
@@ -17,7 +18,7 @@ EXTRACT_ELEMENTS=	${DISTNAME}/build-aux \
 			${DISTNAME}/texk/web2c
 
 GNU_CONFIGURE=	yes
-USE_LANGUAGES=	c c++
+USE_LANGUAGES=	c c++11
 USE_LIBTOOL=	yes
 USE_TOOLS+=	gmake lex perl pkg-config yacc
 CONFIGURE_ARGS+=	--disable-aleph --disable-etex --disable-pdftex \
