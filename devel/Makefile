@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2486 2017/08/21 11:50:35 nils Exp $
+# $NetBSD: Makefile,v 1.2490 2017/08/21 15:35:11 adam Exp $
 #
 
 COMMENT=	Development utilities
@@ -2081,8 +2081,11 @@ SUBDIR+=	py-subvertpy
 SUBDIR+=	py-sysctl
 SUBDIR+=	py-tabular
 SUBDIR+=	py-test
+SUBDIR+=	py-test-cache
 SUBDIR+=	py-test-cov
+SUBDIR+=	py-test-flake8
 SUBDIR+=	py-test-forked
+SUBDIR+=	py-test-isort
 SUBDIR+=	py-test-mock
 SUBDIR+=	py-test-runner
 SUBDIR+=	py-test-xdist
@@ -2292,6 +2295,7 @@ SUBDIR+=	ruby-redmine_theme_changer
 SUBDIR+=	ruby-redmine_work_time
 SUBDIR+=	ruby-ref
 SUBDIR+=	ruby-rgl
+SUBDIR+=	ruby-ronn
 SUBDIR+=	ruby-rspec
 SUBDIR+=	ruby-rspec-core
 SUBDIR+=	ruby-rspec-expectations
