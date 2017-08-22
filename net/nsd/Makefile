@@ -1,6 +1,7 @@
-# $NetBSD: Makefile,v 1.93 2017/08/13 11:11:42 nros Exp $
+# $NetBSD: Makefile,v 1.95 2017/08/22 00:32:18 ryoon Exp $
 
 DISTNAME=	nsd-4.1.17
+PKGREVISION=	2
 CATEGORIES=	net
 MASTER_SITES=	http://www.nlnetlabs.nl/downloads/nsd/
 
@@ -47,6 +48,11 @@ CONFIGURE_ARGS+=--with-dbfile=${VARBASE}/nsd/nsd.db
 CONFIGURE_ARGS+=--with-xfrdfile=${VARBASE}/nsd/nsd-xfrd.state
 CONFIGURE_ARGS+=--with-libevent=${BUILDLINK_PREFIX.libevent}
 CONFIGURE_ARGS+=--with-ssl=${BUILDLINK_PREFIX.openssl}
+
+.if ${OPSYS} == "NetBSD"
+# For reallocarray(3)
+CPPFLAGS+=	-D_OPENBSD_SOURCE
+.endif
 
 RCD_SCRIPTS=	nsd
 
