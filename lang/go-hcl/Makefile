@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 02:02:39 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:27 jperkin Exp $
 
 DISTNAME=	hcl-0.0.20160616
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://github.com/hashicorp/hcl
-COMMENT=	HCL is a configuration language.
+COMMENT=	HCL is a configuration language
 LICENSE=	mpl-2.0
 
 GO_DIST_BASE=	${GITHUB_PROJECT}-${GITHUB_TAG}
@@ -17,4 +17,3 @@ GO_SRCPATH=	github.com/hashicorp/hcl
 
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-

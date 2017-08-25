@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 01:38:36 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:27 jperkin Exp $
 
 DISTNAME=	yaml-0.0.20160301
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	http://gopkg.in/yaml.v2
-COMMENT=	Package yaml implements YAML support for the Go language.
+COMMENT=	YAML support for the Go language
 LICENSE=	gnu-lgpl-v3
 
 GO_DIST_BASE=	${GITHUB_PROJECT}-${GITHUB_TAG}
@@ -17,4 +17,3 @@ GO_SRCPATH=	gopkg.in/yaml.v2
 
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-

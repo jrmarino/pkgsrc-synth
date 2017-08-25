@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 01:20:57 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:26 jperkin Exp $
 
 DISTNAME=	cobra-0.0.20170815
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://github.com/spf13/cobra
-COMMENT=	A Commander for modern Go CLI interactions
+COMMENT=	Commander for modern Go CLI interactions
 LICENSE=	apache-2.0
 
 GO_DIST_BASE=	${GITHUB_PROJECT}-${GITHUB_TAG}
@@ -21,4 +21,3 @@ GO_SRCPATH=	github.com/spf13/cobra
 .include "../../devel/go-homedir/buildlink3.mk"
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-

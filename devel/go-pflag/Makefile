@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 01:36:26 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:27 jperkin Exp $
 
 DISTNAME=	pflag-1.0.0
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://github.com/spf13/pflag
-COMMENT=	Drop-in replacement for Go's flag package, implementing POSIX/GNU-style --flags.
+COMMENT=	Replacement for flag package implementing POSIX --flags
 LICENSE=	modified-bsd
 
 GO_DIST_BASE=	${DISTNAME}
@@ -17,4 +17,3 @@ GO_SRCPATH=	github.com/spf13/pflag
 
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-

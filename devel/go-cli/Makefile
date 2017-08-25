@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 01:19:56 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:26 jperkin Exp $
 
 DISTNAME=	cli-1.20.0
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://github.com/urfave/cli
-COMMENT=	A simple, fast, and fun package for building command line apps in Go
+COMMENT=	Package for building command line apps in Go
 LICENSE=	mit
 
 GO_DIST_BASE=	${DISTNAME}
@@ -26,4 +26,3 @@ pre-install:
 .include "../../devel/go-yaml/buildlink3.mk"
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-

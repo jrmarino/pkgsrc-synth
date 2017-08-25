@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 01:56:05 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:28 jperkin Exp $
 
 DISTNAME=	prose-0.0.20170806
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://github.com/jdkato/prose
-COMMENT=	A Golang library for text processing, including tokenization, part-of-speech tagging, and named-entity extraction.
+COMMENT=	Text processing including tokenization, tagging, and extraction
 LICENSE=	mit
 
 GO_DIST_BASE=	${GITHUB_PROJECT}-${GITHUB_TAG}
@@ -21,4 +21,3 @@ GO_SRCPATH=	github.com/jdkato/prose
 .include "../../textproc/go-sentences/buildlink3.mk"
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-

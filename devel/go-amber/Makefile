@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 01:15:39 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:25 jperkin Exp $
 
 DISTNAME=	amber-0.0.20160421
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://github.com/eknkc/amber
-COMMENT=	Amber is an elegant templating engine for Go Programming Language It is inspired from HAML and Jade
+COMMENT=	Templating engine for Go inspired by HAML and Jade
 LICENSE=	mit
 
 GO_DIST_BASE=	${GITHUB_PROJECT}-${GITHUB_TAG}
@@ -17,4 +17,3 @@ GO_SRCPATH=	github.com/eknkc/amber
 
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-

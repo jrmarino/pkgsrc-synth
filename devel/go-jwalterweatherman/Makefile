@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1 2017/08/17 01:31:19 gavan Exp $
+# $NetBSD: Makefile,v 1.3 2017/08/25 17:03:26 jperkin Exp $
 
 DISTNAME=	jWalterWeatherman-20170523
 PKGNAME=	go-${DISTNAME}
@@ -9,7 +9,7 @@ GITHUB_PROJECT= ${PKGBASE:S/^go-//}
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
 HOMEPAGE=	https://github.com/spf13/jwalterweatherman
-COMMENT=	Seamless printing to the terminal (stdout) and logging to a io.Writer (file)
+COMMENT=	Seamless printing to the terminal and io.Writer
 LICENSE=	mit
 
 GO_DIST_BASE=	${GITHUB_PROJECT}-${GITHUB_TAG}
@@ -17,4 +17,3 @@ GO_SRCPATH=	github.com/spf13/jwalterweatherman
 
 .include "../../lang/go/go-package.mk"
 .include "../../mk/bsd.pkg.mk"
-
