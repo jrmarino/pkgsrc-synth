@@ -1,4 +1,4 @@
-# $NetBSD: buildlink3.mk,v 1.16 2017/07/11 14:19:23 jaapb Exp $
+# $NetBSD: buildlink3.mk,v 1.18 2017/09/05 05:01:37 dholland Exp $
 
 BUILDLINK_TREE+=	ocaml-lablgtk
 
@@ -14,7 +14,7 @@ pkgbase := ocaml-lablgtk
 .include "../../mk/pkg-build-options.mk"
 
 .if !empty(PKG_BUILD_OPTIONS.ocaml-lablgtk:Mgnomecanvas)
-.  include "../../x11/gnome-panel/buildlink3.mk"
+.  include "../../graphics/libgnomecanvas/buildlink3.mk"
 .endif
 
 .if !empty(PKG_BUILD_OPTIONS.ocaml-lablgtk:Mgtksourceview)
@@ -23,6 +23,10 @@ pkgbase := ocaml-lablgtk
 
 .if !empty(PKG_BUILD_OPTIONS.ocaml-lablgtk:Mgtksourceview2)
 .  include "../../x11/gtksourceview2/buildlink3.mk"
+.endif
+
+.if !empty(PKG_BUILD_OPTIONS.ocaml-lablgtk:Mgnome)
+.  include "../../x11/gnome-panel/buildlink3.mk"
 .endif
 
 .endif # OCAML_LABLGTK_BUILDLINK3_MK
