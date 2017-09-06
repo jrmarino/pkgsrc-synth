@@ -1,11 +1,11 @@
-# $NetBSD: Makefile,v 1.15 2017/08/17 07:58:53 fhajny Exp $
+# $NetBSD: Makefile,v 1.17 2017/09/06 11:44:07 fhajny Exp $
 
-DISTNAME=	vault-0.8.1
+DISTNAME=	vault-0.8.2
 CATEGORIES=	security
 MASTER_SITES=	${MASTER_SITE_GITHUB:=hashicorp/}
 
 MAINTAINER=	filip@joyent.com
-HOMEPAGE=	http://www.vaultproject.io/
+HOMEPAGE=	https://www.vaultproject.io/
 COMMENT=	Tool for managing secrets
 LICENSE=	mpl-2.0
 
