@@ -9,4 +9,4 @@ simple plugin with a clean, generic interface.
 GStreamer is released under the LGPL.
 
 This package is part of the 'ugly' plugins for GStreamer.  It provides the
-mad plugin, which allows playback of MPEG Layer 3 audio files.
+mpg123 plugin, which allows MP3 decoding.
