@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2511 2017/09/16 08:59:25 wiz Exp $
+# $NetBSD: Makefile,v 1.2513 2017/09/17 12:24:31 adam Exp $
 #
 
 COMMENT=	Development utilities
@@ -1018,6 +1018,7 @@ SUBDIR+=	p5-Devel-Leak-Object
 SUBDIR+=	p5-Devel-LexAlias
 SUBDIR+=	p5-Devel-NYTProf
 SUBDIR+=	p5-Devel-OverloadInfo
+SUBDIR+=	p5-Devel-OverrideGlobalRequire
 SUBDIR+=	p5-Devel-PPPort
 SUBDIR+=	p5-Devel-PartialDump
 SUBDIR+=	p5-Devel-PatchPerl
@@ -1939,7 +1940,6 @@ SUBDIR+=	py-ipaddr
 SUBDIR+=	py-ipykernel
 SUBDIR+=	py-ipython
 SUBDIR+=	py-ipython010
-SUBDIR+=	py-ipython013
 SUBDIR+=	py-ipython1
 SUBDIR+=	py-ipython_genutils
 SUBDIR+=	py-iso-639
