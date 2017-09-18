@@ -1,26 +1,24 @@
-# $NetBSD: Makefile,v 1.39 2017/09/18 02:48:08 taca Exp $
+# $NetBSD: Makefile,v 1.1 2017/09/18 02:36:01 taca Exp $
 #
 
-DISTNAME=	ruby-mysql-2.9.14
-PKGNAME=	${RUBY_PKGPREFIX}-mysql-2.9.14
+DISTNAME=	mysql-ruby-2.8.2
+PKGNAME=	${RUBY_PKGPREFIX}-mysql28-2.8.2
 CATEGORIES=	databases ruby
-MASTER_SITES=	${MASTER_SITE_GITHUB:=tmtm/}
-GITHUB_PROJECT=	ruby-mysql
-GITHUB_TAG=	${PKGVERSION_NOREV}
+MASTER_SITES=	http://tmtm.org/downloads/mysql/ruby/
 
 MAINTAINER=	neumann@s-direktnet.de
 HOMEPAGE=	http://www.tmtm.org/en/mysql/ruby/
 COMMENT=	Ruby extension for MySQL
 LICENSE=	gnu-gpl-v2 OR ruby-license
 
-USE_RUBY_SETUP=		yes
-USE_RUBY_SETUP_PKG=	yes
-
+USE_RUBY_EXTCONF=	yes
+INSTALL_TARGET=		site-install
+CONFIGURE_ARGS+=	--with-mysql-config
 INSTALLATION_DIRS=	${RUBY_DOC}/mysql ${RUBY_EG}/mysql
 
-DOCS=		README.rdoc
+DOCS=		README.html README_ja.html tommy.css
 
-ppost-install:
+post-install:
 .for f in ${DOCS}
 	${INSTALL_DATA} ${WRKSRC}/${f} ${DESTDIR}${PREFIX}/${RUBY_DOC}/mysql
 .endfor
