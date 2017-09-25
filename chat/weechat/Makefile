@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.77 2017/09/25 12:09:24 maya Exp $
+# $NetBSD: Makefile,v 1.79 2017/09/25 18:29:05 maya Exp $
 
 DISTNAME=	weechat-1.9.1
 CATEGORIES=	chat
