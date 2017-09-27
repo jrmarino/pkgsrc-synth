@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.545 2017/09/26 11:20:52 wiz Exp $
+# $NetBSD: Makefile,v 1.547 2017/09/27 13:32:30 wiz Exp $
 #
 
 COMMENT=	Audio tools
@@ -223,7 +223,6 @@ SUBDIR+=	liba52
 SUBDIR+=	libalac
 SUBDIR+=	libao
 SUBDIR+=	libao-alsa
-SUBDIR+=	libao-arts
 SUBDIR+=	libao-esound
 SUBDIR+=	libao-macosx
 SUBDIR+=	libao-nas
@@ -322,7 +321,6 @@ SUBDIR+=	mpc
 SUBDIR+=	mpdas
 SUBDIR+=	mpegaudio
 SUBDIR+=	mpg123
-SUBDIR+=	mpg123-arts
 SUBDIR+=	mpg123-esound
 SUBDIR+=	mpg123-nas
 SUBDIR+=	mpg123-oss

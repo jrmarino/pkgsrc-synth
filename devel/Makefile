@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2519 2017/09/26 17:39:00 minskim Exp $
+# $NetBSD: Makefile,v 1.2521 2017/09/27 17:19:39 wiz Exp $
 #
 
 COMMENT=	Development utilities
@@ -85,7 +85,6 @@ SUBDIR+=	binutils
 SUBDIR+=	bison
 SUBDIR+=	blame
 SUBDIR+=	blib
-SUBDIR+=	blosc
 SUBDIR+=	bmake
 SUBDIR+=	bmkdep
 SUBDIR+=	boa-constructor
@@ -940,6 +939,7 @@ SUBDIR+=	p5-Const-Fast
 SUBDIR+=	p5-Context-Preserve
 SUBDIR+=	p5-Contextual-Return
 SUBDIR+=	p5-Convert-Binary-C
+SUBDIR+=	p5-Coro
 SUBDIR+=	p5-Curses
 SUBDIR+=	p5-Curses-UI
 SUBDIR+=	p5-Curses-UI-POE
@@ -1066,6 +1066,7 @@ SUBDIR+=	p5-ExtUtils-ParseXS
 SUBDIR+=	p5-ExtUtils-PkgConfig
 SUBDIR+=	p5-ExtUtils-XSBuilder
 SUBDIR+=	p5-ExtUtils-XSpp
+SUBDIR+=	p5-FFI-CheckLib
 SUBDIR+=	p5-File-BOM
 SUBDIR+=	p5-File-BaseDir
 SUBDIR+=	p5-File-Binary
