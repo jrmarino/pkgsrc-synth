@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2521 2017/09/27 17:19:39 wiz Exp $
+# $NetBSD: Makefile,v 1.2523 2017/09/27 21:21:32 wiz Exp $
 #
 
 COMMENT=	Development utilities
@@ -1006,6 +1006,7 @@ SUBDIR+=	p5-Devel-FindRef
 SUBDIR+=	p5-Devel-Gladiator
 SUBDIR+=	p5-Devel-GlobalDestruction
 SUBDIR+=	p5-Devel-Hide
+SUBDIR+=	p5-Devel-Leak
 SUBDIR+=	p5-Devel-Leak-Object
 SUBDIR+=	p5-Devel-LexAlias
 SUBDIR+=	p5-Devel-NYTProf
@@ -1259,6 +1260,7 @@ SUBDIR+=	p5-Module-Build-WithXSpp
 SUBDIR+=	p5-Module-Build-XSUtil
 SUBDIR+=	p5-Module-CPANTS-Analyse
 SUBDIR+=	p5-Module-CPANfile
+SUBDIR+=	p5-Module-Compile
 SUBDIR+=	p5-Module-CoreList
 SUBDIR+=	p5-Module-Dependency
 SUBDIR+=	p5-Module-ExtractUse
