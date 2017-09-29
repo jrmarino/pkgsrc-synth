@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1268 2017/09/27 15:54:15 wiz Exp $
+# $NetBSD: Makefile,v 1.1271 2017/09/29 14:45:53 joerg Exp $
 #
 
 COMMENT=	Packages related to the World Wide Web
@@ -621,6 +621,7 @@ SUBDIR+=	py-channels
 SUBDIR+=	py-cheroot
 SUBDIR+=	py-cherrypy
 SUBDIR+=	py-clearsilver
+SUBDIR+=	py-cookies
 SUBDIR+=	py-curl
 SUBDIR+=	py-daphne
 SUBDIR+=	py-django
@@ -710,6 +711,7 @@ SUBDIR+=	py-jonpy
 SUBDIR+=	py-landslide
 SUBDIR+=	py-livereload
 SUBDIR+=	py-mechanize
+SUBDIR+=	py-meinheld
 SUBDIR+=	py-meld3
 SUBDIR+=	py-mezzanine
 SUBDIR+=	py-mod_wsgi
@@ -757,6 +759,7 @@ SUBDIR+=	py-webpy
 SUBDIR+=	py-websockets
 SUBDIR+=	py-werkzeug
 SUBDIR+=	py-werkzeug-docs
+SUBDIR+=	py-whitenoise
 SUBDIR+=	py-wtforms
 SUBDIR+=	py-wtforms-alchemy
 SUBDIR+=	py-wtforms-components

@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.958 2017/09/29 11:04:19 adam Exp $
+# $NetBSD: Makefile,v 1.963 2017/09/29 13:55:23 joerg Exp $
 #
 
 COMMENT=	Text processing utilities (does not include desktop publishing)
@@ -731,6 +731,7 @@ SUBDIR+=	py-cssselect2
 SUBDIR+=	py-cssutils
 SUBDIR+=	py-deepdiff
 SUBDIR+=	py-defusedxml
+SUBDIR+=	py-dicttoxml
 SUBDIR+=	py-docutils
 SUBDIR+=	py-docx
 SUBDIR+=	py-ejson
@@ -755,6 +756,7 @@ SUBDIR+=	py-jsbeautifier
 SUBDIR+=	py-jsonlib
 SUBDIR+=	py-jsonlib3
 SUBDIR+=	py-jsonpickle
+SUBDIR+=	py-jsonref
 SUBDIR+=	py-jsonrpclib
 SUBDIR+=	py-jsonschema
 SUBDIR+=	py-jxmlease
@@ -781,6 +783,7 @@ SUBDIR+=	py-pdf-parser
 SUBDIR+=	py-pdfrw
 SUBDIR+=	py-phonenumbers
 SUBDIR+=	py-prettytable
+SUBDIR+=	py-pyaml
 SUBDIR+=	py-pygments
 SUBDIR+=	py-pyphen
 SUBDIR+=	py-pyquery
@@ -788,6 +791,7 @@ SUBDIR+=	py-pysrt
 SUBDIR+=	py-pytoml
 SUBDIR+=	py-rdflib
 SUBDIR+=	py-rebulk
+SUBDIR+=	py-regex
 SUBDIR+=	py-relatorio
 SUBDIR+=	py-rst2pdf
 SUBDIR+=	py-snowballstemmer
@@ -811,6 +815,7 @@ SUBDIR+=	py-xlrd
 SUBDIR+=	py-xlsxwriter
 SUBDIR+=	py-xlwt
 SUBDIR+=	py-xml
+SUBDIR+=	py-xmltodict
 SUBDIR+=	py-yamcha
 SUBDIR+=	py-yaml
 SUBDIR+=	qore-json-module
