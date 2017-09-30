@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2534 2017/09/29 14:32:23 joerg Exp $
+# $NetBSD: Makefile,v 1.2538 2017/09/29 21:39:33 joerg Exp $
 #
 
 COMMENT=	Development utilities
@@ -1838,7 +1838,7 @@ SUBDIR+=	py-blinker
 SUBDIR+=	py-boost
 SUBDIR+=	py-bugzilla
 SUBDIR+=	py-buildbot
-SUBDIR+=	py-buildbot-slave
+SUBDIR+=	py-buildbot-worker
 SUBDIR+=	py-cached-property
 SUBDIR+=	py-cachetools
 SUBDIR+=	py-capstone
@@ -1863,6 +1863,7 @@ SUBDIR+=	py-contextlib2
 SUBDIR+=	py-cookiecutter
 SUBDIR+=	py-coverage
 SUBDIR+=	py-cparser
+SUBDIR+=	py-crayons
 SUBDIR+=	py-cubes
 SUBDIR+=	py-curses
 SUBDIR+=	py-cursespanel
@@ -1973,6 +1974,7 @@ SUBDIR+=	py-mako
 SUBDIR+=	py-mando
 SUBDIR+=	py-mccabe
 SUBDIR+=	py-memcached
+SUBDIR+=	py-memory-profiler
 SUBDIR+=	py-mercurial
 SUBDIR+=	py-meson
 SUBDIR+=	py-minimock
@@ -2092,6 +2094,7 @@ SUBDIR+=	py-stsci.distutils
 SUBDIR+=	py-subprocess32
 SUBDIR+=	py-subversion
 SUBDIR+=	py-subvertpy
+SUBDIR+=	py-sure
 SUBDIR+=	py-sysctl
 SUBDIR+=	py-tabular
 SUBDIR+=	py-termcolor
