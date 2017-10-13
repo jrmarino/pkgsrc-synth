@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.637 2017/10/12 16:19:18 minskim Exp $
+# $NetBSD: Makefile,v 1.649 2017/10/13 18:52:25 minskim Exp $
 #
 
 COMMENT=	Security tools
@@ -475,11 +475,23 @@ SUBDIR+=	ruby-openid
 SUBDIR+=	ruby-password
 SUBDIR+=	ruby-rack-openid
 SUBDIR+=	ruby-rc4
+SUBDIR+=	ruby-rex-arch
+SUBDIR+=	ruby-rex-bin_tools
 SUBDIR+=	ruby-rex-core
+SUBDIR+=	ruby-rex-encoder
+SUBDIR+=	ruby-rex-java
+SUBDIR+=	ruby-rex-mime
+SUBDIR+=	ruby-rex-nop
+SUBDIR+=	ruby-rex-ole
 SUBDIR+=	ruby-rex-powershell
 SUBDIR+=	ruby-rex-random_identifier
+SUBDIR+=	ruby-rex-registry
+SUBDIR+=	ruby-rex-rop_builder
+SUBDIR+=	ruby-rex-socket
+SUBDIR+=	ruby-rex-sslscan
 SUBDIR+=	ruby-rex-struct2
 SUBDIR+=	ruby-rex-text
+SUBDIR+=	ruby-rex-zip
 SUBDIR+=	ruby-ruby-openid
 SUBDIR+=	ruby-rubyntlm
 SUBDIR+=	ruby-shadow
