@@ -1,4 +1,4 @@
-$NetBSD: patch-CMakeLists.txt,v 1.2 2017/11/04 17:23:20 maya Exp $
+$NetBSD$
 
 Check that eat_newline_glitch can be assigned to
 
