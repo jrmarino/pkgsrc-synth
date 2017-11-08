@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1283 2017/11/04 14:43:40 wen Exp $
+# $NetBSD: Makefile,v 1.1285 2017/11/08 14:49:39 tnn Exp $
 #
 
 COMMENT=	Packages related to the World Wide Web
@@ -125,6 +125,7 @@ SUBDIR+=	firefox52-l10n
 SUBDIR+=	gallery
 SUBDIR+=	gallery2
 SUBDIR+=	ganglia-webfrontend
+SUBDIR+=	geckodriver
 SUBDIR+=	geeklog
 SUBDIR+=	gitweb
 SUBDIR+=	go-ace
