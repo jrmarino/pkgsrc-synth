@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2565 2017/10/27 13:59:51 ryoon Exp $
+# $NetBSD: Makefile,v 1.2567 2017/11/08 21:35:46 wiz Exp $
 #
 
 COMMENT=	Development utilities
@@ -956,6 +956,7 @@ SUBDIR+=	p5-Coro
 SUBDIR+=	p5-Curses
 SUBDIR+=	p5-Curses-UI
 SUBDIR+=	p5-Curses-UI-POE
+SUBDIR+=	p5-Cwd-Guard
 SUBDIR+=	p5-Data-Alias
 SUBDIR+=	p5-Data-Buffer
 SUBDIR+=	p5-Data-Compare
@@ -1002,6 +1003,7 @@ SUBDIR+=	p5-Declare-Constraints-Simple
 SUBDIR+=	p5-Devel-Autoflush
 SUBDIR+=	p5-Devel-BeginLift
 SUBDIR+=	p5-Devel-Caller
+SUBDIR+=	p5-Devel-Caller-IgnoreNamespaces
 SUBDIR+=	p5-Devel-CheckBin
 SUBDIR+=	p5-Devel-CheckCompiler
 SUBDIR+=	p5-Devel-CheckLib
