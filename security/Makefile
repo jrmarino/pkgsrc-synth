@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.660 2017/12/14 21:05:45 fhajny Exp $
+# $NetBSD: Makefile,v 1.662 2017/12/19 11:55:52 leot Exp $
 #
 
 COMMENT=	Security tools
@@ -354,6 +354,7 @@ SUBDIR+=	php-oauth1
 SUBDIR+=	php-pecl-mcrypt
 SUBDIR+=	php-sodium
 SUBDIR+=	php-ssdeep
+SUBDIR+=	php-ssh2-0
 SUBDIR+=	php-ssh2
 SUBDIR+=	php-suhosin
 SUBDIR+=	pinentry
@@ -410,6 +411,7 @@ SUBDIR+=	py-hsm
 SUBDIR+=	py-itsdangerous
 SUBDIR+=	py-kerberos
 SUBDIR+=	py-keyring
+SUBDIR+=	py-keyrings.alt
 SUBDIR+=	py-lasso
 SUBDIR+=	py-libtaxii
 SUBDIR+=	py-m2crypto
