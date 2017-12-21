@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.1288 2017/12/14 13:52:58 adam Exp $
+# $NetBSD: Makefile,v 1.1290 2017/12/21 03:50:43 manu Exp $
 #
 
 COMMENT=	Packages related to the World Wide Web
@@ -43,7 +43,9 @@ SUBDIR+=	ap2-python
 SUBDIR+=	ap2-subversion
 SUBDIR+=	ap2-suphp
 SUBDIR+=	ap2-transform
+SUBDIR+=	ap2-upload
 SUBDIR+=	ap2-xsendfile
+SUBDIR+=	ap22-auth-ofba
 SUBDIR+=	ap22-authn-sasl
 SUBDIR+=	ap22-authnz-external
 SUBDIR+=	ap22-authz-ldap
