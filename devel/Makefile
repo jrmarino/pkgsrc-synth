@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2584 2017/12/21 10:15:48 adam Exp $
+# $NetBSD: Makefile,v 1.2586 2017/12/30 04:38:40 tsutsui Exp $
 #
 
 COMMENT=	Development utilities
@@ -2254,6 +2254,7 @@ SUBDIR+=	ruby-delayer-deferred
 SUBDIR+=	ruby-dep
 SUBDIR+=	ruby-deprecated
 SUBDIR+=	ruby-dhaka
+SUBDIR+=	ruby-diva
 SUBDIR+=	ruby-docile
 SUBDIR+=	ruby-eet
 SUBDIR+=	ruby-eventmachine
@@ -2285,6 +2286,7 @@ SUBDIR+=	ruby-highline
 SUBDIR+=	ruby-hike
 SUBDIR+=	ruby-hike1
 SUBDIR+=	ruby-i18n
+SUBDIR+=	ruby-idn
 SUBDIR+=	ruby-iniparse
 SUBDIR+=	ruby-inline
 SUBDIR+=	ruby-instance_storage
