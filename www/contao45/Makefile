@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.13 2018/01/04 13:23:03 taca Exp $
+# $NetBSD: Makefile,v 1.1 2018/01/04 13:39:46 taca Exp $
 #
 
 DISTNAME=	contao-${CT_PKGVER}
@@ -13,18 +13,21 @@ HOMEPAGE=	https://contao.org/
 COMMENT=	Contao Open Source CMS ${CT_VERSION}
 LICENSE=	gnu-lgpl-v3
 
-DEPENDS+=	${PHP_PKG_PREFIX}-gd>=5.6:../../graphics/php-gd
-DEPENDS+=	${PHP_PKG_PREFIX}-mbstring>=5.6:../../converters/php-mbstring
-DEPENDS+=	${PHP_PKG_PREFIX}-pdo_mysql>=5.6:../../databases/php-pdo_mysql
-DEPENDS+=	${PHP_PKG_PREFIX}-soap>=5.6:../../net/php-soap
-DEPENDS+=	${PHP_PKG_PREFIX}-intl>=5.6:../../textproc/php-intl
-DEPENDS+=	${PHP_PKG_PREFIX}-json>=5.6:../../textproc/php-json
-DEPENDS+=	${PHP_PKG_PREFIX}-curl>=5.6:../../www/php-curl
-DEPENDS+=	${PHP_PKG_PREFIX}-zlib>=5.6:../../archivers/php-zlib
+DEPENDS+=	${PHP_PKG_PREFIX}-gd>=7.1:../../graphics/php-gd
+DEPENDS+=	${PHP_PKG_PREFIX}-mbstring>=7.1:../../converters/php-mbstring
+DEPENDS+=	${PHP_PKG_PREFIX}-pdo_mysql>=7.1:../../databases/php-pdo_mysql
+DEPENDS+=	${PHP_PKG_PREFIX}-soap>=7.1:../../net/php-soap
+DEPENDS+=	${PHP_PKG_PREFIX}-intl>=7.1:../../textproc/php-intl
+DEPENDS+=	${PHP_PKG_PREFIX}-json>=7.1:../../textproc/php-json
+DEPENDS+=	${PHP_PKG_PREFIX}-curl>=7.1:../../www/php-curl
+DEPENDS+=	${PHP_PKG_PREFIX}-zlib>=7.1:../../archivers/php-zlib
+DEPENDS+=	${PHP_PKG_PREFIX}-pecl-mcrypt>=1.0.1:../../security/php-pecl-mcrypt
 
-CT_VERSION=	4.4.12
+CT_VERSION=	4.5.1
 USE_TOOLS=	bash:run pax
 NO_BUILD=	yes
+
+PHP_VERSIONS_ACCEPTED=	71 72
 
 EG_DATA=	app/config
 
@@ -53,13 +56,14 @@ REPLACE_INTERPRETER+=	php
 REPLACE.php.old=	.*php[^ ]*
 REPLACE.php.new=	${PREFIX}/bin/php
 REPLACE_FILES.php= \
+	vendor/bin/contao-api vendor/bin/update-psl-icann-section \
+	vendor/contao/manager-bundle/bin/contao-api \
+	vendor/league/uri-hostname-parser/bin/update-psl-icann-section \
 	vendor/contao/manager-bundle/bin/contao-console \
 	vendor/doctrine/dbal/bin/doctrine-dbal \
 	vendor/oyejorge/less.php/bin/lessc \
 	vendor/matthiasmullie/minify/bin/minifycss \
 	vendor/matthiasmullie/minify/bin/minifyjs \
-	vendor/jeremykendall/php-domain-parser/bin/parse \
-	vendor/jeremykendall/php-domain-parser/bin/update-psl \
 	vendor/leafo/scssphp/bin/pscss \
 	vendor/sensiolabs/security-checker/security-checker \
 	vendor/ua-parser/uap-php/bin/uaparser \
@@ -82,12 +86,6 @@ PERMFIXFILES=	vendor/oyejorge/less.php/lib/Less/Less.php.combine \
 	vendor/simplepie/simplepie/library/SimplePie/Registry.php
 
 .include "../../lang/php/phpversion.mk"
-
-.if ${PKG_PHP_VERSION} < 71
-DEPENDS+=	${PHP_PKG_PREFIX}-mcrypt>=5.6:../../security/php-mcrypt
-.else
-DEPENDS+=	${PHP_PKG_PREFIX}-pecl-mcrypt>=1.0.1:../../security/php-pecl-mcrypt
-.endif
 
 pre-configure:
 	${CP} ${FILESDIR}/contao.conf ${WRKDIR}
