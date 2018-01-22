@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.351 2018/01/18 11:02:07 markd Exp $
+# $NetBSD: Makefile,v 1.353 2018/01/22 06:21:00 wen Exp $
 
 COMMENT=	Mathematics
 
@@ -41,6 +41,7 @@ SUBDIR+=	R-gtools
 SUBDIR+=	R-httpRequest
 SUBDIR+=	R-hwde
 SUBDIR+=	R-intervals
+SUBDIR+=	R-lme4
 SUBDIR+=	R-lmm
 SUBDIR+=	R-mapproj
 SUBDIR+=	R-maps
@@ -48,6 +49,7 @@ SUBDIR+=	R-minqa
 SUBDIR+=	R-mvtnorm
 SUBDIR+=	R-ncdf
 SUBDIR+=	R-nloptr
+SUBDIR+=	R-pbkrtest
 SUBDIR+=	R-pixmap
 SUBDIR+=	R-plyr
 SUBDIR+=	R-quantreg
