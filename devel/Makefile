@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2597 2018/02/04 12:01:25 jdolecek Exp $
+# $NetBSD: Makefile,v 1.2600 2018/02/05 16:28:49 adam Exp $
 #
 
 COMMENT=	Development utilities
@@ -1839,6 +1839,7 @@ SUBDIR+=	py-args
 SUBDIR+=	py-astor
 SUBDIR+=	py-astroid
 SUBDIR+=	py-async-timeout
+SUBDIR+=	py-async_generator
 SUBDIR+=	py-at-spi
 SUBDIR+=	py-at-spi2
 SUBDIR+=	py-atomicwrites
@@ -2140,6 +2141,7 @@ SUBDIR+=	py-tabular
 SUBDIR+=	py-termcolor
 SUBDIR+=	py-test
 SUBDIR+=	py-test-assume
+SUBDIR+=	py-test-asyncio
 SUBDIR+=	py-test-cache
 SUBDIR+=	py-test-cov
 SUBDIR+=	py-test-flake8
@@ -2173,6 +2175,7 @@ SUBDIR+=	py-txrequests
 SUBDIR+=	py-typing
 SUBDIR+=	py-unit
 SUBDIR+=	py-unitgui
+SUBDIR+=	py-unittest-mixins
 SUBDIR+=	py-unittest2
 SUBDIR+=	py-urwid
 SUBDIR+=	py-usb
