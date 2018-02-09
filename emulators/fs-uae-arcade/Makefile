@@ -1,8 +1,8 @@
-# $NetBSD: Makefile,v 1.8 2018/02/08 20:57:27 adam Exp $
+# $NetBSD: Makefile,v 1.1 2018/02/08 20:58:50 adam Exp $
 
-DISTNAME=	fs-uae-launcher-2.8.3
+DISTNAME=	fs-uae-arcade-2.8.3
 CATEGORIES=	emulators
-MASTER_SITES=	https://fs-uae.net/fs-uae/stable/${PKGVERSION_NOREV}/
+MASTER_SITES=	http://fs-uae.net/fs-uae/stable/${PKGVERSION_NOREV}/
 
 MAINTAINER=	adam@NetBSD.org
 HOMEPAGE=	https://fs-uae.net/
@@ -24,10 +24,10 @@ INSTALL_TARGET=		install-data
 USE_TOOLS+=		gmake msgfmt
 
 PYTHON_VERSIONS_ACCEPTED=	36 35 34 # import urllib.parse
-PYSETUPINSTALLARGS=	--install-lib=${PREFIX:Q}/share/fs-uae-launcher
-PYSETUPINSTALLARGS+=	--install-scripts=${PREFIX:Q}/share/fs-uae-launcher
+PYSETUPINSTALLARGS=	--install-lib=${PREFIX:Q}/share/fs-uae-arcade
+PYSETUPINSTALLARGS+=	--install-scripts=${PREFIX:Q}/share/fs-uae-arcade
 
-REPLACE_PYTHON+=	fs-uae-launcher
+REPLACE_PYTHON+=	fs-uae-arcade
 
 INSTALLATION_DIRS+=	bin
 
@@ -42,8 +42,8 @@ SUBST_SED.prefix=	-e 's,/usr/local,${PREFIX},'
 post-install:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE_PROGRAM} ${INSTALL_MAKE_FLAGS} \
 		-f ${MAKE_FILE} ${INSTALL_TARGET}
-	cd ${DESTDIR}${PREFIX}/bin && ${RM} -f fs-uae-launcher && \
-		${LN} -s ../share/fs-uae-launcher/fs-uae-launcher fs-uae-launcher
+	cd ${DESTDIR}${PREFIX}/bin && ${RM} -f fs-uae-arcade && \
+		${LN} -s ../share/fs-uae-arcade/fs-uae-arcade fs-uae-arcade
 
 .include "../../graphics/hicolor-icon-theme/buildlink3.mk"
 .include "../../lang/python/application.mk"
