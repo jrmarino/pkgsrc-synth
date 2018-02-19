@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2608 2018/02/15 16:45:18 minskim Exp $
+# $NetBSD: Makefile,v 1.2611 2018/02/19 01:52:49 kamil Exp $
 #
 
 COMMENT=	Development utilities
@@ -95,7 +95,6 @@ SUBDIR+=	bmake
 SUBDIR+=	bmkdep
 SUBDIR+=	boa-constructor
 SUBDIR+=	boehm-gc
-SUBDIR+=	bokken
 SUBDIR+=	boost-build
 SUBDIR+=	boost-docs
 SUBDIR+=	boost-headers
@@ -2145,7 +2144,6 @@ SUBDIR+=	py-pytemplate
 SUBDIR+=	py-pyutil
 SUBDIR+=	py-queuelib
 SUBDIR+=	py-quixote
-SUBDIR+=	py-radare2
 SUBDIR+=	py-radon
 SUBDIR+=	py-rauth
 SUBDIR+=	py-readlike
@@ -2252,7 +2250,7 @@ SUBDIR+=	qtscriptgenerator
 SUBDIR+=	quilt
 SUBDIR+=	radamsa
 SUBDIR+=	radare2
-SUBDIR+=	radare2-valabind
+SUBDIR+=	radare2-cutter
 SUBDIR+=	ragel
 SUBDIR+=	rainbow-delimiters-el
 SUBDIR+=	rapidsvn
