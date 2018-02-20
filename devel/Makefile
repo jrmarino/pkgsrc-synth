@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2611 2018/02/19 01:52:49 kamil Exp $
+# $NetBSD: Makefile,v 1.2613 2018/02/20 14:01:19 fhajny Exp $
 #
 
 COMMENT=	Development utilities
@@ -876,6 +876,7 @@ SUBDIR+=	p5-Cache-Cache
 SUBDIR+=	p5-Cache-FastMmap
 SUBDIR+=	p5-Cache-LRU
 SUBDIR+=	p5-Cache-Memcached
+SUBDIR+=	p5-Cache-Memcached-Fast
 SUBDIR+=	p5-Cache-Simple-TimedExpiry
 SUBDIR+=	p5-Canary-Stability
 SUBDIR+=	p5-Capture-Tiny
@@ -998,6 +999,7 @@ SUBDIR+=	p5-Data-Structure-Util
 SUBDIR+=	p5-Data-Taxi
 SUBDIR+=	p5-Data-TemporaryBag
 SUBDIR+=	p5-Data-UUID
+SUBDIR+=	p5-Data-UUID-Base64URLSafe
 SUBDIR+=	p5-Data-Uniqid
 SUBDIR+=	p5-Data-Visitor
 SUBDIR+=	p5-Date-Business
