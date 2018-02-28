@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2620 2018/02/28 08:36:50 wiz Exp $
+# $NetBSD: Makefile,v 1.2623 2018/02/28 15:45:55 taca Exp $
 #
 
 COMMENT=	Development utilities
@@ -2291,7 +2291,6 @@ SUBDIR+=	ruby-activesupport42
 SUBDIR+=	ruby-algorithms
 SUBDIR+=	ruby-amstd
 SUBDIR+=	ruby-assistance
-SUBDIR+=	ruby-atomic
 SUBDIR+=	ruby-backports
 SUBDIR+=	ruby-bindata
 SUBDIR+=	ruby-bit-struct
@@ -2305,7 +2304,9 @@ SUBDIR+=	ruby-celluloid-extras
 SUBDIR+=	ruby-celluloid-fsm
 SUBDIR+=	ruby-celluloid-pool
 SUBDIR+=	ruby-celluloid-supervision
+SUBDIR+=	ruby-classy_hash
 SUBDIR+=	ruby-cmd
+SUBDIR+=	ruby-concurrent-ruby
 SUBDIR+=	ruby-contracts
 SUBDIR+=	ruby-cucumber-core
 SUBDIR+=	ruby-cucumber-wire
