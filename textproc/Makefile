@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.976 2018/02/14 16:55:31 minskim Exp $
+# $NetBSD: Makefile,v 1.978 2018/03/11 15:44:29 rillig Exp $
 #
 
 COMMENT=	Text processing utilities (does not include desktop publishing)
@@ -465,6 +465,7 @@ SUBDIR+=	p5-Lingua-Stem-Snowball-Da
 SUBDIR+=	p5-Lingua-Translit
 SUBDIR+=	p5-List-Compare
 SUBDIR+=	p5-Locale-Maketext-Gettext
+SUBDIR+=	p5-MultiMarkdown
 SUBDIR+=	p5-Net-Dict
 SUBDIR+=	p5-Net-IDN-Encode
 SUBDIR+=	p5-Number-Format
@@ -968,6 +969,7 @@ SUBDIR+=	tinyxml2
 SUBDIR+=	tokyodystopia
 SUBDIR+=	trang
 SUBDIR+=	translate-shell
+SUBDIR+=	translate-toolkit
 SUBDIR+=	troffcvt
 SUBDIR+=	unac
 SUBDIR+=	uncrustify
