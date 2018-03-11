@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2629 2018/03/11 04:07:19 dholland Exp $
+# $NetBSD: Makefile,v 1.2631 2018/03/11 11:20:13 maya Exp $
 #
 
 COMMENT=	Development utilities
@@ -1077,6 +1077,7 @@ SUBDIR+=	p5-Exporter-Lite
 SUBDIR+=	p5-Exporter-Tiny
 SUBDIR+=	p5-ExtUtils-AutoInstall
 SUBDIR+=	p5-ExtUtils-CBuilder
+SUBDIR+=	p5-ExtUtils-CChecker
 SUBDIR+=	p5-ExtUtils-Command
 SUBDIR+=	p5-ExtUtils-Config
 SUBDIR+=	p5-ExtUtils-CppGuess
@@ -1565,6 +1566,7 @@ SUBDIR+=	p5-System-Command
 SUBDIR+=	p5-TAP-Formatter-HTML
 SUBDIR+=	p5-TAP-Harness-Archive
 SUBDIR+=	p5-Task-Weaken
+SUBDIR+=	p5-Taint-Util
 SUBDIR+=	p5-Tee
 SUBDIR+=	p5-Template-Plugin-Handy
 SUBDIR+=	p5-Template-Plugin-HashMerge
