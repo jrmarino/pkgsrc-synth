@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2643 2018/03/20 15:41:38 khorben Exp $
+# $NetBSD: Makefile,v 1.2648 2018/03/21 10:24:36 taca Exp $
 #
 
 COMMENT=	Development utilities
@@ -2298,10 +2298,13 @@ SUBDIR+=	rubigen
 SUBDIR+=	ruby-SDL
 SUBDIR+=	ruby-abstract
 SUBDIR+=	ruby-activejob42
+SUBDIR+=	ruby-activejob51
 SUBDIR+=	ruby-activemodel32
 SUBDIR+=	ruby-activemodel42
+SUBDIR+=	ruby-activemodel51
 SUBDIR+=	ruby-activesupport32
 SUBDIR+=	ruby-activesupport42
+SUBDIR+=	ruby-activesupport51
 SUBDIR+=	ruby-algorithms
 SUBDIR+=	ruby-amstd
 SUBDIR+=	ruby-assistance
@@ -2323,6 +2326,7 @@ SUBDIR+=	ruby-cmd
 SUBDIR+=	ruby-concurrent-ruby
 SUBDIR+=	ruby-contracts
 SUBDIR+=	ruby-cucumber-core
+SUBDIR+=	ruby-cucumber-tag_expressions
 SUBDIR+=	ruby-cucumber-wire
 SUBDIR+=	ruby-curses
 SUBDIR+=	ruby-daemon_controller
@@ -2418,6 +2422,7 @@ SUBDIR+=	ruby-priority-queue
 SUBDIR+=	ruby-racc
 SUBDIR+=	ruby-railties32
 SUBDIR+=	ruby-railties42
+SUBDIR+=	ruby-railties51
 SUBDIR+=	ruby-randexp
 SUBDIR+=	ruby-rb-fsevent
 SUBDIR+=	ruby-rb-kqueue
