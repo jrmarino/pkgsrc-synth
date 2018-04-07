@@ -1,11 +1,11 @@
-# $NetBSD: Makefile,v 1.1 2018/01/23 01:52:12 minskim Exp $
+# $NetBSD: Makefile,v 1.1 2018/04/06 19:22:41 minskim Exp $
 
-DISTNAME=	tensorflow-tensorboard-${GITHUB_TAG:S/-//}
+DISTNAME=	tensorboard-${GITHUB_TAG:S/-//}
 PKGNAME=	${PYPKGPREFIX}-${DISTNAME}
 CATEGORIES=	math python
 MASTER_SITES=	${MASTER_SITE_GITHUB:=tensorflow/}
 GITHUB_PROJECT=	tensorboard
-GITHUB_TAG=	0.4.0
+GITHUB_TAG=	1.7.0
 
 MAINTAINER=	minskim@NetBSD.org
 HOMEPAGE=	https://github.com/tensorflow/tensorboard
