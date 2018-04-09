@@ -1,4 +1,4 @@
-$NetBSD: patch-src_bin_gnucash-bin.c,v 1.1 2014/04/21 21:40:01 wiz Exp $
+$NetBSD: patch-src_bin_gnucash-bin.c,v 1.1 2018/04/09 08:40:53 wiz Exp $
 
 Allow starting gnucash in the background.
 python's readline module causes a SIGTTOU to be sent and if this
