@@ -1,4 +1,4 @@
-# $NetBSD: Makefile.common,v 1.8 2018/04/07 00:39:29 markd Exp $
+# $NetBSD: kf5.mk,v 1.1 2018/04/11 11:34:57 markd Exp $
 # used by misc/attica-qt5/Makefile
 # used by sysutils/baloo5/Makefile
 # used by x11/frameworkintegration/Makefile
@@ -60,34 +60,12 @@
 # used by x11/qqc2-desktop-style/Makefile
 # used by graphics/prison/Makefile
 
-KF5VER=		5.41.0
+KF5VER=		5.44.0
 CATEGORIES+=	kde
-MASTER_SITES=	${MASTER_SITE_KDE:=frameworks/5.41/}
+MASTER_SITES=	${MASTER_SITE_KDE:=frameworks/5.44/}
 EXTRACT_SUFX=	.tar.xz
-
-MAINTAINER?=	markd@NetBSD.org
 
 BUILD_DEPENDS+= extra-cmake-modules>=${KF5VER}:../../devel/extra-cmake-modules
 TOOLS_DEPENDS.cmake= cmake>=3.0:../../devel/cmake
-BUILDLINK_ABI_DEPENDS.qt5-qtbase+=	qt5-qtbase>=5.10.1nb2
 
-USE_CMAKE=	yes
-USE_LANGUAGES=	c c++
-CMAKE_ARG_PATH=	..
-CONFIGURE_DIRS=	_KDE_build
-
-CMAKE_ARGS+=	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON
-CMAKE_ARGS+=	-DKDE_INSTALL_LIBEXECDIR=libexec
-CMAKE_ARGS+=	-DKDE_INSTALL_SYSCONFDIR=${PKG_SYSCONFDIR:Q}
-
-pre-configure:
-	${MKDIR} ${WRKSRC}/_KDE_build
-
-.include "../../mk/bsd.prefs.mk"
-.if ${OPSYS} == "NetBSD"
-# Work-around bad use-warning check in GNU ld 2.26
-# /usr/lib/librpcsvc.so.1: warning: warning: this program uses xdr_peername(), which is deprecated and buggy.
-# is triggered, even though the current linker output contains
-# no references to it.
-BUILDLINK_TRANSFORM+=	rm:-Wl,--fatal-warnings
-.endif
+.include "../../meta-pkgs/kde/Makefile.common"
