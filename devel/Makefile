@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2658 2018/04/11 15:23:55 minskim Exp $
+# $NetBSD: Makefile,v 1.2660 2018/04/13 16:05:47 minskim Exp $
 #
 
 COMMENT=	Development utilities
@@ -22,6 +22,7 @@ SUBDIR+=	R-bit64
 SUBDIR+=	R-cli
 SUBDIR+=	R-crayon
 SUBDIR+=	R-evaluate
+SUBDIR+=	R-iterators
 SUBDIR+=	R-lazyeval
 SUBDIR+=	R-magrittr
 SUBDIR+=	R-memoise
@@ -765,6 +766,7 @@ SUBDIR+=	ocaml-jbuilder
 SUBDIR+=	ocaml-js-build-tools
 SUBDIR+=	ocaml-lwt
 SUBDIR+=	ocaml-lwt_glib
+SUBDIR+=	ocaml-lwt_log
 SUBDIR+=	ocaml-lwt_ppx
 SUBDIR+=	ocaml-lwt_react
 SUBDIR+=	ocaml-lwt_ssl
