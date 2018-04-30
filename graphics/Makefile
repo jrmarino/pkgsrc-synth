@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.788 2018/04/06 03:47:12 maya Exp $
+# $NetBSD: Makefile,v 1.790 2018/04/30 04:57:24 ryoon Exp $
 #
 
 COMMENT=	Graphics tools and libraries
@@ -312,6 +312,7 @@ SUBDIR+=	libkface
 SUBDIR+=	libkipi
 SUBDIR+=	libksane
 SUBDIR+=	liblqr
+SUBDIR+=	libmypaint
 SUBDIR+=	libotf
 SUBDIR+=	libpano13
 SUBDIR+=	libpgf
@@ -343,6 +344,7 @@ SUBDIR+=	mpeg2codec
 SUBDIR+=	mpgtx
 SUBDIR+=	mscgen
 SUBDIR+=	mypaint
+SUBDIR+=	mypaint-brushes
 SUBDIR+=	ncview
 SUBDIR+=	netpbm
 SUBDIR+=	ns-cult3d
