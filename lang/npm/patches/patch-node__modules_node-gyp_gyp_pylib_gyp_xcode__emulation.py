@@ -1,9 +1,9 @@
-$NetBSD: patch-deps_npm_node__modules_node-gyp_gyp_pylib_gyp_xcode__emulation.py,v 1.1 2017/05/30 14:26:38 adam Exp $
+$NetBSD: patch-node__modules_node-gyp_gyp_pylib_gyp_xcode__emulation.py,v 1.1 2018/05/02 17:03:09 fhajny Exp $
 
 Do not generate debugging symbols (uses lots of disk space).
 
---- deps/npm/node_modules/node-gyp/gyp/pylib/gyp/xcode_emulation.py.orig	2017-05-30 13:51:50.000000000 +0000
-+++ deps/npm/node_modules/node-gyp/gyp/pylib/gyp/xcode_emulation.py
+--- node_modules/node-gyp/gyp/pylib/gyp/xcode_emulation.py.orig	2018-03-23 09:08:01.000000000 +0000
++++ node_modules/node-gyp/gyp/pylib/gyp/xcode_emulation.py
 @@ -500,7 +500,7 @@ class XcodeSettings(object):
  
      self._Appendf(cflags, 'GCC_OPTIMIZATION_LEVEL', '-O%s', default='s')
