@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.6 2018/05/11 10:09:55 adam Exp $
+# $NetBSD: Makefile,v 1.8 2018/05/11 19:46:36 minskim Exp $
 
 DISTNAME=	notebook-5.5.0
 PKGNAME=	${PYPKGPREFIX}-${DISTNAME}
