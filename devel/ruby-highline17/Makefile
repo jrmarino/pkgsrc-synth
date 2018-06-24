@@ -1,6 +1,7 @@
-# $NetBSD: Makefile,v 1.21 2018/06/24 14:22:04 taca Exp $
+# $NetBSD: Makefile,v 1.1 2018/06/24 14:16:31 taca Exp $
 
-DISTNAME=	highline-2.0.0
+DISTNAME=	highline-1.7.10
+PKGNAME=	${RUBY_PKGPREFIX}-${DISTNAME:S/highline/highline17/}
 CATEGORIES=	net security
 
 MAINTAINER=	pkgsrc-users@NetBSD.org
