@@ -1,4 +1,4 @@
-$NetBSD: patch-third__party_rust_libloading_build.rs,v 1.1 2018/06/26 09:37:10 jperkin Exp $
+$NetBSD: patch-third__party_rust_libloading_build.rs,v 1.1 2018/06/28 14:04:10 ryoon Exp $
 
 Support SunOS.
 

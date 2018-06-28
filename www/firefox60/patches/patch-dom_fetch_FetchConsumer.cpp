@@ -1,4 +1,4 @@
-$NetBSD: patch-dom_fetch_FetchConsumer.cpp,v 1.1 2018/05/10 20:02:59 ryoon Exp $
+$NetBSD: patch-dom_fetch_FetchConsumer.cpp,v 1.1 2018/06/28 14:04:10 ryoon Exp $
 
 --- dom/fetch/FetchConsumer.cpp.orig	2018-05-03 16:58:26.000000000 +0000
 +++ dom/fetch/FetchConsumer.cpp
