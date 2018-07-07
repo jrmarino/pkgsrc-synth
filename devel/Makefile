@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2694 2018/07/06 03:13:48 minskim Exp $
+# $NetBSD: Makefile,v 1.2696 2018/07/07 09:00:15 adam Exp $
 #
 
 COMMENT=	Development utilities
@@ -2012,6 +2012,7 @@ SUBDIR+=	py-grako
 SUBDIR+=	py-greenlet
 SUBDIR+=	py-h5py
 SUBDIR+=	py-hash
+SUBDIR+=	py-hg-evolve
 SUBDIR+=	py-hg-fastimport
 SUBDIR+=	py-hg-git
 SUBDIR+=	py-hglib
@@ -2035,6 +2036,7 @@ SUBDIR+=	py-iso-639
 SUBDIR+=	py-iso3166
 SUBDIR+=	py-isort
 SUBDIR+=	py-jaraco.classes
+SUBDIR+=	py-jaraco.functools
 SUBDIR+=	py-jaraco_util
 SUBDIR+=	py-jersey
 SUBDIR+=	py-joblib
