@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.197 2017/11/26 10:48:04 wiz Exp $
+# $NetBSD: Makefile,v 1.199 2018/07/25 17:00:57 nia Exp $
 #
 
 COMMENT=	Communication programs
@@ -105,6 +105,7 @@ SUBDIR+=	prosody
 SUBDIR+=	psi
 SUBDIR+=	psybnc
 SUBDIR+=	py-hangups
+SUBDIR+=	py-mastodon
 SUBDIR+=	py-xmpppy
 SUBDIR+=	quirc
 SUBDIR+=	riece
