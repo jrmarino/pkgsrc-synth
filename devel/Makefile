@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2707 2018/07/24 16:25:56 jperkin Exp $
+# $NetBSD: Makefile,v 1.2709 2018/07/26 11:47:32 jaapb Exp $
 #
 
 COMMENT=	Development utilities
@@ -745,8 +745,8 @@ SUBDIR+=	monotone
 SUBDIR+=	monotone-server
 SUBDIR+=	monotone-viz
 SUBDIR+=	mph
-SUBDIR+=	mr
 SUBDIR+=	msgpack
+SUBDIR+=	myrepos
 SUBDIR+=	nana
 SUBDIR+=	nant
 SUBDIR+=	nasm
@@ -2097,6 +2097,7 @@ SUBDIR+=	py-ode
 SUBDIR+=	py-olefile
 SUBDIR+=	py-open-vcdiff
 SUBDIR+=	py-ordered-set
+SUBDIR+=	py-oset
 SUBDIR+=	py-packaging
 SUBDIR+=	py-parameterized
 SUBDIR+=	py-path.py
