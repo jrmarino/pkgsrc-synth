@@ -1,6 +1,7 @@
-# $NetBSD: Makefile,v 1.174 2018/08/12 08:33:55 maya Exp $
+# $NetBSD: Makefile,v 1.177 2018/08/16 18:55:00 adam Exp $
 
 DISTNAME=	octave-4.4.1
+PKGREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	${MASTER_SITE_GNU:=octave/}
 
@@ -60,7 +61,10 @@ OCTAVE_DOC=	doc/interpreter/octave.pdf doc/liboctave/liboctave.pdf \
 		doc/refcard/refcard-letter.pdf
 INSTALLATION_DIRS+=	share/octave/${PKGVERSION_NOREV}/doc
 
-#CHECK_WRKREF_SKIP+=	share/octave/${PKGVERSION_NOREV}/etc/config.log
+PRINT_PLIST_AWK+=	{ gsub(/${MACHINE_GNU_PLATFORM}/, "$${MACHINE_GNU_PLATFORM}"); }
+CHECK_WRKREF_SKIP+=	lib/octave/${PKGVERSION}/liboctinterp.so* \
+			lib/octave/${PKGVERSION}/liboctinterp.a
+
 
 TEST_TARGET=	check
 
