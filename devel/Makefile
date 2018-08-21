@@ -1,4 +1,4 @@
-# $NetBSD: Makefile,v 1.2717 2018/08/20 12:58:06 adam Exp $
+# $NetBSD: Makefile,v 1.2719 2018/08/21 12:00:50 wiz Exp $
 #
 
 COMMENT=	Development utilities
@@ -849,7 +849,6 @@ SUBDIR+=	p5-Algorithm-Permute
 SUBDIR+=	p5-Alien-Base-ModuleBuild
 SUBDIR+=	p5-Alien-Build
 SUBDIR+=	p5-Alien-Packages
-SUBDIR+=	p5-Alien-Role-Alt
 SUBDIR+=	p5-Alien-SDL
 SUBDIR+=	p5-AnnoCPAN-Perldoc
 SUBDIR+=	p5-Any-Moose
@@ -1676,6 +1675,7 @@ SUBDIR+=	p5-Test-Inline
 SUBDIR+=	p5-Test-Inter
 SUBDIR+=	p5-Test-Kwalitee
 SUBDIR+=	p5-Test-LeakTrace
+SUBDIR+=	p5-Test-LectroTest
 SUBDIR+=	p5-Test-Log4perl
 SUBDIR+=	p5-Test-LongString
 SUBDIR+=	p5-Test-Manifest
